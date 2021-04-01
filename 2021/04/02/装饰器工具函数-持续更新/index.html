@@ -158,18 +158,19 @@
   </script>
 
 
-  <meta name="description" content="一、引入Express框架1.安装并加载Express模块1npm install express -g  1234let express &#x3D; require(&#39;express&#39;)let app &#x3D; express() &#x2F;&#x2F;相当于http.createServer()module.exports &#x3D; app">
+  <meta name="description" content="TypeScript中的装饰器随着TypeScript和ES6里引入了类，在一些场景下我们需要额外的特性来支持标注或修改类及其成员。 装饰器（Decorators）为我们在类的声明及成员上通过元编程语法添加标注提供了一种方式。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Express框架">
-<meta property="og:url" content="http://yoursite.com/2019/07/16/Express%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:title" content="装饰器工具函数[持续更新]">
+<meta property="og:url" content="http://yoursite.com/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/index.html">
 <meta property="og:site_name" content="Maoli">
-<meta property="og:description" content="一、引入Express框架1.安装并加载Express模块1npm install express -g  1234let express &#x3D; require(&#39;express&#39;)let app &#x3D; express() &#x2F;&#x2F;相当于http.createServer()module.exports &#x3D; app">
+<meta property="og:description" content="TypeScript中的装饰器随着TypeScript和ES6里引入了类，在一些场景下我们需要额外的特性来支持标注或修改类及其成员。 装饰器（Decorators）为我们在类的声明及成员上通过元编程语法添加标注提供了一种方式。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-07-16T02:03:27.000Z">
-<meta property="article:modified_time" content="2019-08-07T12:04:06.000Z">
+<meta property="article:published_time" content="2021-04-01T17:30:54.000Z">
+<meta property="article:modified_time" content="2021-04-01T18:00:37.966Z">
 <meta property="article:author" content="Jacky Mao">
-<meta property="article:tag" content="Node.js">
-<meta property="article:tag" content="Express框架">
+<meta property="article:tag" content="TypeScript">
+<meta property="article:tag" content="Webpack">
+<meta property="article:tag" content="装饰器语法">
 <meta name="twitter:card" content="summary">
 
 
@@ -177,7 +178,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/16/Express框架/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/04/02/装饰器工具函数-持续更新/"/>
 
 
 
@@ -187,7 +188,7 @@
   };
 </script>
 
-  <title>Express框架 | Maoli</title>
+  <title>装饰器工具函数[持续更新] | Maoli</title>
   
 
 
@@ -412,7 +413,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/Express%E6%A1%86%E6%9E%B6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jacky Mao">
@@ -429,7 +430,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Express框架
+          <h1 class="post-title" itemprop="name headline">装饰器工具函数[持续更新]
               
             
           </h1>
@@ -454,24 +455,12 @@
                 
               
 
-              <time title="创建时间：2019-07-16 10:03:27" itemprop="dateCreated datePublished" datetime="2019-07-16T10:03:27+08:00">2019-07-16</time>
+              <time title="创建时间：2021-04-02 01:30:54 / 修改时间：02:00:37" itemprop="dateCreated datePublished" datetime="2021-04-02T01:30:54+08:00">2021-04-02</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-07 20:04:06" itemprop="dateModified" datetime="2019-08-07T20:04:06+08:00">2019-08-07</time>
               
             
           </span>
@@ -503,8 +492,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/16/Express%E6%A1%86%E6%9E%B6/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/07/16/Express%E6%A1%86%E6%9E%B6/" itemprop="commentCount"></span>
+                <a href="/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -512,7 +501,7 @@
 
           
           
-             <span id="/2019/07/16/Express%E6%A1%86%E6%9E%B6/" class="leancloud_visitors" data-flag-title="Express框架">
+             <span id="/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="leancloud_visitors" data-flag-title="装饰器工具函数[持续更新]">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -537,7 +526,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">12k</span>
+                <span title="本文字数">11k</span>
               
 
               
@@ -551,7 +540,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">11 分钟</span>
+                <span title="阅读时长">10 分钟</span>
               
             </div>
           
@@ -571,90 +560,35 @@
       
 
       
-        <h2 id="一、引入Express框架"><a href="#一、引入Express框架" class="headerlink" title="一、引入Express框架"></a>一、引入Express框架</h2><h4 id="1-安装并加载Express模块"><a href="#1-安装并加载Express模块" class="headerlink" title="1.安装并加载Express模块"></a>1.安装并加载Express模块</h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express -g</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">let</span> app = express() <span class="comment">//相当于http.createServer()</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br></pre></td></tr></table></figure>
-
+        <h2 id="TypeScript中的装饰器"><a href="#TypeScript中的装饰器" class="headerlink" title="TypeScript中的装饰器"></a>TypeScript中的装饰器</h2><p>随着TypeScript和ES6里引入了类，在一些场景下我们需要额外的特性来支持标注或修改类及其成员。 装饰器（Decorators）为我们在类的声明及成员上通过元编程语法添加标注提供了一种方式。</p>
 <a id="more"></a>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>更新tsconfig.json,开启装饰器实验功能</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="attr">"target"</span>: <span class="string">"ES5"</span>,</span><br><span class="line">        <span class="attr">"experimentalDecorators"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-编写响应和绑定端口号"><a href="#2-编写响应和绑定端口号" class="headerlink" title="2.编写响应和绑定端口号"></a>2.编写响应和绑定端口号</h4><p>在Express框架下，不再需要更改响应头，其具有自动识别并更改响应头的能力。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.get(<span class="string">'/'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.url)</span><br><span class="line">    res.send(<span class="string">'i am erxpress'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Server is running~'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在项目中，在方法或属性前一行通过@[装饰器名称] 加入装饰器</p>
+<p>例如</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Submit &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> onClick(): <span class="built_in">void</span> &#123; <span class="comment">// 这是一个Submit类下普通的方法但是我们现在想为这个onclick方法加入防抖功能</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'submit'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-设置静态空间"><a href="#3-设置静态空间" class="headerlink" title="3.设置静态空间"></a>3.设置静态空间</h4><p>在被设置为静态空间的文件夹下的文件可以被终端直接访问,例如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	功能：为在当前文件夹下的public文件夹设置为静态空间</span></span><br><span class="line"><span class="comment">		可以直接以./public/*的方式打开对应文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">app.use(<span class="string">'/public/'</span>,express.static(<span class="string">'./public'</span>))</span><br></pre></td></tr></table></figure>
+<p>加入装饰器后, 这种非入侵式的加入功能，和设计模式中装饰器模式非常契合！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Submit &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Debounce</span>() <span class="comment">// 此处是防抖装饰器</span></span><br><span class="line">  <span class="keyword">private</span> onClick(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'submit'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-在express中使用art-template"><a href="#4-在express中使用art-template" class="headerlink" title="4.在express中使用art-template"></a>4.在express中使用art-template</h4><p>使用<code>express-art-tempalte</code>虽然不需要再载入<code>art-template</code>,但是前者是基于后者的，所以使用前者必须安装后者。</p>
-<p>安装<code>express-art-template</code>模块后，使用方法如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">app.engine(<span class="string">'html'</span>,<span class="built_in">require</span>(<span class="string">'express-art-template'</span>))</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    res.render(<span class="string">'文件名.html'</span>,模板json)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>注意</p>
+<h3 id="需要知道"><a href="#需要知道" class="headerlink" title="需要知道"></a>需要知道</h3><p>目前浏览器中并不直接支持装饰器的语法，JavaScript中的装饰器也还只在提案阶段。而前端大佬阮一峰也只对之前旧提案的语法进行了解释<a href="https://es6.ruanyifeng.com/#docs/decorator" target="_blank" rel="noopener">[阮一峰的装饰器教程]</a></p>
+<p>因此，TypeScirpt中装饰器在编译后看不到任何@等特殊语法，而是将装饰器和装饰的目标生成一个混合的方法或属性，然后使用<code>Object.defineProperty()</code>来重新定义到原有的方法和属性。</p>
+<p>著名的工具函数第三库lodash也发布了装饰器版本，其中包含了大量的工具装饰器<a href="https://github.com/steelsojka/lodash-decorators#readme" target="_blank" rel="noopener">lodash-decorators</a></p>
+<h2 id="装饰器方法【持续更新】"><a href="#装饰器方法【持续更新】" class="headerlink" title="装饰器方法【持续更新】"></a>装饰器方法【持续更新】</h2><p>该列表中将会持续更新一些自己编写的装饰器方法（可能lodash中已经存在，但也可能没有），作为方法仓库</p>
+<h3 id="Debounce-防抖"><a href="#Debounce-防抖" class="headerlink" title="Debounce 防抖"></a>Debounce 防抖</h3><p>防止抖动</p>
 <ul>
-<li><p>render中的文件无需加入路径，默认访问当前文件夹下的<code>views</code>文件夹下的对应文件，如需更改可以使用：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.set(<span class="string">'views'</span>,更改的默认目录+<span class="string">'/'</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
+<li>delay 延迟</li>
 </ul>
-<h4 id="5-在express中解析post请求的数据"><a href="#5-在express中解析post请求的数据" class="headerlink" title="5.在express中解析post请求的数据"></a>5.在express中解析post请求的数据</h4><p>需要先安装中间件-<code>body-parser</code>,然后根据以下命令配置</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line">app.use(bodyParser.urlencoded(&#123;<span class="attr">extended</span>:<span class="literal">false</span>&#125;))</span><br><span class="line">app.use(bodyParser.json)</span><br><span class="line"></span><br><span class="line">app.post(<span class="string">'/'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.body)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [装饰器]防止抖动</span></span><br><span class="line"><span class="comment"> * @param delay 延迟</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">Debounce</span>(<span class="params">delay = 300</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        target: <span class="built_in">Object</span>,</span><br><span class="line">        propertyKey: <span class="built_in">string</span>,</span><br><span class="line">        propertyDecorator: PropertyDescriptor</span><br><span class="line">    ): <span class="function"><span class="params">PropertyDescriptor</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> methods = propertyDecorator.value;</span><br><span class="line">        <span class="keyword">let</span> timer: <span class="built_in">number</span> | <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line">        propertyDecorator.value = <span class="function"><span class="keyword">function</span>(<span class="params">...args: <span class="built_in">any</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">            timer &amp;&amp; clearTimeout(timer);</span><br><span class="line">            timer = setTimeout(methods.bind(<span class="keyword">this</span>, ...args), delay);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> propertyDecorator;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="6-构建路由"><a href="#6-构建路由" class="headerlink" title="6.构建路由"></a>6.构建路由</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">router = express.Router()</span><br><span class="line">router.get(<span class="string">'/'</span>,(req,res)=&gt;&#123;&#125;)</span><br><span class="line">router.post(<span class="string">'/'</span>,(req,res)=&gt;&#123;&#125;)</span><br><span class="line">app.use(router)</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="7-构建项目链"><a href="#7-构建项目链" class="headerlink" title="7.构建项目链"></a>7.构建项目链</h4><ol>
-<li>构建入口函数</li>
-<li>设计路由</li>
-<li>设计API</li>
-<li>具体实现</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.js &lt;--- router.js &lt;--- APIname.js</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h2><p><code>express-session中间件</code></p>
-<p>配置:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> session = <span class="built_in">require</span>(<span class="string">'express-session'</span>)</span><br><span class="line"></span><br><span class="line">app.use(session(&#123;</span><br><span class="line">  secret: <span class="string">'keyboard cat'</span>,  <span class="comment">//配置加密字符串。为了增加安全性，再加密后再加上该字符串进行一次加密</span></span><br><span class="line">  resave: <span class="literal">false</span>,</span><br><span class="line">  saveUninitialized: <span class="literal">true</span>  <span class="comment">//无论是否使用session,默认分配一个sid（钥匙）</span></span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>,(req,res)=&gt;&#123;</span><br><span class="line">    req.session.xx = xxx</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、关于Express中的中间件"><a href="#三、关于Express中的中间件" class="headerlink" title="三、关于Express中的中间件"></a>三、关于Express中的<a href="http://expressjs.com/en/guide/using-middleware.html" target="_blank" rel="noopener">中间件</a></h2><h4 id="3-1-中间件"><a href="#3-1-中间件" class="headerlink" title="3.1 中间件"></a>3.1 中间件</h4><p>中间件<code>middleware</code>就是一个为你增加功能的方法。配置好对应的中间件之后，我们就能使用对应的功能了。在<code>Node.js</code>中，中间件一般都是处理请求的<code>req,res</code></p>
-<h4 id="3-2-Express中间件按关心内容分类"><a href="#3-2-Express中间件按关心内容分类" class="headerlink" title="3.2 Express中间件按关心内容分类"></a>3.2 Express中间件按关心内容分类</h4><table>
-<thead>
-<tr>
-<th>中间件</th>
-<th>参数</th>
-<th>功能</th>
-<th>类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>use</td>
-<td>(req,res,next)=&gt;{}</td>
-<td>不论收到来自客户端的任何请求，都会执行参数里的方法。next()代表自动执行下一个中间件</td>
-<td>不关心请求路径和请求方式的中间件</td>
-</tr>
-<tr>
-<td>use</td>
-<td>‘/xxx’,(req,res,next)=&gt;{}</td>
-<td>当请求路径以第一个参数开头时，则执行第二个参数的方法</td>
-<td>关心请求路径但不关心请求方式的中间件</td>
-</tr>
-<tr>
-<td>get、post</td>
-<td>‘/xxx’,(req,res,next)=&gt;{}</td>
-<td>当对应get、post请求的请求路径为对应的第一个参数时执行</td>
-<td>严格按照请求路径并关心请求方式的中间件</td>
-</tr>
-</tbody></table>
-<h4 id="3-3-中间件匹配策略"><a href="#3-3-中间件匹配策略" class="headerlink" title="3.3 中间件匹配策略"></a>3.3 中间件匹配策略</h4><ul>
-<li>如果匹配到第一个符合条件的中间件<ul>
-<li>如果没有next则结束匹配</li>
-<li>如果执行了next（）则继续匹配下一个符合条件的中间件</li>
+<h3 id="ClickOutside-处理点击某元素外的事件"><a href="#ClickOutside-处理点击某元素外的事件" class="headerlink" title="ClickOutside 处理点击某元素外的事件"></a>ClickOutside 处理点击某元素外的事件</h3><p>处理点击指定元素之外的事件，配合Vue使用，推荐在mounted及以后的生命周期中执行</p>
+<ul>
+<li>offscaleElRef 指定元素的ref值</li>
 </ul>
-</li>
-<li>如果没有匹配到，则继续向下找满足条件的中间件</li>
-</ul>
-<h4 id="3-4-使用中间件配置404和全局错误处理"><a href="#3-4-使用中间件配置404和全局错误处理" class="headerlink" title="3.4 使用中间件配置404和全局错误处理"></a>3.4 使用中间件配置404和全局错误处理</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//example...</span></span><br><span class="line">app.get(<span class="string">'/'</span>,(req,res,next)=&gt;&#123;</span><br><span class="line">    fs.read(<span class="string">'ab.txt'</span>,(err,data)=&gt;&#123;</span><br><span class="line">        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">            <span class="keyword">return</span> next(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//example...</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//配置404页面</span></span><br><span class="line">app.use(<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    res.render(<span class="string">'404.html'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//配置全局错误处理</span></span><br><span class="line">app.use(<span class="function">(<span class="params">err,req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    res.status(<span class="number">500</span>).send(err.message)</span><br><span class="line">    <span class="comment">//或者</span></span><br><span class="line">    res.status(<span class="number">500</span>).json(&#123;</span><br><span class="line">        ....</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理点击指定元素之外的工具，推荐在mounted及以后的生命周期中执行</span></span><br><span class="line"><span class="comment"> * @param offscaleElRef 指定元素的ref值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ClickOutside</span>(<span class="params">offscaleElRef: <span class="built_in">string</span></span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        target: <span class="built_in">Object</span>,</span><br><span class="line">        propertyKey: <span class="built_in">string</span>,</span><br><span class="line">        propertyDecorator: PropertyDescriptor</span><br><span class="line">    ): <span class="function"><span class="params">PropertyDescriptor</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> methods = propertyDecorator.value;</span><br><span class="line">        propertyDecorator.value = <span class="function"><span class="keyword">function</span>(<span class="params"><span class="keyword">this</span>: <span class="built_in">any</span>, ...args: <span class="built_in">any</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">            <span class="keyword">const</span> offscaleEl = <span class="keyword">this</span>.$refs[offscaleElRef];</span><br><span class="line">            <span class="keyword">if</span> (offscaleEl &amp;&amp; offscaleEl.contains) &#123;</span><br><span class="line">                <span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!event || !event.target) <span class="keyword">return</span>;</span><br><span class="line">                    <span class="keyword">const</span> clickEl = event.target <span class="keyword">as</span> HTMLElement;</span><br><span class="line">                    <span class="keyword">const</span> clickSelf = offscaleEl.contains(clickEl);</span><br><span class="line">                    <span class="keyword">if</span> (!clickSelf) &#123;</span><br><span class="line">                        methods.call(<span class="keyword">this</span>, ...args);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> propertyDecorator;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -676,9 +610,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+            <a href="/tags/TypeScript/" rel="tag"><i class="fa fa-tag"></i> TypeScript</a>
           
-            <a href="/tags/Express%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> Express框架</a>
+            <a href="/tags/Webpack/" rel="tag"><i class="fa fa-tag"></i> Webpack</a>
+          
+            <a href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%AD%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 装饰器语法</a>
           
         </div>
       
@@ -691,8 +627,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/16/Node-js%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" rel="next" title="Node.js基本语法">
-                <i class="fa fa-chevron-left"></i> Node.js基本语法
+              <a href="/2021/04/02/TypeScript%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%85%A5%E9%97%A8/" rel="next" title="TypeScript渐进式入门">
+                <i class="fa fa-chevron-left"></i> TypeScript渐进式入门
               </a>
             
           </div>
@@ -700,10 +636,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/16/MongoDB/" rel="prev" title="MongoDB">
-                MongoDB <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -970,7 +902,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引入Express框架"><span class="nav-text">一、引入Express框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-安装并加载Express模块"><span class="nav-text">1.安装并加载Express模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-编写响应和绑定端口号"><span class="nav-text">2.编写响应和绑定端口号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-设置静态空间"><span class="nav-text">3.设置静态空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-在express中使用art-template"><span class="nav-text">4.在express中使用art-template</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-在express中解析post请求的数据"><span class="nav-text">5.在express中解析post请求的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-构建路由"><span class="nav-text">6.构建路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-构建项目链"><span class="nav-text">7.构建项目链</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Session"><span class="nav-text">二、Session</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、关于Express中的中间件"><span class="nav-text">三、关于Express中的中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-中间件"><span class="nav-text">3.1 中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Express中间件按关心内容分类"><span class="nav-text">3.2 Express中间件按关心内容分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-中间件匹配策略"><span class="nav-text">3.3 中间件匹配策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-使用中间件配置404和全局错误处理"><span class="nav-text">3.4 使用中间件配置404和全局错误处理</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TypeScript中的装饰器"><span class="nav-text">TypeScript中的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#需要知道"><span class="nav-text">需要知道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器方法【持续更新】"><span class="nav-text">装饰器方法【持续更新】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debounce-防抖"><span class="nav-text">Debounce 防抖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClickOutside-处理点击某元素外的事件"><span class="nav-text">ClickOutside 处理点击某元素外的事件</span></a></li></ol></li></ol></div>
             
 
           </div>

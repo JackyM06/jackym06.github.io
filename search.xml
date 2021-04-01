@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>装饰器工具函数[持续更新]</title>
+    <url>/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<h2 id="TypeScript中的装饰器"><a href="#TypeScript中的装饰器" class="headerlink" title="TypeScript中的装饰器"></a>TypeScript中的装饰器</h2><p>随着TypeScript和ES6里引入了类，在一些场景下我们需要额外的特性来支持标注或修改类及其成员。 装饰器（Decorators）为我们在类的声明及成员上通过元编程语法添加标注提供了一种方式。</p>
+<a id="more"></a>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>更新tsconfig.json,开启装饰器实验功能</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="attr">"target"</span>: <span class="string">"ES5"</span>,</span><br><span class="line">        <span class="attr">"experimentalDecorators"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在项目中，在方法或属性前一行通过@[装饰器名称] 加入装饰器</p>
+<p>例如</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> Submit &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> onClick(): <span class="built_in">void</span> &#123; <span class="comment">// 这是一个Submit类下普通的方法但是我们现在想为这个onclick方法加入防抖功能</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'submit'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加入装饰器后, 这种非入侵式的加入功能，和设计模式中装饰器模式非常契合！</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> Submit &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Debounce</span>() <span class="comment">// 此处是防抖装饰器</span></span><br><span class="line">  <span class="keyword">private</span> onClick(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'submit'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="需要知道"><a href="#需要知道" class="headerlink" title="需要知道"></a>需要知道</h3><p>目前浏览器中并不直接支持装饰器的语法，JavaScript中的装饰器也还只在提案阶段。而前端大佬阮一峰也只对之前旧提案的语法进行了解释<a href="https://es6.ruanyifeng.com/#docs/decorator" target="_blank" rel="noopener">[阮一峰的装饰器教程]</a></p>
+<p>因此，TypeScirpt中装饰器在编译后看不到任何@等特殊语法，而是将装饰器和装饰的目标生成一个混合的方法或属性，然后使用<code>Object.defineProperty()</code>来重新定义到原有的方法和属性。</p>
+<p>著名的工具函数第三库lodash也发布了装饰器版本，其中包含了大量的工具装饰器<a href="https://github.com/steelsojka/lodash-decorators#readme" target="_blank" rel="noopener">lodash-decorators</a></p>
+<h2 id="装饰器方法【持续更新】"><a href="#装饰器方法【持续更新】" class="headerlink" title="装饰器方法【持续更新】"></a>装饰器方法【持续更新】</h2><p>该列表中将会持续更新一些自己编写的装饰器方法（可能lodash中已经存在，但也可能没有），作为方法仓库</p>
+<h3 id="Debounce-防抖"><a href="#Debounce-防抖" class="headerlink" title="Debounce 防抖"></a>Debounce 防抖</h3><p>防止抖动</p>
+<ul>
+<li>delay 延迟</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [装饰器]防止抖动</span></span><br><span class="line"><span class="comment"> * @param delay 延迟</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">Debounce</span>(<span class="params">delay = 300</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        target: <span class="built_in">Object</span>,</span><br><span class="line">        propertyKey: <span class="built_in">string</span>,</span><br><span class="line">        propertyDecorator: PropertyDescriptor</span><br><span class="line">    ): <span class="function"><span class="params">PropertyDescriptor</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> methods = propertyDecorator.value;</span><br><span class="line">        <span class="keyword">let</span> timer: <span class="built_in">number</span> | <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line">        propertyDecorator.value = <span class="function"><span class="keyword">function</span>(<span class="params">...args: <span class="built_in">any</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">            timer &amp;&amp; clearTimeout(timer);</span><br><span class="line">            timer = setTimeout(methods.bind(<span class="keyword">this</span>, ...args), delay);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> propertyDecorator;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ClickOutside-处理点击某元素外的事件"><a href="#ClickOutside-处理点击某元素外的事件" class="headerlink" title="ClickOutside 处理点击某元素外的事件"></a>ClickOutside 处理点击某元素外的事件</h3><p>处理点击指定元素之外的事件，配合Vue使用，推荐在mounted及以后的生命周期中执行</p>
+<ul>
+<li>offscaleElRef 指定元素的ref值</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理点击指定元素之外的工具，推荐在mounted及以后的生命周期中执行</span></span><br><span class="line"><span class="comment"> * @param offscaleElRef 指定元素的ref值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ClickOutside</span>(<span class="params">offscaleElRef: <span class="built_in">string</span></span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        target: <span class="built_in">Object</span>,</span><br><span class="line">        propertyKey: <span class="built_in">string</span>,</span><br><span class="line">        propertyDecorator: PropertyDescriptor</span><br><span class="line">    ): <span class="function"><span class="params">PropertyDescriptor</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> methods = propertyDecorator.value;</span><br><span class="line">        propertyDecorator.value = <span class="function"><span class="keyword">function</span>(<span class="params"><span class="keyword">this</span>: <span class="built_in">any</span>, ...args: <span class="built_in">any</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">            <span class="keyword">const</span> offscaleEl = <span class="keyword">this</span>.$refs[offscaleElRef];</span><br><span class="line">            <span class="keyword">if</span> (offscaleEl &amp;&amp; offscaleEl.contains) &#123;</span><br><span class="line">                <span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!event || !event.target) <span class="keyword">return</span>;</span><br><span class="line">                    <span class="keyword">const</span> clickEl = event.target <span class="keyword">as</span> HTMLElement;</span><br><span class="line">                    <span class="keyword">const</span> clickSelf = offscaleEl.contains(clickEl);</span><br><span class="line">                    <span class="keyword">if</span> (!clickSelf) &#123;</span><br><span class="line">                        methods.call(<span class="keyword">this</span>, ...args);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> propertyDecorator;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Web前端</category>
+      </categories>
+      <tags>
+        <tag>TypeScript</tag>
+        <tag>Webpack</tag>
+        <tag>装饰器语法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TypeScript渐进式入门</title>
     <url>/2021/04/02/TypeScript%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>本部分主要是一些基础概念，掌握后可以从JavaScript语法习惯转变为TypeScript。</p>
