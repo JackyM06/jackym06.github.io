@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/uploads/avatar.png?v=6.3.0" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      appId: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "07daa06f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="摘要这次分享主要是对在浏览器环境中实现直播的相关技术介绍，其中包括了对音视频的格式以及推送、播放技术的探索。分享过程中还会对目前自己已经实现的一套Web直播方案进行分析。最后还会简单介绍现在比较热门的WebRTC技术。 音视频串流简介音视频串流从广义角度来说，就是能够实现设备A将音视频画面同步传输给设备B进行播放，例如电视投屏、会议投屏。而今天所介绍的Web音视频串流主要是实现允许用户在浏览器环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web音视频串流">
+<meta property="og:url" content="http://yoursite.com/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/index.html">
+<meta property="og:site_name" content="Maoli">
+<meta property="og:description" content="摘要这次分享主要是对在浏览器环境中实现直播的相关技术介绍，其中包括了对音视频的格式以及推送、播放技术的探索。分享过程中还会对目前自己已经实现的一套Web直播方案进行分析。最后还会简单介绍现在比较热门的WebRTC技术。 音视频串流简介音视频串流从广义角度来说，就是能够实现设备A将音视频画面同步传输给设备B进行播放，例如电视投屏、会议投屏。而今天所介绍的Web音视频串流主要是实现允许用户在浏览器环境">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(8).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(2).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(5).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/1382048-20180604152939120-1356963733.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210418115656418.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/1328846-d0df01e6b2dec3bb.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/loadimage.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(12).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/architecture.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210418002005470.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210419160402279.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(9).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(10).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(11).png">
+<meta property="article:published_time" content="2021-04-21T02:30:08.000Z">
+<meta property="article:modified_time" content="2021-04-21T02:38:14.090Z">
+<meta property="article:author" content="Jacky Mao">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="音视频">
+<meta property="article:tag" content="直播">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(8).png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/04/21/Web音视频串流/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Web音视频串流 | Maoli</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f6eaa5ccd4d3e722e2e845b133cb889a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Maoli</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be your own hero</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类<span class="badge">6</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签<span class="badge">38</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">35</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/JackyM06" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky Mao">
+      <meta itemprop="description" content="爱吃酱油的人运气不会差😁">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maoli">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web音视频串流
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-04-21 10:30:08 / 修改时间：10:38:14" itemprop="dateCreated datePublished" datetime="2021-04-21T10:30:08+08:00">2021-04-21</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Web前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/" class="leancloud_visitors" data-flag-title="Web音视频串流">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">19k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">17 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>这次分享主要是对在浏览器环境中实现直播的相关技术介绍，其中包括了对音视频的格式以及推送、播放技术的探索。分享过程中还会对目前自己已经实现的一套Web直播方案进行分析。最后还会简单介绍现在比较热门的WebRTC技术。</p>
+<h2 id="音视频串流简介"><a href="#音视频串流简介" class="headerlink" title="音视频串流简介"></a>音视频串流简介</h2><p>音视频串流从广义角度来说，就是能够实现设备A将音视频画面同步传输给设备B进行播放，例如电视投屏、会议投屏。而今天所介绍的Web音视频串流主要是实现允许用户在浏览器环境就能完成串流。</p>
+<a id="more"></a>
+
+<p>一个完整的Web媒体串流应当具备3种角色，推流客户端（主播侧），媒体服务器（MediaServer）和拉流客户端（观众侧）。其中推流和拉流客户端其实都是在网页中进行处理的，而MediaServer位于服务端，并且要能够完成同时接收来自不同推流客户端的流数据，并对这些流进行区分，向拉流客户端提供获取对应流的渠道。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(8).png" alt="Untitled Diagram (8)"></p>
+<h2 id="关于音视频的编码和封装格式概念补充"><a href="#关于音视频的编码和封装格式概念补充" class="headerlink" title="关于音视频的编码和封装格式概念补充"></a>关于音视频的编码和封装格式概念补充</h2><h3 id="音视频编码格式"><a href="#音视频编码格式" class="headerlink" title="音视频编码格式"></a>音视频编码格式</h3><p>在封装格式里的视频可以用不同的编码格式,编码格式简单的理解就是用特定的压缩技术把视频做些处理。不过容器其实也可以做些压缩处理。所以视频是可以在编码格式、容器格式中做两次压缩。</p>
+<p>常见的编码格式有:mpeg-2、mpeg-4、h.263、h.264、RV40</p>
+<h3 id="音视频封装格式"><a href="#音视频封装格式" class="headerlink" title="音视频封装格式"></a>音视频封装格式</h3><p>封装格式就是把已经编码封装好的视频、音频按照一定的规范放到一起</p>
+<p>同一种封装格式中可以放不同编码的视频，不过一种视频容器格式一般是只支持某几类编码格式的视频。我们能够最直观判断封装格式的方法就是文件后缀。</p>
+<p>常见的容器格式有: MP4、rmvb、rm、flv、AVI、mov、WMV、mk </p>
+<h3 id="浏览器支持的格式"><a href="#浏览器支持的格式" class="headerlink" title="浏览器支持的格式"></a>浏览器支持的格式</h3><p>对于video标签来说，浏览器支持视频播放的封装格式有：MP4、WebM和Ogg。其中我们就MP4来说，必须使用h.264编码的视频和aac编码的音频，才能被浏览器正确解析，否则是没有办法播放的。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(2).png" alt="Untitled Diagram (2)"></p>
+<p>下面列出了另外两种封装格式下浏览器能直接解码的音视频编码组合：</p>
+<ul>
+<li>WebM ：使用 VP8 视频编解码器和 Vorbis 音频编解码器</li>
+<li>Ogg：使用 Theora 视频编解码器和 Vorbis音频编解码器</li>
+</ul>
+<h3 id="适合媒体串流中的封装格式"><a href="#适合媒体串流中的封装格式" class="headerlink" title="适合媒体串流中的封装格式"></a>适合媒体串流中的封装格式</h3><p>由于在媒体串流的过程中，客户端是需要源源不断接受来自外界传输的音视频，并且需要播放已经接受到的部分，后文中把这种特殊的媒体简写为<strong>流媒体</strong>。</p>
+<p>而不论是MP4还是WebM还是Ogg都是需要等待完整的数据传递完成后才能够开始播放，并且不能将多个音视频进行无缝连接播放，所以这三种格式统统无法没流媒体利用，凉凉。</p>
+<p>因此我们需要其他更加适合串流的媒体封装格式，这里主要介绍下面两种，为后文作铺垫。</p>
+<h4 id="FLV（Flash-Video）封装格式"><a href="#FLV（Flash-Video）封装格式" class="headerlink" title="FLV（Flash Video）封装格式"></a>FLV（Flash Video）封装格式</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(5).png" alt="Untitled Diagram (5)"></p>
+<p>FLV格式的流中， 每一个音视频数据都被封装成了包含时间戳信息头的数据包。在传输时，只需要当播放器拿到这些数据包解包的时候能够根据时间戳信息把这些音视频数据和之前到达的音视频数据连续起来播放。</p>
+<p>而MP4，MKV等等类似这种封装，必须拿到完整的音视频文件才能播放，因为里面的单个音视频数据块不带有时间戳信息，播放器不能将这些没有时间戳信息数据块连续起来，所以就不能实时的解码播放。</p>
+<h4 id="TS（Transport-Stream）封装格式"><a href="#TS（Transport-Stream）封装格式" class="headerlink" title="TS（Transport Stream）封装格式"></a>TS（Transport Stream）封装格式</h4><p>就如TS（传输流）的命名，似乎天生就是为了流媒体而生的一种封装格式，其特点是多个TS片段可以被播放器无缝拼接进行播放，无需等待重新载入。不过TS的实现相对FLV要复杂许多，在此不再说明（太难了🤯）。</p>
+<h2 id="音视频串流的协议"><a href="#音视频串流的协议" class="headerlink" title="音视频串流的协议"></a>音视频串流的协议</h2><h3 id="RTMP（Real-Time-Messaging-Protocol-实时信息控制协议）"><a href="#RTMP（Real-Time-Messaging-Protocol-实时信息控制协议）" class="headerlink" title="RTMP（Real Time Messaging Protocol 实时信息控制协议）"></a>RTMP（Real Time Messaging Protocol 实时信息控制协议）</h3><p> RTMP是 Adobe Systems 公司为 Flash 播放器和服务器之间音频、视频和数据传输开发的开放协议， 该协议在国内直播平台中较为普及。</p>
+<p>RTMP 是一种基于TCP进行实时流媒体通信的网络协议，主要用来在 Flash 平台和支持 RTMP 协议的流媒体服务器之间进行音视频和数据通信。RTMP协议下可以用来拉流，也可以进行退流。在浏览器中并不支持RTMP协议，只能通过Flash插件进行处理。RTMP传输是所支持的媒体格式为FLV。</p>
+<p>主播 ==&gt; MediaServer ==&gt;  观众</p>
+<h3 id="HTTP-FLV"><a href="#HTTP-FLV" class="headerlink" title="HTTP-FLV"></a>HTTP-FLV</h3><p>这种协议主要是为了让原本只能在RTMP中进行传输的FLV音视频流也能够在HTTP下进行传输。主要是用于FLV能够在浏览器页面中进行播放，由于HTML的Video不直接支持Flv格式的音视频，所以在早期需要在网页中加入Flash插件才能够播放。目前大量的流媒体服务器 Media Server都支持了将FLV格式流通过HTTP-FLV的形式对外界进行开放。</p>
+<h3 id="HLS"><a href="#HLS" class="headerlink" title="HLS"></a>HLS</h3><p>HLS（HTTP Living Stream） 是一个由苹果公司提出的基于 HTTP 的<a href="https://zh.wikipedia.org/wiki/流媒体" target="_blank" rel="noopener">流媒体</a>网络传输协议。</p>
+<p>HLS 的工作原理是把整个流分成一个个小的基于 HTTP 的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的 extended M3U (m3u8) playlist文件，用于寻找可用的媒体流。</p>
+<img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/1382048-20180604152939120-1356963733.png" alt="img" style="zoom:150%;" />
+
+<p>来解释一下这张图，从左到右讲，左下方的inputs的视频源是什么格式都无所谓，他与server之间的通信协议也可以任意（比如RTMP），总之只要把视频数据传输到服务器上即可。这个视频在server服务器上被转换成HLS格式的视频（既TS和m3u8文件）文件。细拆分来看server里面的Media encoder的是一个转码模块负责将视频源中的视频数据转码到目标编码格式（H264）的视频数据。转码成H264视频数据之后，在stream segmenter模块将视频切片，切片的结果就是index file（m3u8）和ts文件了。图中的Distribution其实只是一个普通的HTTP文件服务器，然后客户端只需要访问一级m3u8文件的路径就会自动播放HLS视频流了。</p>
+<p>说说m3u8文件</p>
+<p>m3u8的命名来源是m3u文件 + utf-8编码而来，两者的文件内容是完全一样的。下文中直接称为m3u</p>
+<p>m3u (移动图像专家组音频层3统一资源定位器)</p>
+<p>m3u实际上就是一个索引文件，其中可以记录TS文件地址，客户端会按照下载的顺序进行连续播放。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210418115656418.png" alt="image-20210418115656418"></p>
+<p>对于一个记录了TS的文件M3U的文件内容如下 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U &#x2F;&#x2F; 声明文件为M3U，必须写在第一行</span><br><span class="line">#EXT-X-PLAYLIST-TYPE:VOD &#x2F;&#x2F; 当前播放类型为点播</span><br><span class="line">#EXT-X-TARGETDURATION:10 &#x2F;&#x2F;每个视频分段最大的时长（单位秒）</span><br><span class="line">#EXTINF:10, &#x2F;&#x2F;下面ts切片的播放时长</span><br><span class="line">2000kbps-00001.ts &#x2F;&#x2F;ts文件路径</span><br><span class="line">#EXTINF:10,</span><br><span class="line">2000kbps-00002.ts</span><br><span class="line">#ZEN-TOTAL-DURATION:20</span><br><span class="line">#ZEN-AVERAGE-BANDWIDTH:2190954</span><br><span class="line">#ZEN-MAXIMUM-BANDWIDTH:3536205</span><br><span class="line">#EXT-X-ENDLIST &#x2F;&#x2F; m3u结束指令</span><br></pre></td></tr></table></figure>
+
+<p>不光如此，m3u还可以记录二级m3u的文件的地址。</p>
+<img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/1328846-d0df01e6b2dec3bb.png" alt="1328846-d0df01e6b2dec3bb" style="zoom:50%;" />
+
+<p>下面是一个记录了文件地址的m3u8内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID&#x3D;1,BANDWIDTH&#x3D;2128000</span><br><span class="line">drawingSword(1080p).m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID&#x3D;1,BANDWIDTH&#x3D;1064000</span><br><span class="line">drawingSword(720p).m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID&#x3D;1,BANDWIDTH&#x3D;564000</span><br><span class="line">drawingSword(480p).m3u8</span><br><span class="line">#EXT-X-STREAM-INF:PROGRAM-ID&#x3D;1,BANDWIDTH&#x3D;282000</span><br><span class="line">drawingSword(360p).m3u8</span><br><span class="line">#EXT-X-ENDLIST</span><br></pre></td></tr></table></figure>
+
+<p>bandwidth指定视频流的比特率，PROGRAM-ID表示资源的ID，每一个#EXT-X-STREAM-INF的下一行是二级index文件的路径，可以用相对路径也可以用绝对路径。例子中用的是相对路径。这个文件中记录了不同比特率视频流的二级index文件路径，客户端可以当前环境的网络带宽，来决定播放哪一个视频流。也可以在网络带宽变化的时候平滑切换到和带宽匹配的视频流。</p>
+<h4 id="HLS目前的不足"><a href="#HLS目前的不足" class="headerlink" title="HLS目前的不足"></a>HLS目前的不足</h4><p>由于HLS需要将采集到的音视频进行分片、客户端也需要对接受到的分片后的音视频进行合并处理，因此相对来时会存在比较大的延迟，大概会达到 10s左右。</p>
+<h5 id="HLS在浏览器中的兼容情况"><a href="#HLS在浏览器中的兼容情况" class="headerlink" title="HLS在浏览器中的兼容情况"></a>HLS在浏览器中的兼容情况</h5><p>事实上，HLS 在 PC 端仅支持safari浏览器，而其他大部分PC浏览器使用HTML5 video标签由于无法解析TS所以不能直接播放(需要通过hls.js)。移动端不论是安卓还是IOS统统都原生支持HLS。这点主要是由于HLS是由Apple公司推广的，苹果自家的浏览器上都是支持的，而安卓也进行了跟进。所以如果想要在PC浏览器上使用到HLS，仍然需要使用其他技术手段才能实现。</p>
+<p>各协议总结：</p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>http-flv</th>
+<th>rtmp</th>
+<th>hls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传输层</td>
+<td>http</td>
+<td>tcp</td>
+<td>http</td>
+</tr>
+<tr>
+<td>视频格式</td>
+<td>flv</td>
+<td>flv</td>
+<td>Ts文件</td>
+</tr>
+<tr>
+<td>延时</td>
+<td>低</td>
+<td>低</td>
+<td>很高</td>
+</tr>
+<tr>
+<td>数据分段</td>
+<td>连续流</td>
+<td>连续流</td>
+<td>切片文件</td>
+</tr>
+<tr>
+<td>Html5播放</td>
+<td>暂不支持</td>
+<td>不支持</td>
+<td>移动端支持</td>
+</tr>
+</tbody></table>
+<h2 id="WebSocket-RTMP在网页中进行音视频串流的方案"><a href="#WebSocket-RTMP在网页中进行音视频串流的方案" class="headerlink" title="WebSocket + RTMP在网页中进行音视频串流的方案"></a>WebSocket + RTMP在网页中进行音视频串流的方案</h2><p>所谓兼容RTMP的方案就是，把RTMP推流的工作放到中间服务层（此次以Node为例）去,而拉流通过流媒体服务器开放的HTTP-FLV，并在播放前使用Flv.js将转换后的流数据喂给Video去解析播放。</p>
+<p>这里需要介绍一款处理音视频非常有效的工具 FFmpeg, 这款工具提供以命令行的方式去对视频进行转码、转封装格式、增加水印等等功能其中还包括了RTMP推流的功能。同时FFmpeg也为Node提供了一些控制的Bridge，在后文中，我会在中间层使用Node来控制FFmpeg进行音视频的推流。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/loadimage.png" alt="loadimage"></p>
+<h3 id="推流客户端-gt-Node中间处理层"><a href="#推流客户端-gt-Node中间处理层" class="headerlink" title="推流客户端 =&gt; Node中间处理层"></a>推流客户端 =&gt; Node中间处理层</h3><p>这里有包括两种推流的音视频源，一种是实时录制自己的摄像头进行推流。另外一种是使用本地的视频文件进行发送。这里我们分开来讲</p>
+<p>对于推流客户端推送实时录制的音视频数据时，其核心操作就用过浏览器来调用摄像头数据，并通过<a href="https://github.com/streamproc/MediaStreamRecorder" target="_blank" rel="noopener">MediaStreamRecorder.js</a>去捕获音视频二进制数据（Blob）注意此处每个时间片返回一个blob，获得当前时间片的Blob后通过WebSocket将blob数据传递给Node中间层。</p>
+<p>而对于推流客户端推送视频格式的文件时，需要做的就是将视频文件按照每段时间的视频量进行分片。例如对于一个100s的视频，如果按照每段blob需要发送4s的数据量，那就需要分为25段blob，这些可以通过前端去进行分片，分片发送的中间Node层。后面的操作就和摄像头推流一致了。</p>
+<h3 id="Node中间处理层-gt-流媒体服务器"><a href="#Node中间处理层-gt-流媒体服务器" class="headerlink" title="Node中间处理层 =&gt; 流媒体服务器"></a>Node中间处理层 =&gt; 流媒体服务器</h3><p>在Blob数据抵达Node中间层后会被转化为Buffer，在Node层我们需要做的这些分段的视频格式转化为ts格式的片段，再将ts片段（这里就利用到了TS能够无缝拼接进行播放的特性，能够让ffmpeg推送持续的流媒体）通过ffmpeg将持续不断接受到的TS格式的流媒体转化为Flv流并通过RTMP推流到流媒体服务器上。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(12).png" alt="Untitled Diagram (12)"></p>
+<p>流媒体服务器是在Node.js环境下通过node-media-server第三方包进行搭建。Node-media-server许多不同协议的推流和拉流的方法。其中它支持外界通过RTMP的方式进行推流拉流（端口1935），也支持将RTMP流转换为HTTP-FLV协议的流对外开放（端口8000）。通过Node-media-server建立一个流媒体服务步骤也很简单，只需要如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> NodeMediaServer = <span class="built_in">require</span>(<span class="string">'node-media-server'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  rtmp: &#123;</span><br><span class="line">    port: <span class="number">1935</span>,</span><br><span class="line">    chunk_size: <span class="number">60000</span>,</span><br><span class="line">    gop_cache: <span class="literal">true</span>,</span><br><span class="line">    ping: <span class="number">30</span>,</span><br><span class="line">    ping_timeout: <span class="number">60</span></span><br><span class="line">  &#125;,</span><br><span class="line">  http: &#123;</span><br><span class="line">    port: <span class="number">8000</span>,</span><br><span class="line">    allow_origin: <span class="string">'*'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nms = <span class="keyword">new</span> NodeMediaServer(config)</span><br><span class="line">nms.run();</span><br></pre></td></tr></table></figure>
+
+<p>在Node-media-server中，提供了通过使用不用的URL路径来对流进行区分。这里贴上一个官方提供的URL格式</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rtmp:<span class="regexp">//</span>hostname:port<span class="regexp">/appname/</span>stream</span><br><span class="line">http:<span class="regexp">//</span>hostname:port<span class="regexp">/appname/</span>stream.flv</span><br></pre></td></tr></table></figure>
+<p>例如对于音视频流A，它的URL是这样的：</p>
+<p>rtmp://47.110.88.142:1935/live/root_14465</p>
+<p>可以看出对于这个流，appName这里被命名为了live, 而stream被命名为了root_14465。对应的，如果想通过HTTP-FLV进行拉这条流，可以通过下面这条URL:</p>
+<p><a href="http://47.110.88.142:8000/live/root_14465.flv" target="_blank" rel="noopener">http://47.110.88.142:8000/live/root_14465.flv</a></p>
+<p>在完成流媒体服务器的搭建后，不同用户会生成对应不同的推流URL，只要为观众发放正确对应的拉流URL就会播放正确的流数据。实现了并行串流的目的。</p>
+<p>本地演示：</p>
+<ol>
+<li>起流媒体服务器</li>
+<li>通过ffmpeg推流</li>
+<li>通过http-flv拉流</li>
+</ol>
+<h3 id="流媒体服务器-gt-拉流客户端"><a href="#流媒体服务器-gt-拉流客户端" class="headerlink" title="流媒体服务器 =&gt; 拉流客户端"></a>流媒体服务器 =&gt; 拉流客户端</h3><p>通过Http-flv进行传输，浏览器的video标签通过http获取到flv流后，使用Flv.js【后文中介绍】进行转换封包格式后为MP4后便能够持续播放。</p>
+<h4 id="Flv-js"><a href="#Flv-js" class="headerlink" title="Flv.js"></a>Flv.js</h4><p>B站开源的一款媒体流转码插件，该插件能够利用Js将接受到的HTTP-FLV实时转码为Video能够接受的MP4格式。</p>
+<img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/architecture.png" alt="img" style="zoom: 67%;" />
+
+<p>得益于浏览器提供了Media Source Extensions API（MSE）,使得flv.js能够通过JavaScript来对流数据格式进行转换，并分片为</p>
+<p>这里我们贴一段flv.js的简单的使用代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"flv.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">id</span>=<span class="string">"videoElement"</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">    if (flvjs.isSupported()) &#123;</span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> videoElement = <span class="built_in">document</span>.getElementById(<span class="string">'videoElement'</span>);</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> flvPlayer = flvjs.createPlayer(&#123;</span></span><br><span class="line"><span class="actionscript">            type: <span class="string">'flv'</span>,</span></span><br><span class="line"><span class="actionscript">            url: <span class="string">'http://example.com/flv/video.flv'</span></span></span><br><span class="line">        &#125;);</span><br><span class="line">        flvPlayer.attachMediaElement(videoElement);</span><br><span class="line">        flvPlayer.load();</span><br><span class="line">        flvPlayer.play();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Flv-js不足"><a href="#Flv-js不足" class="headerlink" title="Flv.js不足"></a>Flv.js不足</h5><p>MSE目前在PC端浏览器上支持较好，但是一些较低版本的移动端流览器就不是那么理想了如图：</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210418002005470.png" alt="image-20210418002005470"></p>
+<p>由于Flv.js是基于MSE制作的，所以一些低版本移动端流览器中是无法正常播放的，因此在考虑兼容性的情况下需要慎用。</p>
+<h2 id="关于WebRTC"><a href="#关于WebRTC" class="headerlink" title="关于WebRTC"></a>关于WebRTC</h2><p>在研究Web音视频串流的时候，发现了一种新兴的平台 - Web视频会议，用户直接通过PC浏览器即可加入音视频会议。列出一些目前市场上的web视频会议产品：</p>
+<p>Google Meet: <a href="https://meet.google.com" target="_blank" rel="noopener">https://meet.google.com</a></p>
+<p>轻雀视频会议<a href="https://www.qingque.cn/meet/" target="_blank" rel="noopener">https://www.qingque.cn/meet/</a></p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image-20210419160402279.png" alt="image-20210419160402279"></p>
+<p>而移动端的浏览器由于种类繁多并不能较好的适配，因此不被推荐直接在移动端浏览器中使用web视频会议。</p>
+<p>Google给出的方案是需要下载一个应用程序GoogleMeet，而轻雀给出的方案比较适合国内的场景，提供了微信小程序或者轻雀APP两种方式供参会者加入。</p>
+<p>如果从音视频串流的角度来思考，视频会议就是让传统的单向直播变化为了双向直播，即每个参与者即需要推流，也需要拉流。但是显然这样对流媒体服务器的压力过于庞大，并且还有不可忽视的延时问题。因此促进了Google对WebRTC的建设。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(9).png" alt="Untitled Diagram (9)"></p>
+<p>而这两种视频会议都是由WebRTC技术进行实现的</p>
+<blockquote>
+<p>WebRTC （Web Real-Time Communications） 是一项由Google推行的实时通讯技术，它允许网络应用或者站点，在<strong>不借助中间媒介</strong>的情况下，建立浏览器之间点对点（Peer-to-Peer）的连接，实现视频流和（或）音频流或者其他任意数据的传输。</p>
+</blockquote>
+<p>大部分主流浏览器为开发者开放了可以开箱即用WebRTC - API，可以通过执行API就能呼叫指定的Peer并建立连接。但需要注意使用WebRTC技术虽然音视频数据不经过服务端传输，但是仍然需要服务端去交换一些连接的必要信息。</p>
+<h3 id="WebRTC技术的工作流"><a href="#WebRTC技术的工作流" class="headerlink" title="WebRTC技术的工作流"></a>WebRTC技术的工作流</h3><p>WebRTC更适合用来做Web视频会议的原因就是它能够实现浏览器和浏览器之间进行音视频的传输。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(10).png" alt="Untitled Diagram (10)"></p>
+<p>这其中的传输过程如图。这里面的PeerN指的是连接的浏览器客户端，在多个Peer连接之前，每个Peer需要和信令服务器（Signaling Server）进行连接，这里面提到的信令服务器需要由开发者自行搭建。</p>
+<p>可以看到Peer与 信令服务器的连接是双向的，这是因为连接的各方需要通过信令服务器交换一些关键信息，这些信息都会以信令的信息发送和接受。</p>
+<p>Peer之间主要需要交换下面3种类型的信息</p>
+<ul>
+<li>初始化和关闭通信，及报告错误；</li>
+<li>用户WebRTC的的IP和端口号</li>
+<li>当前浏览器支持播放的音视频编码及封装格式，以及能播放的最高分辨率等信息。</li>
+</ul>
+<p>其中需要重点关注第二点，因为需要交换各个Peer之间的IP来进行Peer之间的连接，所以要保证Peer之间是要能够正确访问到对方ip的，如果所有的Peer都是在同一个局域网下没有问题，但是如果参会的Peer来自不通的局域网，那么他们交换的IP是无法访问到的。</p>
+<p>所以在这里还需要增加一个借助另一种服务器（称为STUN server）实现NAT/Firewall穿越。主要做的工作就是将用户交换IP的过程中需要把根据局域网IP生成一个公网IP，这样就实现了公网环境的传输。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Untitled%20Diagram%20(11).png" alt="Untitled Diagram (11)"></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>具体应当如何建设一个WebRTC方案的Web音视频会议平台的方法，目前能力尚浅，还需要进一步实践和探索。如果有机会，未来会继续分享有关WebRTC相关的支持。感谢大家宝贵时间！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+          
+            <a href="/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/" rel="tag"><i class="fa fa-tag"></i> 音视频</a>
+          
+            <a href="/tags/%E7%9B%B4%E6%92%AD/" rel="tag"><i class="fa fa-tag"></i> 直播</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/02/%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" rel="next" title="装饰器工具函数[持续更新]">
+                <i class="fa fa-chevron-left"></i> 装饰器工具函数[持续更新]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/04/27/%E5%86%99%E4%BA%86%E4%B8%AA%E6%94%AF%E6%8C%81%E5%9B%BE%E7%89%87%E8%A3%81%E5%88%87%E4%B8%8E%E5%90%88%E5%B9%B6%E7%9A%84%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="prev" title="写了个支持图片裁切与合并的工具类">
+                写了个支持图片裁切与合并的工具类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Jacky Mao" />
+            
+              <p class="site-author-name" itemprop="name">Jacky Mao</p>
+              <p class="site-description motion-element" itemprop="description">爱吃酱油的人运气不会差😁</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.jianshu.com/u/af6911bf71ea" target="_blank" title="简书"><i class="fa fa-fw fa-vk"></i>简书</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/JackyM06" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://gitee.com/JackyM06" target="_blank" title="Gitee"><i class="fa fa-fw fa-git"></i>Gitee</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:ChinaMJK06@163.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5539476061/profile?topnav=1&wvr=6" target="_blank" title="WeiBo"><i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/chinamjk" target="_blank" title="CSDN"><i class="fa fa-fw fa-compass"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                friends
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://powerlrl.github.io" title="Power林" target="_blank">Power林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://marmomento.github.io" title="Momento" target="_blank">Momento</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音视频串流简介"><span class="nav-text">音视频串流简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于音视频的编码和封装格式概念补充"><span class="nav-text">关于音视频的编码和封装格式概念补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#音视频编码格式"><span class="nav-text">音视频编码格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#音视频封装格式"><span class="nav-text">音视频封装格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器支持的格式"><span class="nav-text">浏览器支持的格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适合媒体串流中的封装格式"><span class="nav-text">适合媒体串流中的封装格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#FLV（Flash-Video）封装格式"><span class="nav-text">FLV（Flash Video）封装格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TS（Transport-Stream）封装格式"><span class="nav-text">TS（Transport Stream）封装格式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音视频串流的协议"><span class="nav-text">音视频串流的协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RTMP（Real-Time-Messaging-Protocol-实时信息控制协议）"><span class="nav-text">RTMP（Real Time Messaging Protocol 实时信息控制协议）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-FLV"><span class="nav-text">HTTP-FLV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HLS"><span class="nav-text">HLS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HLS目前的不足"><span class="nav-text">HLS目前的不足</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HLS在浏览器中的兼容情况"><span class="nav-text">HLS在浏览器中的兼容情况</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket-RTMP在网页中进行音视频串流的方案"><span class="nav-text">WebSocket + RTMP在网页中进行音视频串流的方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#推流客户端-gt-Node中间处理层"><span class="nav-text">推流客户端 &#x3D;&gt; Node中间处理层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node中间处理层-gt-流媒体服务器"><span class="nav-text">Node中间处理层 &#x3D;&gt; 流媒体服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流媒体服务器-gt-拉流客户端"><span class="nav-text">流媒体服务器 &#x3D;&gt; 拉流客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Flv-js"><span class="nav-text">Flv.js</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Flv-js不足"><span class="nav-text">Flv.js不足</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于WebRTC"><span class="nav-text">关于WebRTC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebRTC技术的工作流"><span class="nav-text">WebRTC技术的工作流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fab fa-pencil fa fa-user"> Writer</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jacky Mao</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">171k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">2:35</span>
+  
+</div>
+
+
+
+
+ 
+
+
+
+  
+
+
+
+  
+
+
+
+
+        
+<div class="busuanzi-count">
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz',
+        appKey: 'rLM78Nu15QmWgP5T55c7A37t',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz", "rLM78Nu15QmWgP5T55c7A37t");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var newcounter = new Counter();
+              /* Set ACL */
+              var acl = new AV.ACL();
+              acl.setPublicReadAccess(true);
+              acl.setPublicWriteAccess(true);
+              newcounter.setACL(acl);
+              /* End Set ACL */
+              newcounter.set("title", title);
+              newcounter.set("url", url);
+              newcounter.set("time", 1);
+              newcounter.save(null, {
+                success: function(newcounter) {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                },
+                error: function(newcounter, error) {
+                  console.log('Failed to create');
+                }
+              });
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+    
+  
+  <script src="true"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+</body>
+</html>
