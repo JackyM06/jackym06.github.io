@@ -187,7 +187,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Sinn_wlMie.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Jt5904XxEq.png">
 <meta property="article:published_time" content="2022-05-18T14:20:09.000Z">
-<meta property="article:modified_time" content="2022-05-19T09:18:35.287Z">
+<meta property="article:modified_time" content="2022-05-19T10:03:21.285Z">
 <meta property="article:author" content="Jacky Mao">
 <meta property="article:tag" content="JavaScript">
 <meta property="article:tag" content="浏览器">
@@ -493,7 +493,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2022-05-19 17:18:35" itemprop="dateModified" datetime="2022-05-19T17:18:35+08:00">2022-05-19</time>
+                <time title="修改时间：2022-05-19 18:03:21" itemprop="dateModified" datetime="2022-05-19T18:03:21+08:00">2022-05-19</time>
               
             
           </span>
@@ -533,17 +533,6 @@
           
 
           
-          
-             <span id="/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="leancloud_visitors" data-flag-title="浅谈现代浏览器的网页生命周期">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
           
 
           
@@ -593,7 +582,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。</p>
 <p>对于网页来说，并没有类似的生命周期机制。随着浏览器中被打开网页数量增加，内存、CPU、等系统关键资源都被过度使用，导致系统性能下降，从而降低了用户的操作体验，因此<strong>现如今，各大浏览器也像操作系统一样通过干预页面来节省资源</strong>。</p>
 <p>但是这也引发了一些问题：开发人员可能无法为系统发起的干预做准备，这就可能导致浏览器在优化页面的过程中如果对页面造成了破坏，而开发者对此一无所知。</p>
 <p>因此浏览器为了解决上面的问题，提出了<strong>页面生命周期</strong>的方案（<a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener" title="Page Lifecycle API">Page Lifecycle API</a>），方案的目标主要有三点：</p>
@@ -607,12 +596,12 @@
 </ol>
 <a id="more"></a>
 
-<h2 id="不得不谈的浏览器优化"><a href="#不得不谈的浏览器优化" class="headerlink" title="不得不谈的浏览器优化"></a>不得不谈的浏览器优化</h2><p>或许你也和我一样，在使用浏览器的过程中，只要是打开过的tab，不到迫不得己都不舍得关。因此经常在无意间就把浏览器tab区域整的非常拥挤，并且由于内存和CPU不堪重负，电脑往往也会变得非常卡顿。</p>
+<h1 id="不得不谈的浏览器优化"><a href="#不得不谈的浏览器优化" class="headerlink" title="不得不谈的浏览器优化"></a>不得不谈的浏览器优化</h1><p>或许你也和我一样，在使用浏览器的过程中，只要是打开过的tab，不到迫不得己都不舍得关。因此经常在无意间就把浏览器tab区域整的非常拥挤，并且由于内存和CPU不堪重负，电脑往往也会变得非常卡顿。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_sykhEwu4vE.png" alt=""></p>
 <p>而我们要知道Chrome每个选项卡的网页通常至少需要 50MB内存，如果打开了 10 个选项卡，那么至少要花费 450MB 的内存来保持后台选项卡状态，随着时间的推移，内存开销会变得非常大。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/ACgBMoYLWGuwW20KqHjG.png" alt=""></p>
 <p>因此才有了我们在前言中所提到的：浏览器对于这种后台Tab泛滥、大量占用系统资源的情况需要去做相关的优化手段。</p>
-<h3 id="页面冻结-Frozen"><a href="#页面冻结-Frozen" class="headerlink" title="页面冻结 - Frozen"></a>页面冻结 - Frozen</h3><p>当页面长期被放在后台时，为了节省资源的开销，浏览器会将页面冻结（Fozen），<strong>页面冻结特征是：浏览器不会再分配 CPU 计算资源给网页任务队列中未执行的任务</strong>。也就是说页面要冻结时，待执行的定时器、网络请求、DOM 操作都会被挂起。</p>
+<h2 id="页面冻结-Frozen"><a href="#页面冻结-Frozen" class="headerlink" title="页面冻结 - Frozen"></a>页面冻结 - Frozen</h2><p>当页面长期被放在后台时，为了节省资源的开销，浏览器会将页面冻结（Fozen），<strong>页面冻结特征是：浏览器不会再分配 CPU 计算资源给网页任务队列中未执行的任务</strong>。也就是说页面要冻结时，待执行的定时器、网络请求、DOM 操作都会被挂起。</p>
 <p>直到页面重新被用户打开时，浏览器才将页面解冻，重新分配资源，让页面继续执行冻结前挂起的任务。</p>
 <p>不过浏览器可能会在页面冻结期间，周期性复苏页面一小段时间，允许一小部分任务执行。</p>
 <p>浏览器为了开发者能够感知到页面被冻结，因此提供了两个事件</p>
@@ -631,16 +620,16 @@
 
 </li>
 </ul>
-<h3 id="Frozen与bfcache"><a href="#Frozen与bfcache" class="headerlink" title="Frozen与bfcache"></a>Frozen与bfcache</h3><p>后向缓存Back-Forward Cache（或<a href="https://developer.mozilla.org/Firefox/Releases/1.5/Using_Firefox_1.5_caching" target="_blank" rel="noopener" title="bfcache">bfcache</a>或<a href="https://webkit.org/blog/427/webkit-page-cache-i-the-basics/" target="_blank" rel="noopener" title="Page Cache">Page Cache</a>）是浏览器实现的导航优化的手段：当用户离开一个页面时，如果当前页面符合bfcache的条件时，浏览器会将整个页面（包括当前JavaScript堆栈）暂存到内存中，将来用户在当前Tab导航变化的过程中如果返回该页面时浏览器可以直接从内存中打开页面，而不是重新加载此页面，如此一来能够极大提高页面之间跳转的速度。</p>
+<h2 id="Frozen与bfcache"><a href="#Frozen与bfcache" class="headerlink" title="Frozen与bfcache"></a>Frozen与bfcache</h2><p>后向缓存Back-Forward Cache（或<a href="https://developer.mozilla.org/Firefox/Releases/1.5/Using_Firefox_1.5_caching" target="_blank" rel="noopener" title="bfcache">bfcache</a>或<a href="https://webkit.org/blog/427/webkit-page-cache-i-the-basics/" target="_blank" rel="noopener" title="Page Cache">Page Cache</a>）是浏览器实现的导航优化的手段：当用户离开一个页面时，如果当前页面符合bfcache的条件时，浏览器会将整个页面（包括当前JavaScript堆栈）暂存到内存中，将来用户在当前Tab导航变化的过程中如果返回该页面时浏览器可以直接从内存中打开页面，而不是重新加载此页面，如此一来能够极大提高页面之间跳转的速度。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/18d35024b6f01a1_9PDLb3w2G1.gif" alt=""></p>
 <p>不难看出，bfcache和冻结（Frozen）有异曲同工之处，两者都是停止CPU资源分配，等页面重新被激活时再重新分配资源，在此过程中页面始终被暂存在内存中没有被浏览器丢弃，所以<strong>从浏览器</strong><a href="这里仅指支持Frozen的浏览器">^1</a><strong>层面来看，bfcache可以视作页面被冻结</strong>。</p>
 <blockquote>
 <p>目前在Chrome移动端已经默认开启了bfcache。PC 端的话官方称在96+版本已经默认开启，但是我在101版本实测没开启（可能是安装了某个浏览器扩展导致），如果你也出现这种情况，可以Chrome实验室中主动开启bfcache功能：<br><a href="chrome://flags/#back-forward-cache" title="chrome://flags/#back-forward-cache">chrome://flags/#back-forward-cache</a></p>
 </blockquote>
-<h3 id="页面丢弃-Discarded"><a href="#页面丢弃-Discarded" class="headerlink" title="页面丢弃 - Discarded"></a>页面丢弃 - Discarded</h3><p>当前系统如果进入到极端资源限制的情况下，<strong>被冻结的页面会进入丢弃阶段（Discarded），此时网页会被浏览器卸载，也就是说页面不再占用任何资源。</strong></p>
+<h2 id="页面丢弃-Discarded"><a href="#页面丢弃-Discarded" class="headerlink" title="页面丢弃 - Discarded"></a>页面丢弃 - Discarded</h2><p>当前系统如果进入到极端资源限制的情况下，<strong>被冻结的页面会进入丢弃阶段（Discarded），此时网页会被浏览器卸载，也就是说页面不再占用任何资源。</strong></p>
 <p>对于被冻结的后台Tab来说，页面丢弃后，虽然页面被卸载了，但是它的 Tab标签还是可见的。如果用户重新返回这个 Tab 页，浏览器会发出请求重新加载网页。</p>
 <p>由于页面丢弃通常是发生在页面冻结之后的，此时不会允许任何页面任务执行，所以页面被丢弃前不会发出相关事件。但是为了让开发者知道页面被丢弃过，浏览器会在页面重新加载被丢弃的页面时将页面的<code>document.wasDiscarded</code>属性会被设置为<code>true</code>。</p>
-<h3 id="二者对比"><a href="#二者对比" class="headerlink" title="二者对比"></a>二者对比</h3><table>
+<h2 id="二者对比"><a href="#二者对比" class="headerlink" title="二者对比"></a>二者对比</h2><table>
 <thead>
 <tr>
 <th>生命周期状态</th>
@@ -656,17 +645,17 @@
 <td>1. 完全把页面卸载，没有任何CPU和内存的消耗&#xA;2. 用户返回需要重新发起网络请求以加载页面</td>
 </tr>
 </tbody></table>
-<h3 id="冻结和丢弃的条件"><a href="#冻结和丢弃的条件" class="headerlink" title="冻结和丢弃的条件"></a>冻结和丢弃的条件</h3><p>目前，Chrome 在冻结或丢弃页面时会比较保守，只有在确信不会影响用户时才会这样做。下面介绍几种浏览器会放弃冻结或丢弃的特殊场景：</p>
-<h4 id="存在未提交的用户输入"><a href="#存在未提交的用户输入" class="headerlink" title="存在未提交的用户输入"></a>存在未提交的用户输入</h4><p>浏览器会跟踪用户是否在页面上填写了任何表单数据。如果存在的话，为了避免数据丢失，浏览器会阻止丢弃发生，但不会阻止冻结。</p>
-<h4 id="正在播放Audio-x20"><a href="#正在播放Audio-x20" class="headerlink" title="正在播放Audio&#x20;"></a>正在播放Audio&#x20;</h4><p>在页面上播放音频的方式通常见于音乐网站，用户常见的使用模式是开始播放音频，然后在后台播放或以其他方式最小化选项卡，因为考虑到了这种场景，所以浏览器会阻止正在播放Audio的网页被冻结和丢弃。</p>
+<h2 id="冻结和丢弃的条件"><a href="#冻结和丢弃的条件" class="headerlink" title="冻结和丢弃的条件"></a>冻结和丢弃的条件</h2><p>目前，Chrome 在冻结或丢弃页面时会比较保守，只有在确信不会影响用户时才会这样做。下面介绍几种浏览器会放弃冻结或丢弃的特殊场景：</p>
+<h3 id="存在未提交的用户输入"><a href="#存在未提交的用户输入" class="headerlink" title="存在未提交的用户输入"></a>存在未提交的用户输入</h3><p>浏览器会跟踪用户是否在页面上填写了任何表单数据。如果存在的话，为了避免数据丢失，浏览器会阻止丢弃发生，但不会阻止冻结。</p>
+<h3 id="正在播放Audio-x20"><a href="#正在播放Audio-x20" class="headerlink" title="正在播放Audio&#x20;"></a>正在播放Audio&#x20;</h3><p>在页面上播放音频的方式通常见于音乐网站，用户常见的使用模式是开始播放音频，然后在后台播放或以其他方式最小化选项卡，因为考虑到了这种场景，所以浏览器会阻止正在播放Audio的网页被冻结和丢弃。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Xnm1ph4WJT.png" alt=""></p>
-<h4 id="使用WebRTC-API"><a href="#使用WebRTC-API" class="headerlink" title="使用WebRTC API"></a>使用WebRTC API</h4><p>使用 WebRTC API代表用户持续在传输音视频流（即使页面被隐藏），因此浏览器会阻止使用了WebRTC API的页面被冻结和丢弃。</p>
-<h4 id="使用WebSockets-API"><a href="#使用WebSockets-API" class="headerlink" title="使用WebSockets API"></a>使用WebSockets API</h4><p>使用 WebSockets API 的网站通常会持续发送和/或接收数据。中断此连接可能会导致用户数据丢失、工作丢失、错过通知等。所以浏览器也会阻止使用了 WebSockets 的页面被冻结和丢弃</p>
-<h4 id="处于BeforeUnload的待处理状态"><a href="#处于BeforeUnload的待处理状态" class="headerlink" title="处于BeforeUnload的待处理状态"></a>处于BeforeUnload的待处理状态</h4><p>除了由于页面tab在后台长期没打开而被冻结之外，还有可能通过我们前面提到的切换导航时的bfcache而冻结。&#x20;</p>
+<h3 id="使用WebRTC-API"><a href="#使用WebRTC-API" class="headerlink" title="使用WebRTC API"></a>使用WebRTC API</h3><p>使用 WebRTC API代表用户持续在传输音视频流（即使页面被隐藏），因此浏览器会阻止使用了WebRTC API的页面被冻结和丢弃。</p>
+<h3 id="使用WebSockets-API"><a href="#使用WebSockets-API" class="headerlink" title="使用WebSockets API"></a>使用WebSockets API</h3><p>使用 WebSockets API 的网站通常会持续发送和/或接收数据。中断此连接可能会导致用户数据丢失、工作丢失、错过通知等。所以浏览器也会阻止使用了 WebSockets 的页面被冻结和丢弃</p>
+<h3 id="处于BeforeUnload的待处理状态"><a href="#处于BeforeUnload的待处理状态" class="headerlink" title="处于BeforeUnload的待处理状态"></a>处于BeforeUnload的待处理状态</h3><p>除了由于页面tab在后台长期没打开而被冻结之外，还有可能通过我们前面提到的切换导航时的bfcache而冻结。&#x20;</p>
 <p>切换导航会使页面触发beforeunload 事件，我们知道，网页可以通过注册beforeunload事件来触发一个页面离开前的待处理弹窗，这样能够很好的避免用户数据丢失。</p>
 <p>对于浏览器来说如果没出现待处理弹窗，则该页面可以被冻结并且能够被正常丢弃。如果有待处理弹窗，这里浏览器为了避免用户数据丢失，页面会被冻结但不会被丢弃。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_r2aXUu-4yB.png" alt=""></p>
-<h4 id="页面注册unload事件"><a href="#页面注册unload事件" class="headerlink" title="页面注册unload事件"></a>页面注册unload事件</h4><p>和beforeunload一样，切换导航时也会触发unload事件。unload事件主要用于当用户退出页面时让网页处理一些收尾工作，而我们之前说的页面冻结是将页面暂存到内存中，解冻时再取出来继续运行。</p>
+<h3 id="页面注册unload事件"><a href="#页面注册unload事件" class="headerlink" title="页面注册unload事件"></a>页面注册unload事件</h3><p>和beforeunload一样，切换导航时也会触发unload事件。unload事件主要用于当用户退出页面时让网页处理一些收尾工作，而我们之前说的页面冻结是将页面暂存到内存中，解冻时再取出来继续运行。</p>
 <p>因此我们可以做以下两个角度的假设：</p>
 <ul>
 <li><p>如果在页面冻结前执行了unload事件，可能会导致解冻后<strong>：页面的关键部分被之前触发的unload事件给清理</strong>，从而引起页面异常。</p>
@@ -675,20 +664,20 @@
 </li>
 </ul>
 <p><strong>所以在这种缺陷下，浏览器拒绝把注册了unload事件的页面进行冻结</strong>。</p>
-<h3 id="兼容情况"><a href="#兼容情况" class="headerlink" title="兼容情况"></a>兼容情况</h3><p>Frozen和Discarded在19年已经进入到了<a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener" title="草案阶段">草案阶段</a>，目前在Chrome上支持较好，Safari和Firefox还没有兼容。</p>
+<h2 id="兼容情况"><a href="#兼容情况" class="headerlink" title="兼容情况"></a>兼容情况</h2><p>Frozen和Discarded在19年已经进入到了<a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener" title="草案阶段">草案阶段</a>，目前在Chrome上支持较好，Safari和Firefox还没有兼容。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SkZQUnyZm7.png" alt=""></p>
 <p>不过随着网页场景越来越复杂，未来浏览器一定会更加积极的进行资源调度优化，以便更有效的使用系统资源。因此页面冻结和丢弃是一个在开发时建议考虑的场景。后文中会详细说明这两个状态在页面生命周期中所占据的重要一环。</p>
 <p>另外，为了便于测试，我们可以在 Chrome 中，可以方便的使用 <a href="chrome://discards">chrome://discards</a>来测试页面在 <strong>冻结</strong> 和 <strong>丢弃</strong> 状态下的表现。</p>
 <p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SVi6rzLDtm.png" alt=""></p>
-<h2 id="页面生命周期"><a href="#页面生命周期" class="headerlink" title="页面生命周期"></a>页面生命周期</h2><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Page%20Lifecycle%20Diagram-Page-1.drawio%20(1)_8jWraVEud.png" alt=""></p>
-<h4 id="Active"><a href="#Active" class="headerlink" title="Active"></a>Active</h4><p>在 Active 阶段，网页处于可见状态，且拥有输入焦点。</p>
-<h4 id="Passive"><a href="#Passive" class="headerlink" title="Passive"></a>Passive</h4><p>在 Passive 阶段，网页可见，但没有输入焦点，无法接受输入。UI 更新（比如动画）仍然在执行。该阶段可能发生在桌面同时有多个窗口时，或者存在内嵌的Iframe页面时。</p>
-<h4 id="Hidden"><a href="#Hidden" class="headerlink" title="Hidden"></a>Hidden</h4><p>在 Hidden 阶段，网页不可见，当前网页可能被被其他窗口占据，由于未被冻结，页面中除了UI 更新不再执行外，其他的任务不会被浏览器限制。</p>
-<h4 id="Terminated"><a href="#Terminated" class="headerlink" title="Terminated"></a>Terminated</h4><p>在 Terminated 阶段，由于用户主动关闭窗口，或者在同一个窗口前往其他页面，导致当前页面开始被浏览器卸载并从内存中清除。</p>
+<h1 id="页面生命周期"><a href="#页面生命周期" class="headerlink" title="页面生命周期"></a>页面生命周期</h1><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Page%20Lifecycle%20Diagram-Page-1.drawio%20(1)_8jWraVEud.png" alt=""></p>
+<h2 id="生命周期状态"><a href="#生命周期状态" class="headerlink" title="生命周期状态"></a>生命周期状态</h2><h3 id="Active"><a href="#Active" class="headerlink" title="Active"></a>Active</h3><p>在 Active 阶段，网页处于可见状态，且拥有输入焦点。</p>
+<h3 id="Passive"><a href="#Passive" class="headerlink" title="Passive"></a>Passive</h3><p>在 Passive 阶段，网页可见，但没有输入焦点，无法接受输入。UI 更新（比如动画）仍然在执行。该阶段可能发生在桌面同时有多个窗口时，或者存在内嵌的Iframe页面时。</p>
+<h3 id="Hidden"><a href="#Hidden" class="headerlink" title="Hidden"></a>Hidden</h3><p>在 Hidden 阶段，网页不可见，当前网页可能被被其他窗口占据，由于未被冻结，页面中除了UI 更新不再执行外，其他的任务不会被浏览器限制。</p>
+<h3 id="Terminated"><a href="#Terminated" class="headerlink" title="Terminated"></a>Terminated</h3><p>在 Terminated 阶段，由于用户主动关闭窗口，或者在同一个窗口前往其他页面，导致当前页面开始被浏览器卸载并从内存中清除。</p>
 <p>这个阶段会导致网页卸载，任何新任务都不会在这个阶段启动，并且如果运行时间太长，正在进行的任务可能会被终止。</p>
-<h4 id="Frozen"><a href="#Frozen" class="headerlink" title="Frozen"></a>Frozen</h4><p>如果网页处于 Hidden 阶段的时间过久，用户又不关闭网页，浏览器就有可能冻结网页，使其进入 Frozen 阶段。不过，处于Passive状态的页面长时间没有操作也有可能会进入 Frozen 阶段。</p>
-<h4 id="Discarded"><a href="#Discarded" class="headerlink" title="Discarded"></a>Discarded</h4><p>如果网页长时间处于 Frozen 阶段，用户又不唤醒页面，那么就会进入 Discarded 阶段，即浏览器自动卸载网页，清除该网页的内存占用。</p>
-<h3 id="生命周期事件"><a href="#生命周期事件" class="headerlink" title="生命周期事件"></a>生命周期事件</h3><h4 id="focus-amp-blur"><a href="#focus-amp-blur" class="headerlink" title="focus &amp; blur"></a>focus &amp; blur</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_wrve55fBSt.png" alt=""></p>
+<h3 id="Frozen"><a href="#Frozen" class="headerlink" title="Frozen"></a>Frozen</h3><p>如果网页处于 Hidden 阶段的时间过久，用户又不关闭网页，浏览器就有可能冻结网页，使其进入 Frozen 阶段。不过，处于Passive状态的页面长时间没有操作也有可能会进入 Frozen 阶段。</p>
+<h3 id="Discarded"><a href="#Discarded" class="headerlink" title="Discarded"></a>Discarded</h3><p>如果网页长时间处于 Frozen 阶段，用户又不唤醒页面，那么就会进入 Discarded 阶段，即浏览器自动卸载网页，清除该网页的内存占用。</p>
+<h2 id="生命周期事件"><a href="#生命周期事件" class="headerlink" title="生命周期事件"></a>生命周期事件</h2><h3 id="focus-amp-blur"><a href="#focus-amp-blur" class="headerlink" title="focus &amp; blur"></a>focus &amp; blur</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_wrve55fBSt.png" alt=""></p>
 <p>焦点变化会导致页面在 active 和 passive 两个状态间切换，可以使用 <code>document.hasFocus()</code> API 来得到页面当前的状态。在焦点状态发生变化时，还会在 <code>window</code> 上触发 <code>focus</code> 或 <code>blur</code> 事件。</p>
 <ul>
 <li><p>$focus$事件在页面获得输入焦点时触发，比如网页从 $Passive$ 阶段变为 $Active$ 阶段。</p>
@@ -696,12 +685,12 @@
 <li><p>$blur$事件在页面失去输入焦点时触发，比如网页从 $Active$ 阶段变为 $Passive$ 阶段。</p>
 </li>
 </ul>
-<h4 id="visibilitychange"><a href="#visibilitychange" class="headerlink" title="visibilitychange"></a>visibilitychange</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_H-nHadtlFs.png" alt=""></p>
+<h3 id="visibilitychange"><a href="#visibilitychange" class="headerlink" title="visibilitychange"></a>visibilitychange</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_H-nHadtlFs.png" alt=""></p>
 <p>当页面处于可见状态时<code>document.visibilityState</code> 为<code>visible</code>；当页面不可见（例如：浏览器最小化，或用户切换至其他浏览器标签页）时<code>document.visibilityState</code> 为<code>hidden</code> 。而当页面可见状态一旦发生变化时，浏览器就会触发<code>visibilitychange</code> 事件。</p>
 <p>因此我们可以通过这个套API来监听Passive和Hidden状态之间的转换。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'visibilitychange'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.visibilityState === <span class="string">'hidden'</span>) &#123;</span><br><span class="line">      <span class="comment">// 页面状态为HIDDEN (用户离开了当前页面)   </span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.visibilityState === <span class="string">'visible'</span>) &#123;</span><br><span class="line">      <span class="comment">// 页面状态为PASSIVE (用户打开或回到页面)</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<h4 id="freeze-amp-resume"><a href="#freeze-amp-resume" class="headerlink" title="freeze &amp; resume"></a>freeze &amp; resume</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_cjSp3qwuSR.png" alt=""></p>
+<h3 id="freeze-amp-resume"><a href="#freeze-amp-resume" class="headerlink" title="freeze &amp; resume"></a>freeze &amp; resume</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_cjSp3qwuSR.png" alt=""></p>
 <p>页面在冻结之前的状态一定是HIDDEN，这也符合我们之前说的：<em>长期处于后台的Tab或者页面跳转导致触发bfcache时有可能会引起页面冻结</em></p>
 <ul>
 <li><p>freeze事件会在页面在进入冻结状态时触发。</p>
@@ -709,18 +698,18 @@
 <li><p>resume事件在页面从冻结状态被唤醒时触发。</p>
 </li>
 </ul>
-<h4 id="pageshow"><a href="#pageshow" class="headerlink" title="pageshow"></a>pageshow</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_8aqmAngydF.png" alt=""></p>
+<h3 id="pageshow"><a href="#pageshow" class="headerlink" title="pageshow"></a>pageshow</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_8aqmAngydF.png" alt=""></p>
 <p>pageshow事件在用户加载网页时触发（这个事件的名字有点误导，它跟页面的可见性其实毫无关系，只跟浏览器的 History 记录的变化有关）</p>
 <p>此时有可能是全新的页面加载，也可能是bfcache中获取的页面。如果是通过bfcache获取，则该事件对象的event.persisted属性为true，否则为false。</p>
-<h4 id="pagehide"><a href="#pagehide" class="headerlink" title="pagehide"></a>pagehide</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_UhBdb7uQC9.png" alt=""></p>
+<h3 id="pagehide"><a href="#pagehide" class="headerlink" title="pagehide"></a>pagehide</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_UhBdb7uQC9.png" alt=""></p>
 <p>pagehide事件和pageshow一样跟网页是否可见也无关，这个事件在用户关闭或切换当前网页时触发。如果浏览器能够将当前页面添加bfcache，则事件对象的event.persisted属性为true并且页面将进入 Frozen 状态，否则进入 Terminated 状态。</p>
-<h4 id="beforeunload"><a href="#beforeunload" class="headerlink" title="beforeunload"></a>beforeunload</h4><p>beforeunload事件在窗口或文档即将卸载时触发。该事件发生时，卸载仍可取消。</p>
-<h4 id="unload"><a href="#unload" class="headerlink" title="unload"></a>unload</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_hh02HWEUvI.png" alt=""></p>
+<h3 id="beforeunload"><a href="#beforeunload" class="headerlink" title="beforeunload"></a>beforeunload</h3><p>beforeunload事件在窗口或文档即将卸载时触发。该事件发生时，卸载仍可取消。</p>
+<h3 id="unload"><a href="#unload" class="headerlink" title="unload"></a>unload</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_hh02HWEUvI.png" alt=""></p>
 <p>unload事件在页面在卸载时触发。经过这个事件，网页进入 Terminated 状态。</p>
-<h4 id="🌰页面生命周期中的事件变化"><a href="#🌰页面生命周期中的事件变化" class="headerlink" title="🌰页面生命周期中的事件变化"></a>🌰页面生命周期中的事件变化</h4><p>这里准备了一个日志页面，能够记录页面生命周期变化过程中所触发事件信息：</p>
+<h3 id="🌰页面生命周期中的事件变化"><a href="#🌰页面生命周期中的事件变化" class="headerlink" title="🌰页面生命周期中的事件变化"></a>🌰页面生命周期中的事件变化</h3><p>这里准备了一个日志页面，能够记录页面生命周期变化过程中所触发事件信息：</p>
 <p><a href="https://codepen.io/jackym06/full/QWvXoLd" target="_blank" rel="noopener" title="https://codepen.io/jackym06/full/QWvXoLd">https://codepen.io/jackym06/full/QWvXoLd</a></p>
-<h2 id="建议与实践"><a href="#建议与实践" class="headerlink" title="建议与实践"></a>建议与实践</h2><h3 id="生命周期各状态下的开发建议"><a href="#生命周期各状态下的开发建议" class="headerlink" title="生命周期各状态下的开发建议"></a>生命周期各状态下的开发建议</h3><p>作为开发者，了解页面生命周期状态并知道如何在代码中观察它们很重要，因为我们所做的工作类型很大程度上取决于页面处于什么状态。</p>
-<h4 id="Active-1"><a href="#Active-1" class="headerlink" title="Active"></a>Active</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_5tdFZfvslL.png" alt=""></p>
+<h1 id="建议与实践"><a href="#建议与实践" class="headerlink" title="建议与实践"></a>建议与实践</h1><h2 id="生命周期各状态下的开发建议"><a href="#生命周期各状态下的开发建议" class="headerlink" title="生命周期各状态下的开发建议"></a>生命周期各状态下的开发建议</h2><p>作为开发者，了解页面生命周期状态并知道如何在代码中观察它们很重要，因为我们所做的工作类型很大程度上取决于页面处于什么状态。</p>
+<h3 id="Active-1"><a href="#Active-1" class="headerlink" title="Active"></a>Active</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_5tdFZfvslL.png" alt=""></p>
 <p>Active状态是页面响应用户交互最重要的时间，响应速度将直接影响<a href="https://web.dev/fid/" target="_blank" rel="noopener" title="首次输入延迟FID">首次输入延迟FID</a>。</p>
 <blockquote>
 <p>FID是一个页面性能标准, 用于衡量网站的交互相应速度，测量方式为首次收到用户交互事件的时间点与主线程下一次空闲的时间点之间的差值。</p>
@@ -733,7 +722,7 @@
 <li><p>放到Web-Worker里处理</p>
 </li>
 </ul>
-<h4 id="Passive-1"><a href="#Passive-1" class="headerlink" title="Passive"></a>Passive</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_qGXhI0lLdZ.png" alt=""></p>
+<h3 id="Passive-1"><a href="#Passive-1" class="headerlink" title="Passive"></a>Passive</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_qGXhI0lLdZ.png" alt=""></p>
 <p>Passive状态下，页面仍然是可见的，但是用户不会和页面发生交互，所以此时可以考虑:&#x20;</p>
 <ul>
 <li><p>执行Active状态时暂缓的工作</p>
@@ -741,7 +730,7 @@
 <li><p>检查或持久化处理用户在Active时更改的页面内容</p>
 </li>
 </ul>
-<h4 id="Hidden-1"><a href="#Hidden-1" class="headerlink" title="Hidden"></a>Hidden</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_EN4Qoshah7.png" alt=""></p>
+<h3 id="Hidden-1"><a href="#Hidden-1" class="headerlink" title="Hidden"></a>Hidden</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_EN4Qoshah7.png" alt=""></p>
 <p>由于页面接下来的状态可能是终止（TERMINATED），所以<strong>Hidden状态通常也是开发者可以可靠观察到的最后一个状态变化</strong>。因此当页面变为Hidden时，应当视为当前用户的会话可能已经结束，此时可以考虑：</p>
 <ul>
 <li><p>保存任何未保存的网页状态（更改的表单数据、当前页面滚动位置等）</p>
@@ -751,23 +740,23 @@
 <li><p>停止进行 UI 更新、停止用户不希望在后台运行的任务，例如视频播放等。</p>
 </li>
 </ul>
-<h4 id="Frozen-1"><a href="#Frozen-1" class="headerlink" title="Frozen"></a>Frozen</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_a4_uGzqHsx.png" alt=""></p>
+<h3 id="Frozen-1"><a href="#Frozen-1" class="headerlink" title="Frozen"></a>Frozen</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_a4_uGzqHsx.png" alt=""></p>
 <p>在Frozen状态下，任务队列中未执行的任务会被被挂起，直到页面解冻继续执行。</p>
 <p>这也就意味着当页面从Hidden变为Frozen时，需要开发者主动终止一些任务，否则当解冻后执行之前挂起的任务时会发生异常：</p>
 <p>例如依赖连接的任务：EventSource、IndexedDB等，在冻结后由于网络连接或数据库连接会断开，因此可以在freeze事件中，将这些连接做好中断处理；等到Frozen转换回Hidden时（resume），再重新进行连接。</p>
 <blockquote>
 <p>WebSocket、WebRTC这两种连接服务由于浏览器会主动保护所在页面不被冻结，所以可以不用考虑他们的中断重连。</p>
 </blockquote>
-<h4 id="Terminated-1"><a href="#Terminated-1" class="headerlink" title="Terminated"></a>Terminated</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Sinn_wlMie.png" alt=""></p>
+<h3 id="Terminated-1"><a href="#Terminated-1" class="headerlink" title="Terminated"></a>Terminated</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Sinn_wlMie.png" alt=""></p>
 <p>终止状态下通常网页通常无法执行任何操作，如果业务场景需要判断页面被终止，在生命周期中看起来有三个选择：<code>unload</code>、<code>beforeunload</code>、<code>pagehide</code>，实际上我们没得选：在典型的一些页面场景上（例如直接从任务管理器中直接将浏览器关闭），这几个事件都无法触发。</p>
 <blockquote>
 <p>如果你可以忍受这种不可靠，也请优先使用pagehide事件来判断，原因在<a href="https://www.wolai.com/8hcBwdRHXnXcCWUzgV1oq9#mn7eBkPnoZKsFXxNzVVFfh" target="_blank" rel="noopener" title="后文">后文</a>中会进行解释</p>
 </blockquote>
 <p>而页面在Terminated前总是会经历Hidden状态，因此一些页面会话结束的逻辑应该在Hidden状态时去做才较为可靠。</p>
-<h4 id="Discarded-1"><a href="#Discarded-1" class="headerlink" title="Discarded"></a>Discarded</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Jt5904XxEq.png" alt=""></p>
+<h3 id="Discarded-1"><a href="#Discarded-1" class="headerlink" title="Discarded"></a>Discarded</h3><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Jt5904XxEq.png" alt=""></p>
 <p>在丢弃页面时不会触发任何回调，因此开发者无法观察到的，原因是页面被丢弃前通常处于Frozen状态并且处于资源限制状态，因此仅仅为了去响应丢弃事件而去解冻页面是不合理的。</p>
 <p>所以我们应该为在状态从Hidden更改为冻结时就做好页面被丢弃的准备，然后通过<code>document.wasDiscarded</code> 属性在页面加载时检查页面是否被丢弃过（如恢复被丢弃之前的页面持久化的状态等）。</p>
-<h3 id="拥抱bfcache"><a href="#拥抱bfcache" class="headerlink" title="拥抱bfcache"></a>拥抱bfcache</h3><p>之前有聊到，bfcache可以很好的提升用户在页面切换过程中的体验，因此我们需要在页面的开发过程中，尽量规避会让浏览器阻止将页面移入bfcache的情况（<em>或者说尽量让页面达到让浏览器能够冻结的标准</em>）:</p>
+<h2 id="拥抱bfcache"><a href="#拥抱bfcache" class="headerlink" title="拥抱bfcache"></a>拥抱bfcache</h2><p>之前有聊到，bfcache可以很好的提升用户在页面切换过程中的体验，因此我们需要在页面的开发过程中，尽量规避会让浏览器阻止将页面移入bfcache的情况（<em>或者说尽量让页面达到让浏览器能够冻结的标准</em>）:</p>
 <ul>
 <li><p>不要在现代浏览器上使用unload事件，前面有提到一旦注册unload会导致页面无法使用bfcache，并且我们完全可以使用pagehide替换unload</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'pagehide'</span>, event =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(event.persisted) &#123;</span><br><span class="line">    <span class="comment">// 下一个状态为 Frozen （bfcache）</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 下一个状态为 Terminated</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
@@ -778,8 +767,8 @@
 <p>所以为了提高兼容性，请在没有必要时移除注册的beforeunload事件</p>
 </li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>标准化页面生命周期的本质是当浏览器或者用户改变页面状态时，开发者能够感知和预测页面的下一步状态。作为开发者在了解整个页面生命周期的走向后，就能够在各种状态进行对应的优化处理，从而提升用户在使用网页时的体验。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/" target="_blank" rel="noopener">https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>标准化页面生命周期的本质是当浏览器或者用户改变页面状态时，开发者能够感知和预测页面的下一步状态。作为开发者在了解整个页面生命周期的走向后，就能够在各种状态进行对应的优化处理，从而提升用户在使用网页时的体验。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/" target="_blank" rel="noopener">https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/</a></p>
 <p><a href="https://github.com/WICG/page-lifecycle/blob/main/README.md" target="_blank" rel="noopener">https://github.com/WICG/page-lifecycle/blob/main/README.md</a></p>
 <p><a href="https://developer.chrome.com/blog/page-lifecycle-api/" target="_blank" rel="noopener">https://developer.chrome.com/blog/page-lifecycle-api/</a></p>
 <p><a href="http://www.ruanyifeng.com/blog/2018/11/page_lifecycle_api.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2018/11/page_lifecycle_api.html</a></p>
@@ -1121,7 +1110,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不得不谈的浏览器优化"><span class="nav-text">不得不谈的浏览器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#页面冻结-Frozen"><span class="nav-text">页面冻结 - Frozen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frozen与bfcache"><span class="nav-text">Frozen与bfcache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面丢弃-Discarded"><span class="nav-text">页面丢弃 - Discarded</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二者对比"><span class="nav-text">二者对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冻结和丢弃的条件"><span class="nav-text">冻结和丢弃的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存在未提交的用户输入"><span class="nav-text">存在未提交的用户输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正在播放Audio-x20"><span class="nav-text">正在播放Audio&amp;#x20;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用WebRTC-API"><span class="nav-text">使用WebRTC API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用WebSockets-API"><span class="nav-text">使用WebSockets API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处于BeforeUnload的待处理状态"><span class="nav-text">处于BeforeUnload的待处理状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面注册unload事件"><span class="nav-text">页面注册unload事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容情况"><span class="nav-text">兼容情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面生命周期"><span class="nav-text">页面生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Active"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Passive"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hidden"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Terminated"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Frozen"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Discarded"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期事件"><span class="nav-text">生命周期事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#focus-amp-blur"><span class="nav-text">focus &amp; blur</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#visibilitychange"><span class="nav-text">visibilitychange</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#freeze-amp-resume"><span class="nav-text">freeze &amp; resume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pageshow"><span class="nav-text">pageshow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pagehide"><span class="nav-text">pagehide</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#beforeunload"><span class="nav-text">beforeunload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unload"><span class="nav-text">unload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#🌰页面生命周期中的事件变化"><span class="nav-text">🌰页面生命周期中的事件变化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建议与实践"><span class="nav-text">建议与实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期各状态下的开发建议"><span class="nav-text">生命周期各状态下的开发建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Active-1"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Passive-1"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hidden-1"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Frozen-1"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Terminated-1"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Discarded-1"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拥抱bfcache"><span class="nav-text">拥抱bfcache</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#不得不谈的浏览器优化"><span class="nav-text">不得不谈的浏览器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#页面冻结-Frozen"><span class="nav-text">页面冻结 - Frozen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frozen与bfcache"><span class="nav-text">Frozen与bfcache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面丢弃-Discarded"><span class="nav-text">页面丢弃 - Discarded</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二者对比"><span class="nav-text">二者对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冻结和丢弃的条件"><span class="nav-text">冻结和丢弃的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存在未提交的用户输入"><span class="nav-text">存在未提交的用户输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正在播放Audio-x20"><span class="nav-text">正在播放Audio&amp;#x20;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用WebRTC-API"><span class="nav-text">使用WebRTC API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用WebSockets-API"><span class="nav-text">使用WebSockets API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处于BeforeUnload的待处理状态"><span class="nav-text">处于BeforeUnload的待处理状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面注册unload事件"><span class="nav-text">页面注册unload事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#兼容情况"><span class="nav-text">兼容情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#页面生命周期"><span class="nav-text">页面生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期状态"><span class="nav-text">生命周期状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Active"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Passive"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hidden"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Terminated"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frozen"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discarded"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期事件"><span class="nav-text">生命周期事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#focus-amp-blur"><span class="nav-text">focus &amp; blur</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visibilitychange"><span class="nav-text">visibilitychange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#freeze-amp-resume"><span class="nav-text">freeze &amp; resume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pageshow"><span class="nav-text">pageshow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pagehide"><span class="nav-text">pagehide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeunload"><span class="nav-text">beforeunload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unload"><span class="nav-text">unload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#🌰页面生命周期中的事件变化"><span class="nav-text">🌰页面生命周期中的事件变化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#建议与实践"><span class="nav-text">建议与实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期各状态下的开发建议"><span class="nav-text">生命周期各状态下的开发建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Active-1"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Passive-1"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hidden-1"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frozen-1"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Terminated-1"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discarded-1"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拥抱bfcache"><span class="nav-text">拥抱bfcache</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
@@ -1697,118 +1686,6 @@
 
 
   
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz", "rLM78Nu15QmWgP5T55c7A37t");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            
-            counter.save(null, {
-              success: function(counter) {
-                
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
-                
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            
-              var newcounter = new Counter();
-              /* Set ACL */
-              var acl = new AV.ACL();
-              acl.setPublicReadAccess(true);
-              acl.setPublicWriteAccess(true);
-              newcounter.setACL(acl);
-              /* End Set ACL */
-              newcounter.set("title", title);
-              newcounter.set("url", url);
-              newcounter.set("time", 1);
-              newcounter.save(null, {
-                success: function(newcounter) {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-                },
-                error: function(newcounter, error) {
-                  console.log('Failed to create');
-                }
-              });
-            
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
 
   
 
