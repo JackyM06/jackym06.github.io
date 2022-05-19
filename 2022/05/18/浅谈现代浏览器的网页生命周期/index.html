@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/uploads/avatar.png?v=6.3.0" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      appId: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "07daa06f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="前言在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。 对于网页来说，并没有类似的生命周期机制。随着浏览器中被打开网页数量增加，内存、CPU、等系统关键资源都被过度使用，导致系统性能下降，从而降低了用户的操">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈现代浏览器的网页生命周期">
+<meta property="og:url" content="http://yoursite.com/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
+<meta property="og:site_name" content="Maoli">
+<meta property="og:description" content="前言在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。 对于网页来说，并没有类似的生命周期机制。随着浏览器中被打开网页数量增加，内存、CPU、等系统关键资源都被过度使用，导致系统性能下降，从而降低了用户的操">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_sykhEwu4vE.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/ACgBMoYLWGuwW20KqHjG.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/18d35024b6f01a1_9PDLb3w2G1.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Xnm1ph4WJT.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_r2aXUu-4yB.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SkZQUnyZm7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SVi6rzLDtm.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Page%20Lifecycle%20Diagram-Page-1.drawio%20(1)_8jWraVEud.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_wrve55fBSt.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_H-nHadtlFs.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_cjSp3qwuSR.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_8aqmAngydF.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_UhBdb7uQC9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_hh02HWEUvI.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_5tdFZfvslL.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_-BACCrYOQg.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_qGXhI0lLdZ.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_EN4Qoshah7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_a4_uGzqHsx.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Sinn_wlMie.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Jt5904XxEq.png">
+<meta property="article:published_time" content="2022-05-18T14:20:09.000Z">
+<meta property="article:modified_time" content="2022-05-19T09:18:35.287Z">
+<meta property="article:author" content="Jacky Mao">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="浏览器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_sykhEwu4vE.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/05/18/浅谈现代浏览器的网页生命周期/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>浅谈现代浏览器的网页生命周期 | Maoli</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f6eaa5ccd4d3e722e2e845b133cb889a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Maoli</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be your own hero</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类<span class="badge">6</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签<span class="badge">42</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">37</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/JackyM06" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky Mao">
+      <meta itemprop="description" content="爱吃酱油的人运气不会差😁">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maoli">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅谈现代浏览器的网页生命周期
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-05-18 22:20:09" itemprop="dateCreated datePublished" datetime="2022-05-18T22:20:09+08:00">2022-05-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-05-19 17:18:35" itemprop="dateModified" datetime="2022-05-19T17:18:35+08:00">2022-05-19</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Web前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="leancloud_visitors" data-flag-title="浅谈现代浏览器的网页生命周期">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">20k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">18 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。</p>
+<p>对于网页来说，并没有类似的生命周期机制。随着浏览器中被打开网页数量增加，内存、CPU、等系统关键资源都被过度使用，导致系统性能下降，从而降低了用户的操作体验，因此<strong>现如今，各大浏览器也像操作系统一样通过干预页面来节省资源</strong>。</p>
+<p>但是这也引发了一些问题：开发人员可能无法为系统发起的干预做准备，这就可能导致浏览器在优化页面的过程中如果对页面造成了破坏，而开发者对此一无所知。</p>
+<p>因此浏览器为了解决上面的问题，提出了<strong>页面生命周期</strong>的方案（<a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener" title="Page Lifecycle API">Page Lifecycle API</a>），方案的目标主要有三点：</p>
+<ol>
+<li><p>在网页中将生命周期状态的概念标准化</p>
+</li>
+<li><p>定义新的页面状态，允许浏览器限制网页，防止页面持续占据系统资源</p>
+</li>
+<li><p>创建新的API和事件，允许开发人员响应这些页面状态之间的转换</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="不得不谈的浏览器优化"><a href="#不得不谈的浏览器优化" class="headerlink" title="不得不谈的浏览器优化"></a>不得不谈的浏览器优化</h2><p>或许你也和我一样，在使用浏览器的过程中，只要是打开过的tab，不到迫不得己都不舍得关。因此经常在无意间就把浏览器tab区域整的非常拥挤，并且由于内存和CPU不堪重负，电脑往往也会变得非常卡顿。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_sykhEwu4vE.png" alt=""></p>
+<p>而我们要知道Chrome每个选项卡的网页通常至少需要 50MB内存，如果打开了 10 个选项卡，那么至少要花费 450MB 的内存来保持后台选项卡状态，随着时间的推移，内存开销会变得非常大。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/ACgBMoYLWGuwW20KqHjG.png" alt=""></p>
+<p>因此才有了我们在前言中所提到的：浏览器对于这种后台Tab泛滥、大量占用系统资源的情况需要去做相关的优化手段。</p>
+<h3 id="页面冻结-Frozen"><a href="#页面冻结-Frozen" class="headerlink" title="页面冻结 - Frozen"></a>页面冻结 - Frozen</h3><p>当页面长期被放在后台时，为了节省资源的开销，浏览器会将页面冻结（Fozen），<strong>页面冻结特征是：浏览器不会再分配 CPU 计算资源给网页任务队列中未执行的任务</strong>。也就是说页面要冻结时，待执行的定时器、网络请求、DOM 操作都会被挂起。</p>
+<p>直到页面重新被用户打开时，浏览器才将页面解冻，重新分配资源，让页面继续执行冻结前挂起的任务。</p>
+<p>不过浏览器可能会在页面冻结期间，周期性复苏页面一小段时间，允许一小部分任务执行。</p>
+<p>浏览器为了开发者能够感知到页面被冻结，因此提供了两个事件</p>
+<ul>
+<li><p><code>freeze</code>：页面被冻结前触发，由于被冻结意味着系统资源即将被限制，所以这个事件的回调会被限制：</p>
+<ul>
+<li><p>无法新增网络请求（除了已经建立的网络连接（keep-alive））</p>
+</li>
+<li><p>事件回调的执行的总时长不能超过 500 毫秒，否则页面不但不冻结，还会被丢弃。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"freeze"</span>, (e) =&gt; &#123;</span><br><span class="line">    <span class="comment">// Handle transition to FROZEN</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>resume</code>：页面被解冻时触发</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"resume"</span>, (e) =&gt; &#123;</span><br><span class="line">    <span class="comment">// handle state transition FROZEN -&gt; ACTIVE</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Frozen与bfcache"><a href="#Frozen与bfcache" class="headerlink" title="Frozen与bfcache"></a>Frozen与bfcache</h3><p>后向缓存Back-Forward Cache（或<a href="https://developer.mozilla.org/Firefox/Releases/1.5/Using_Firefox_1.5_caching" target="_blank" rel="noopener" title="bfcache">bfcache</a>或<a href="https://webkit.org/blog/427/webkit-page-cache-i-the-basics/" target="_blank" rel="noopener" title="Page Cache">Page Cache</a>）是浏览器实现的导航优化的手段：当用户离开一个页面时，如果当前页面符合bfcache的条件时，浏览器会将整个页面（包括当前JavaScript堆栈）暂存到内存中，将来用户在当前Tab导航变化的过程中如果返回该页面时浏览器可以直接从内存中打开页面，而不是重新加载此页面，如此一来能够极大提高页面之间跳转的速度。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/18d35024b6f01a1_9PDLb3w2G1.gif" alt=""></p>
+<p>不难看出，bfcache和冻结（Frozen）有异曲同工之处，两者都是停止CPU资源分配，等页面重新被激活时再重新分配资源，在此过程中页面始终被暂存在内存中没有被浏览器丢弃，所以<strong>从浏览器</strong><a href="这里仅指支持Frozen的浏览器">^1</a><strong>层面来看，bfcache可以视作页面被冻结</strong>。</p>
+<blockquote>
+<p>目前在Chrome移动端已经默认开启了bfcache。PC 端的话官方称在96+版本已经默认开启，但是我在101版本实测没开启（可能是安装了某个浏览器扩展导致），如果你也出现这种情况，可以Chrome实验室中主动开启bfcache功能：<br><a href="chrome://flags/#back-forward-cache" title="chrome://flags/#back-forward-cache">chrome://flags/#back-forward-cache</a></p>
+</blockquote>
+<h3 id="页面丢弃-Discarded"><a href="#页面丢弃-Discarded" class="headerlink" title="页面丢弃 - Discarded"></a>页面丢弃 - Discarded</h3><p>当前系统如果进入到极端资源限制的情况下，<strong>被冻结的页面会进入丢弃阶段（Discarded），此时网页会被浏览器卸载，也就是说页面不再占用任何资源。</strong></p>
+<p>对于被冻结的后台Tab来说，页面丢弃后，虽然页面被卸载了，但是它的 Tab标签还是可见的。如果用户重新返回这个 Tab 页，浏览器会发出请求重新加载网页。</p>
+<p>由于页面丢弃通常是发生在页面冻结之后的，此时不会允许任何页面任务执行，所以页面被丢弃前不会发出相关事件。但是为了让开发者知道页面被丢弃过，浏览器会在页面重新加载被丢弃的页面时将页面的<code>document.wasDiscarded</code>属性会被设置为<code>true</code>。</p>
+<h3 id="二者对比"><a href="#二者对比" class="headerlink" title="二者对比"></a>二者对比</h3><table>
+<thead>
+<tr>
+<th>生命周期状态</th>
+<th>特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Frozen</td>
+<td>1. 停止分配CPU资源，仍有内存消耗；&#xA;2. 用户返回后被冻结页面后，从内存中恢复</td>
+</tr>
+<tr>
+<td>Discarded</td>
+<td>1. 完全把页面卸载，没有任何CPU和内存的消耗&#xA;2. 用户返回需要重新发起网络请求以加载页面</td>
+</tr>
+</tbody></table>
+<h3 id="冻结和丢弃的条件"><a href="#冻结和丢弃的条件" class="headerlink" title="冻结和丢弃的条件"></a>冻结和丢弃的条件</h3><p>目前，Chrome 在冻结或丢弃页面时会比较保守，只有在确信不会影响用户时才会这样做。下面介绍几种浏览器会放弃冻结或丢弃的特殊场景：</p>
+<h4 id="存在未提交的用户输入"><a href="#存在未提交的用户输入" class="headerlink" title="存在未提交的用户输入"></a>存在未提交的用户输入</h4><p>浏览器会跟踪用户是否在页面上填写了任何表单数据。如果存在的话，为了避免数据丢失，浏览器会阻止丢弃发生，但不会阻止冻结。</p>
+<h4 id="正在播放Audio-x20"><a href="#正在播放Audio-x20" class="headerlink" title="正在播放Audio&#x20;"></a>正在播放Audio&#x20;</h4><p>在页面上播放音频的方式通常见于音乐网站，用户常见的使用模式是开始播放音频，然后在后台播放或以其他方式最小化选项卡，因为考虑到了这种场景，所以浏览器会阻止正在播放Audio的网页被冻结和丢弃。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Xnm1ph4WJT.png" alt=""></p>
+<h4 id="使用WebRTC-API"><a href="#使用WebRTC-API" class="headerlink" title="使用WebRTC API"></a>使用WebRTC API</h4><p>使用 WebRTC API代表用户持续在传输音视频流（即使页面被隐藏），因此浏览器会阻止使用了WebRTC API的页面被冻结和丢弃。</p>
+<h4 id="使用WebSockets-API"><a href="#使用WebSockets-API" class="headerlink" title="使用WebSockets API"></a>使用WebSockets API</h4><p>使用 WebSockets API 的网站通常会持续发送和/或接收数据。中断此连接可能会导致用户数据丢失、工作丢失、错过通知等。所以浏览器也会阻止使用了 WebSockets 的页面被冻结和丢弃</p>
+<h4 id="处于BeforeUnload的待处理状态"><a href="#处于BeforeUnload的待处理状态" class="headerlink" title="处于BeforeUnload的待处理状态"></a>处于BeforeUnload的待处理状态</h4><p>除了由于页面tab在后台长期没打开而被冻结之外，还有可能通过我们前面提到的切换导航时的bfcache而冻结。&#x20;</p>
+<p>切换导航会使页面触发beforeunload 事件，我们知道，网页可以通过注册beforeunload事件来触发一个页面离开前的待处理弹窗，这样能够很好的避免用户数据丢失。</p>
+<p>对于浏览器来说如果没出现待处理弹窗，则该页面可以被冻结并且能够被正常丢弃。如果有待处理弹窗，这里浏览器为了避免用户数据丢失，页面会被冻结但不会被丢弃。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_r2aXUu-4yB.png" alt=""></p>
+<h4 id="页面注册unload事件"><a href="#页面注册unload事件" class="headerlink" title="页面注册unload事件"></a>页面注册unload事件</h4><p>和beforeunload一样，切换导航时也会触发unload事件。unload事件主要用于当用户退出页面时让网页处理一些收尾工作，而我们之前说的页面冻结是将页面暂存到内存中，解冻时再取出来继续运行。</p>
+<p>因此我们可以做以下两个角度的假设：</p>
+<ul>
+<li><p>如果在页面冻结前执行了unload事件，可能会导致解冻后<strong>：页面的关键部分被之前触发的unload事件给清理</strong>，从而引起页面异常。</p>
+</li>
+<li><p>如果不触发unload事件而直接冻结，那在冻结的过程中一旦页面被丢弃（Discarded）的话，会导致unload事件会丢失。这对于依赖unload事件的页面会带来很大的副作用。</p>
+</li>
+</ul>
+<p><strong>所以在这种缺陷下，浏览器拒绝把注册了unload事件的页面进行冻结</strong>。</p>
+<h3 id="兼容情况"><a href="#兼容情况" class="headerlink" title="兼容情况"></a>兼容情况</h3><p>Frozen和Discarded在19年已经进入到了<a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener" title="草案阶段">草案阶段</a>，目前在Chrome上支持较好，Safari和Firefox还没有兼容。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SkZQUnyZm7.png" alt=""></p>
+<p>不过随着网页场景越来越复杂，未来浏览器一定会更加积极的进行资源调度优化，以便更有效的使用系统资源。因此页面冻结和丢弃是一个在开发时建议考虑的场景。后文中会详细说明这两个状态在页面生命周期中所占据的重要一环。</p>
+<p>另外，为了便于测试，我们可以在 Chrome 中，可以方便的使用 <a href="chrome://discards">chrome://discards</a>来测试页面在 <strong>冻结</strong> 和 <strong>丢弃</strong> 状态下的表现。</p>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_SVi6rzLDtm.png" alt=""></p>
+<h2 id="页面生命周期"><a href="#页面生命周期" class="headerlink" title="页面生命周期"></a>页面生命周期</h2><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/Page%20Lifecycle%20Diagram-Page-1.drawio%20(1)_8jWraVEud.png" alt=""></p>
+<h4 id="Active"><a href="#Active" class="headerlink" title="Active"></a>Active</h4><p>在 Active 阶段，网页处于可见状态，且拥有输入焦点。</p>
+<h4 id="Passive"><a href="#Passive" class="headerlink" title="Passive"></a>Passive</h4><p>在 Passive 阶段，网页可见，但没有输入焦点，无法接受输入。UI 更新（比如动画）仍然在执行。该阶段可能发生在桌面同时有多个窗口时，或者存在内嵌的Iframe页面时。</p>
+<h4 id="Hidden"><a href="#Hidden" class="headerlink" title="Hidden"></a>Hidden</h4><p>在 Hidden 阶段，网页不可见，当前网页可能被被其他窗口占据，由于未被冻结，页面中除了UI 更新不再执行外，其他的任务不会被浏览器限制。</p>
+<h4 id="Terminated"><a href="#Terminated" class="headerlink" title="Terminated"></a>Terminated</h4><p>在 Terminated 阶段，由于用户主动关闭窗口，或者在同一个窗口前往其他页面，导致当前页面开始被浏览器卸载并从内存中清除。</p>
+<p>这个阶段会导致网页卸载，任何新任务都不会在这个阶段启动，并且如果运行时间太长，正在进行的任务可能会被终止。</p>
+<h4 id="Frozen"><a href="#Frozen" class="headerlink" title="Frozen"></a>Frozen</h4><p>如果网页处于 Hidden 阶段的时间过久，用户又不关闭网页，浏览器就有可能冻结网页，使其进入 Frozen 阶段。不过，处于Passive状态的页面长时间没有操作也有可能会进入 Frozen 阶段。</p>
+<h4 id="Discarded"><a href="#Discarded" class="headerlink" title="Discarded"></a>Discarded</h4><p>如果网页长时间处于 Frozen 阶段，用户又不唤醒页面，那么就会进入 Discarded 阶段，即浏览器自动卸载网页，清除该网页的内存占用。</p>
+<h3 id="生命周期事件"><a href="#生命周期事件" class="headerlink" title="生命周期事件"></a>生命周期事件</h3><h4 id="focus-amp-blur"><a href="#focus-amp-blur" class="headerlink" title="focus &amp; blur"></a>focus &amp; blur</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_wrve55fBSt.png" alt=""></p>
+<p>焦点变化会导致页面在 active 和 passive 两个状态间切换，可以使用 <code>document.hasFocus()</code> API 来得到页面当前的状态。在焦点状态发生变化时，还会在 <code>window</code> 上触发 <code>focus</code> 或 <code>blur</code> 事件。</p>
+<ul>
+<li><p>$focus$事件在页面获得输入焦点时触发，比如网页从 $Passive$ 阶段变为 $Active$ 阶段。</p>
+</li>
+<li><p>$blur$事件在页面失去输入焦点时触发，比如网页从 $Active$ 阶段变为 $Passive$ 阶段。</p>
+</li>
+</ul>
+<h4 id="visibilitychange"><a href="#visibilitychange" class="headerlink" title="visibilitychange"></a>visibilitychange</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_H-nHadtlFs.png" alt=""></p>
+<p>当页面处于可见状态时<code>document.visibilityState</code> 为<code>visible</code>；当页面不可见（例如：浏览器最小化，或用户切换至其他浏览器标签页）时<code>document.visibilityState</code> 为<code>hidden</code> 。而当页面可见状态一旦发生变化时，浏览器就会触发<code>visibilitychange</code> 事件。</p>
+<p>因此我们可以通过这个套API来监听Passive和Hidden状态之间的转换。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'visibilitychange'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.visibilityState === <span class="string">'hidden'</span>) &#123;</span><br><span class="line">      <span class="comment">// 页面状态为HIDDEN (用户离开了当前页面)   </span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.visibilityState === <span class="string">'visible'</span>) &#123;</span><br><span class="line">      <span class="comment">// 页面状态为PASSIVE (用户打开或回到页面)</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="freeze-amp-resume"><a href="#freeze-amp-resume" class="headerlink" title="freeze &amp; resume"></a>freeze &amp; resume</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_cjSp3qwuSR.png" alt=""></p>
+<p>页面在冻结之前的状态一定是HIDDEN，这也符合我们之前说的：<em>长期处于后台的Tab或者页面跳转导致触发bfcache时有可能会引起页面冻结</em></p>
+<ul>
+<li><p>freeze事件会在页面在进入冻结状态时触发。</p>
+</li>
+<li><p>resume事件在页面从冻结状态被唤醒时触发。</p>
+</li>
+</ul>
+<h4 id="pageshow"><a href="#pageshow" class="headerlink" title="pageshow"></a>pageshow</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_8aqmAngydF.png" alt=""></p>
+<p>pageshow事件在用户加载网页时触发（这个事件的名字有点误导，它跟页面的可见性其实毫无关系，只跟浏览器的 History 记录的变化有关）</p>
+<p>此时有可能是全新的页面加载，也可能是bfcache中获取的页面。如果是通过bfcache获取，则该事件对象的event.persisted属性为true，否则为false。</p>
+<h4 id="pagehide"><a href="#pagehide" class="headerlink" title="pagehide"></a>pagehide</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_UhBdb7uQC9.png" alt=""></p>
+<p>pagehide事件和pageshow一样跟网页是否可见也无关，这个事件在用户关闭或切换当前网页时触发。如果浏览器能够将当前页面添加bfcache，则事件对象的event.persisted属性为true并且页面将进入 Frozen 状态，否则进入 Terminated 状态。</p>
+<h4 id="beforeunload"><a href="#beforeunload" class="headerlink" title="beforeunload"></a>beforeunload</h4><p>beforeunload事件在窗口或文档即将卸载时触发。该事件发生时，卸载仍可取消。</p>
+<h4 id="unload"><a href="#unload" class="headerlink" title="unload"></a>unload</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_hh02HWEUvI.png" alt=""></p>
+<p>unload事件在页面在卸载时触发。经过这个事件，网页进入 Terminated 状态。</p>
+<h4 id="🌰页面生命周期中的事件变化"><a href="#🌰页面生命周期中的事件变化" class="headerlink" title="🌰页面生命周期中的事件变化"></a>🌰页面生命周期中的事件变化</h4><p>这里准备了一个日志页面，能够记录页面生命周期变化过程中所触发事件信息：</p>
+<p><a href="https://codepen.io/jackym06/full/QWvXoLd" target="_blank" rel="noopener" title="https://codepen.io/jackym06/full/QWvXoLd">https://codepen.io/jackym06/full/QWvXoLd</a></p>
+<h2 id="建议与实践"><a href="#建议与实践" class="headerlink" title="建议与实践"></a>建议与实践</h2><h3 id="生命周期各状态下的开发建议"><a href="#生命周期各状态下的开发建议" class="headerlink" title="生命周期各状态下的开发建议"></a>生命周期各状态下的开发建议</h3><p>作为开发者，了解页面生命周期状态并知道如何在代码中观察它们很重要，因为我们所做的工作类型很大程度上取决于页面处于什么状态。</p>
+<h4 id="Active-1"><a href="#Active-1" class="headerlink" title="Active"></a>Active</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_5tdFZfvslL.png" alt=""></p>
+<p>Active状态是页面响应用户交互最重要的时间，响应速度将直接影响<a href="https://web.dev/fid/" target="_blank" rel="noopener" title="首次输入延迟FID">首次输入延迟FID</a>。</p>
+<blockquote>
+<p>FID是一个页面性能标准, 用于衡量网站的交互相应速度，测量方式为首次收到用户交互事件的时间点与主线程下一次空闲的时间点之间的差值。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_-BACCrYOQg.png" alt=""></p>
+<p>因此开发者需要评估可能阻塞主线程的非 UI 工作， 考虑：</p>
+<ul>
+<li><p>暂缓执行这类任务(可以使用setTimeout 延迟求值、requestIdleCallback空闲求值)</p>
+</li>
+<li><p>放到Web-Worker里处理</p>
+</li>
+</ul>
+<h4 id="Passive-1"><a href="#Passive-1" class="headerlink" title="Passive"></a>Passive</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_qGXhI0lLdZ.png" alt=""></p>
+<p>Passive状态下，页面仍然是可见的，但是用户不会和页面发生交互，所以此时可以考虑:&#x20;</p>
+<ul>
+<li><p>执行Active状态时暂缓的工作</p>
+</li>
+<li><p>检查或持久化处理用户在Active时更改的页面内容</p>
+</li>
+</ul>
+<h4 id="Hidden-1"><a href="#Hidden-1" class="headerlink" title="Hidden"></a>Hidden</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_EN4Qoshah7.png" alt=""></p>
+<p>由于页面接下来的状态可能是终止（TERMINATED），所以<strong>Hidden状态通常也是开发者可以可靠观察到的最后一个状态变化</strong>。因此当页面变为Hidden时，应当视为当前用户的会话可能已经结束，此时可以考虑：</p>
+<ul>
+<li><p>保存任何未保存的网页状态（更改的表单数据、当前页面滚动位置等）</p>
+</li>
+<li><p>发送任何未发送的埋点数据。</p>
+</li>
+<li><p>停止进行 UI 更新、停止用户不希望在后台运行的任务，例如视频播放等。</p>
+</li>
+</ul>
+<h4 id="Frozen-1"><a href="#Frozen-1" class="headerlink" title="Frozen"></a>Frozen</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_a4_uGzqHsx.png" alt=""></p>
+<p>在Frozen状态下，任务队列中未执行的任务会被被挂起，直到页面解冻继续执行。</p>
+<p>这也就意味着当页面从Hidden变为Frozen时，需要开发者主动终止一些任务，否则当解冻后执行之前挂起的任务时会发生异常：</p>
+<p>例如依赖连接的任务：EventSource、IndexedDB等，在冻结后由于网络连接或数据库连接会断开，因此可以在freeze事件中，将这些连接做好中断处理；等到Frozen转换回Hidden时（resume），再重新进行连接。</p>
+<blockquote>
+<p>WebSocket、WebRTC这两种连接服务由于浏览器会主动保护所在页面不被冻结，所以可以不用考虑他们的中断重连。</p>
+</blockquote>
+<h4 id="Terminated-1"><a href="#Terminated-1" class="headerlink" title="Terminated"></a>Terminated</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Sinn_wlMie.png" alt=""></p>
+<p>终止状态下通常网页通常无法执行任何操作，如果业务场景需要判断页面被终止，在生命周期中看起来有三个选择：<code>unload</code>、<code>beforeunload</code>、<code>pagehide</code>，实际上我们没得选：在典型的一些页面场景上（例如直接从任务管理器中直接将浏览器关闭），这几个事件都无法触发。</p>
+<blockquote>
+<p>如果你可以忍受这种不可靠，也请优先使用pagehide事件来判断，原因在<a href="https://www.wolai.com/8hcBwdRHXnXcCWUzgV1oq9#mn7eBkPnoZKsFXxNzVVFfh" target="_blank" rel="noopener" title="后文">后文</a>中会进行解释</p>
+</blockquote>
+<p>而页面在Terminated前总是会经历Hidden状态，因此一些页面会话结束的逻辑应该在Hidden状态时去做才较为可靠。</p>
+<h4 id="Discarded-1"><a href="#Discarded-1" class="headerlink" title="Discarded"></a>Discarded</h4><p><img src="https://raw.githubusercontent.com/JackyM06/MyPictures/master/image_Jt5904XxEq.png" alt=""></p>
+<p>在丢弃页面时不会触发任何回调，因此开发者无法观察到的，原因是页面被丢弃前通常处于Frozen状态并且处于资源限制状态，因此仅仅为了去响应丢弃事件而去解冻页面是不合理的。</p>
+<p>所以我们应该为在状态从Hidden更改为冻结时就做好页面被丢弃的准备，然后通过<code>document.wasDiscarded</code> 属性在页面加载时检查页面是否被丢弃过（如恢复被丢弃之前的页面持久化的状态等）。</p>
+<h3 id="拥抱bfcache"><a href="#拥抱bfcache" class="headerlink" title="拥抱bfcache"></a>拥抱bfcache</h3><p>之前有聊到，bfcache可以很好的提升用户在页面切换过程中的体验，因此我们需要在页面的开发过程中，尽量规避会让浏览器阻止将页面移入bfcache的情况（<em>或者说尽量让页面达到让浏览器能够冻结的标准</em>）:</p>
+<ul>
+<li><p>不要在现代浏览器上使用unload事件，前面有提到一旦注册unload会导致页面无法使用bfcache，并且我们完全可以使用pagehide替换unload</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'pagehide'</span>, event =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(event.persisted) &#123;</span><br><span class="line">    <span class="comment">// 下一个状态为 Frozen （bfcache）</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 下一个状态为 Terminated</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当页面不需要使用时beforeunload的待处理状态时，请将注册的事件回调移除。</p>
+<p>前文有提及，处于beforeunload不论是否处于待处理状态，都不会影响页面冻结，<strong>为什么还要移除注册的beforeunload事件呢</strong>？</p>
+<p>这是由于对于其他一些还未开放页面冻结状态，但又支持bfcache的浏览器来说，他们对bfcache的处理的是存在差异的：例如fireFox对于激活bfcache的条件是页面既不能注册unload也不能有注册beforeunload事件。</p>
+<p>所以为了提高兼容性，请在没有必要时移除注册的beforeunload事件</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>标准化页面生命周期的本质是当浏览器或者用户改变页面状态时，开发者能够感知和预测页面的下一步状态。作为开发者在了解整个页面生命周期的走向后，就能够在各种状态进行对应的优化处理，从而提升用户在使用网页时的体验。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/" target="_blank" rel="noopener">https://docs.google.com/document/d/1QJpuBTdllLVflMJSov0tlFX3e3yfSfd_-al2IBavbQM/</a></p>
+<p><a href="https://github.com/WICG/page-lifecycle/blob/main/README.md" target="_blank" rel="noopener">https://github.com/WICG/page-lifecycle/blob/main/README.md</a></p>
+<p><a href="https://developer.chrome.com/blog/page-lifecycle-api/" target="_blank" rel="noopener">https://developer.chrome.com/blog/page-lifecycle-api/</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2018/11/page_lifecycle_api.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2018/11/page_lifecycle_api.html</a></p>
+<p><a href="https://wicg.github.io/page-lifecycle/" target="_blank" rel="noopener">https://wicg.github.io/page-lifecycle/</a></p>
+<p><a href="https://segmentfault.com/a/1190000016573872" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016573872</a></p>
+<p><a href="https://web.dev/bfcache/" target="_blank" rel="noopener">https://web.dev/bfcache/</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Mozilla/Firefox/Releases/1.5/Using_Firefox_1.5_caching" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Mozilla/Firefox/Releases/1.5/Using_Firefox_1.5_caching</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          
+            <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 浏览器</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/16/%E6%B2%A1%E6%83%B3%E5%88%B0%E4%BD%A0%E6%98%AF%E8%BF%99%E6%A0%B7%E7%9A%84npm%20install/" rel="next" title="没想到你是这样的npm install">
+                <i class="fa fa-chevron-left"></i> 没想到你是这样的npm install
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Jacky Mao" />
+            
+              <p class="site-author-name" itemprop="name">Jacky Mao</p>
+              <p class="site-description motion-element" itemprop="description">爱吃酱油的人运气不会差😁</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.jianshu.com/u/af6911bf71ea" target="_blank" title="简书"><i class="fa fa-fw fa-vk"></i>简书</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/JackyM06" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://gitee.com/JackyM06" target="_blank" title="Gitee"><i class="fa fa-fw fa-git"></i>Gitee</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:ChinaMJK06@163.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5539476061/profile?topnav=1&wvr=6" target="_blank" title="WeiBo"><i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/chinamjk" target="_blank" title="CSDN"><i class="fa fa-fw fa-compass"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                friends
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://powerlrl.github.io" title="Power林" target="_blank">Power林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://marmomento.github.io" title="Momento" target="_blank">Momento</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不得不谈的浏览器优化"><span class="nav-text">不得不谈的浏览器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#页面冻结-Frozen"><span class="nav-text">页面冻结 - Frozen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frozen与bfcache"><span class="nav-text">Frozen与bfcache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面丢弃-Discarded"><span class="nav-text">页面丢弃 - Discarded</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二者对比"><span class="nav-text">二者对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冻结和丢弃的条件"><span class="nav-text">冻结和丢弃的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存在未提交的用户输入"><span class="nav-text">存在未提交的用户输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正在播放Audio-x20"><span class="nav-text">正在播放Audio&amp;#x20;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用WebRTC-API"><span class="nav-text">使用WebRTC API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用WebSockets-API"><span class="nav-text">使用WebSockets API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处于BeforeUnload的待处理状态"><span class="nav-text">处于BeforeUnload的待处理状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面注册unload事件"><span class="nav-text">页面注册unload事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容情况"><span class="nav-text">兼容情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面生命周期"><span class="nav-text">页面生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Active"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Passive"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hidden"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Terminated"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Frozen"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Discarded"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期事件"><span class="nav-text">生命周期事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#focus-amp-blur"><span class="nav-text">focus &amp; blur</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#visibilitychange"><span class="nav-text">visibilitychange</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#freeze-amp-resume"><span class="nav-text">freeze &amp; resume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pageshow"><span class="nav-text">pageshow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pagehide"><span class="nav-text">pagehide</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#beforeunload"><span class="nav-text">beforeunload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unload"><span class="nav-text">unload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#🌰页面生命周期中的事件变化"><span class="nav-text">🌰页面生命周期中的事件变化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建议与实践"><span class="nav-text">建议与实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期各状态下的开发建议"><span class="nav-text">生命周期各状态下的开发建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Active-1"><span class="nav-text">Active</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Passive-1"><span class="nav-text">Passive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hidden-1"><span class="nav-text">Hidden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Frozen-1"><span class="nav-text">Frozen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Terminated-1"><span class="nav-text">Terminated</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Discarded-1"><span class="nav-text">Discarded</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拥抱bfcache"><span class="nav-text">拥抱bfcache</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fab fa-pencil fa fa-user"> Writer</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jacky Mao</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">186k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">2:49</span>
+  
+</div>
+
+
+
+
+ 
+
+
+
+  
+
+
+
+  
+
+
+
+
+        
+<div class="busuanzi-count">
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz',
+        appKey: 'rLM78Nu15QmWgP5T55c7A37t',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz", "rLM78Nu15QmWgP5T55c7A37t");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var newcounter = new Counter();
+              /* Set ACL */
+              var acl = new AV.ACL();
+              acl.setPublicReadAccess(true);
+              acl.setPublicWriteAccess(true);
+              newcounter.setACL(acl);
+              /* End Set ACL */
+              newcounter.set("title", title);
+              newcounter.set("url", url);
+              newcounter.set("time", 1);
+              newcounter.save(null, {
+                success: function(newcounter) {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                },
+                error: function(newcounter, error) {
+                  console.log('Failed to create');
+                }
+              });
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+    
+  
+  <script src="true"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+</body>
+</html>

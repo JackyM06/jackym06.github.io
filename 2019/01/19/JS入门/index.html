@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic|Fira Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/avatar.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/uploads/avatar.png?v=6.3.0" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      appId: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "07daa06f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="一、js的输出JavaSctipt没有任何打印输出的函数或方法  window.alert()浏览器警告框 document.write()方法可以将内容写入到Html中（如果在写入流结束后再使用将会覆盖整个HTML） innerHTML 写入与读取HTML元素 console.log()在浏览器控制台输出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS入门">
+<meta property="og:url" content="http://yoursite.com/2019/01/19/JS%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Maoli">
+<meta property="og:description" content="一、js的输出JavaSctipt没有任何打印输出的函数或方法  window.alert()浏览器警告框 document.write()方法可以将内容写入到Html中（如果在写入流结束后再使用将会覆盖整个HTML） innerHTML 写入与读取HTML元素 console.log()在浏览器控制台输出">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-19T13:03:30.000Z">
+<meta property="article:modified_time" content="2019-08-07T11:52:52.000Z">
+<meta property="article:author" content="Jacky Mao">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/19/JS入门/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JS入门 | Maoli</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f6eaa5ccd4d3e722e2e845b133cb889a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Maoli</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Be your own hero</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类<span class="badge">6</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签<span class="badge">42</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">37</span></a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/JackyM06" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/19/JS%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky Mao">
+      <meta itemprop="description" content="爱吃酱油的人运气不会差😁">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maoli">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS入门
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-19 21:03:30" itemprop="dateCreated datePublished" datetime="2019-01-19T21:03:30+08:00">2019-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-07 19:52:52" itemprop="dateModified" datetime="2019-08-07T19:52:52+08:00">2019-08-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Web前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/19/JS%E5%85%A5%E9%97%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/19/JS%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/01/19/JS%E5%85%A5%E9%97%A8/" class="leancloud_visitors" data-flag-title="JS入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、js的输出"><a href="#一、js的输出" class="headerlink" title="一、js的输出"></a>一、js的输出</h2><p>JavaSctipt没有任何打印输出的函数或方法</p>
+<ol>
+<li>window.alert()浏览器警告框</li>
+<li>document.write()方法可以将内容写入到Html中（如果在写入流结束后再使用将会覆盖整个HTML）</li>
+<li>innerHTML 写入与读取HTML元素</li>
+<li>console.log()在浏览器控制台输出</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="二、js的基本语法"><a href="#二、js的基本语法" class="headerlink" title="二、js的基本语法"></a>二、js的基本语法</h2><p>###（1）JavaScript的常量称为字面量。所有字面量类型有：###<br>    1.数字(Number)<br>    2.字符串(String)<br>    3.数组(Array)<br>    4.对象(Object)<br>    5.函数(Function)<br>    6.表达式    </p>
+<h3 id="2-JavaScript中变量一般由var来进行定义"><a href="#2-JavaScript中变量一般由var来进行定义" class="headerlink" title="(2)JavaScript中变量一般由var来进行定义"></a>(2)JavaScript中变量一般由var来进行定义</h3><pre><code>var a=0,b;
+b=0;
+/*注释 a=0,b=0 */</code></pre><h3 id="3-JavaScript-中，常见的是小驼峰法的命名规则，如-lastName-而不是lastname"><a href="#3-JavaScript-中，常见的是小驼峰法的命名规则，如-lastName-而不是lastname" class="headerlink" title="(3)JavaScript 中，常见的是小驼峰法的命名规则，如 lastName(而不是lastname)"></a>(3)JavaScript 中，常见的是小驼峰法的命名规则，如 lastName(而不是lastname)</h3><pre><code>变量的三种命名方法：
+var firstName=&apos;king&apos;;//小驼峰
+var FirstName=&apos;queen&apos;;//大驼峰
+var first_name=&apos;maizi&apos;;//下划线法</code></pre><h2 id="三、JavaScript的数据类型"><a href="#三、JavaScript的数据类型" class="headerlink" title="三、JavaScript的数据类型"></a>三、JavaScript的数据类型</h2><pre><code>JavaScript中的基本类型可以分为：
+基本数据类型:Number(数字)、String（字符串）、布尔型(Boolean)、对空（Null）、未定义(Undefined)、Symbol
+引用类型:对象(Object)、数组(Array)、函数(Function)</code></pre><h3 id="1-创建数组的三种方法"><a href="#1-创建数组的三种方法" class="headerlink" title="(1)创建数组的三种方法"></a>(1)创建数组的三种方法</h3><pre><code>1.var cha=new Array(&quot;123&quot;,&quot;456&quot;);
+2.var cha=new Array();
+  cha[0]=&quot;123&quot;;
+  cha[1]=&quot;456&quot;;
+3.var cha=[&quot;123&quot;,&quot;456&quot;];</code></pre><h3 id="2-创建对象的方法"><a href="#2-创建对象的方法" class="headerlink" title="(2)创建对象的方法"></a>(2)创建对象的方法</h3><pre><code>1.    
+var person={
+    name=&quot;jone&quot;,
+    sex=&quot;男&quot;,
+    id=&quot;123456&quot;
+}
+2.键值对的容器，“键”必须为字符串
+var person={
+    &quot;name&quot;:&quot;小明&quot;,
+    &quot;age&quot;:&quot;18&quot;,
+    &quot;like&quot;:function(){
+            return &quot;喜欢打篮球,弹吉他&quot;;
+    }
+}
+/*对象属性的2种寻址方式:*/
+person.name;
+person[&quot;name&quot;];</code></pre><h3 id="3-声明变量类型"><a href="#3-声明变量类型" class="headerlink" title="(3)声明变量类型"></a>(3)声明变量类型</h3><pre><code>var carname=new String;
+var x=      new Number;
+var y=      new Boolean;
+var cars=   new Array;
+var person= new Object;</code></pre><h3 id="4-函数的一般格式"><a href="#4-函数的一般格式" class="headerlink" title="(4)函数的一般格式"></a>(4)函数的一般格式</h3><pre><code>function 函数名(形参列表){
+    ……
+}</code></pre><h3 id="5-给未声明的变量赋值"><a href="#5-给未声明的变量赋值" class="headerlink" title="(5)给未声明的变量赋值"></a>(5)给未声明的变量赋值</h3><p> 如果您把值赋给尚未声明的变量，该变量将被自动作为 window 的一个属性。<br>    carname=”haha”;<br>    console.log(window.carname)//haha</p>
+<pre><code>/*给未声明变量赋值创建的全局变量，是全局对象的可配置属性，可以删除。*/    
+delete carname;//正常删除（只有可配置的属性才能delete）</code></pre><h2 id="四、JavaScript的作用域"><a href="#四、JavaScript的作用域" class="headerlink" title="四、JavaScript的作用域"></a>四、JavaScript的作用域</h2><h3 id="JavaScript中作用域的探讨范围是：可访问变量、对象和函数。"><a href="#JavaScript中作用域的探讨范围是：可访问变量、对象和函数。" class="headerlink" title="JavaScript中作用域的探讨范围是：可访问变量、对象和函数。"></a>JavaScript中作用域的探讨范围是：可访问变量、对象和函数。</h3><pre><code>作用域可以分为全局变量和局部变量。
+在函数外定义的变量为全局变量，而在函数内定义的变量为局部变量。
+全局作用域: 网页中所有脚本和函数均可使用。
+局部变量:仅在声明的函数中可用</code></pre><p>全局变量，或者函数，可以覆盖 window 对象的变量或者函数。局部变量，包括 window 对象可以覆盖全局变量和函数 </p>
+<blockquote>
+<p>ES6中加入let和const来定义变量。const是用于声明常量，增加了安全性。用var定义的变量只能是全局有效或者整个函数块有效，而let声明的变量、语句或者表达式允许你只在本级代码块中使用。</p>
+</blockquote>
+<h2 id="五、JavaScript事件"><a href="#五、JavaScript事件" class="headerlink" title="五、JavaScript事件"></a>五、JavaScript事件</h2><h3 id="1-HTML中添加事件属性"><a href="#1-HTML中添加事件属性" class="headerlink" title="(1)HTML中添加事件属性"></a>(1)HTML中添加事件属性</h3><pre><code>&lt;标签名 事件属性名=&quot;……代码&quot;&gt;&lt;/标签名&gt;</code></pre><h3 id="2-在js中为相关元素添加事件属性"><a href="#2-在js中为相关元素添加事件属性" class="headerlink" title="(2)在js中为相关元素添加事件属性"></a>(2)在js中为相关元素添加事件属性</h3><pre><code>在HTML中:
+&lt;button id=&quot;test&quot; onclick=&quot;check()&quot;&gt;检查&lt;/button&gt;
+在js中:
+var test=document.getElementById(&quot;test&quot;);
+test.onclick=check();</code></pre><h3 id="3-常用的事件属性名"><a href="#3-常用的事件属性名" class="headerlink" title="(3)常用的事件属性名"></a>(3)常用的事件属性名</h3><table>
+<thead>
+<tr>
+<th align="left">事件</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">onchange</td>
+<td align="left">HTML 元素改变</td>
+</tr>
+<tr>
+<td align="left">onclick</td>
+<td align="left">用户点击 HTML 元素</td>
+</tr>
+<tr>
+<td align="left">onmouseover</td>
+<td align="left">用户在一个HTML元素上移动鼠标</td>
+</tr>
+<tr>
+<td align="left">onmouseout</td>
+<td align="left">用户从一个HTML元素上移开鼠标</td>
+</tr>
+<tr>
+<td align="left">onkeydown</td>
+<td align="left">用户按下键盘按键</td>
+</tr>
+<tr>
+<td align="left">onload</td>
+<td align="left">浏览器已完成页面的加载</td>
+</tr>
+<tr>
+<td align="left"><a href="http://www.runoob.com/jsref/dom-obj-event.html" target="_blank" rel="noopener" title="更多事件">http://www.runoob.com/jsref/dom-obj-event.html</a></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="六、JavaScript数据类型转换"><a href="#六、JavaScript数据类型转换" class="headerlink" title="六、JavaScript数据类型转换"></a>六、JavaScript数据类型转换</h2><pre><code>Number()转换为数字,String()转换为字符串,Boolean()转换为布尔型</code></pre><p>5种数据类型: string,number,boolean,,object,function</p>
+<p>3种对象类型：Object，Date,Array</p>
+<p>2种不包含任何值的数据类型：null,undefined</p>
+<blockquote>
+<p>可以利用typeof操作符来查看数据类型。</p>
+<p>注：NaN的数据类型是number,Array和Date以及null的数据类型是object,未定义变量的数据类型为undefined</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/25/Hexo%E6%90%AD%E5%BB%BA%E6%89%8B%E5%86%8C/" rel="next" title="Hexo搭建手册">
+                <i class="fa fa-chevron-left"></i> Hexo搭建手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/20/JS%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="JS正则表达式">
+                JS正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Jacky Mao" />
+            
+              <p class="site-author-name" itemprop="name">Jacky Mao</p>
+              <p class="site-description motion-element" itemprop="description">爱吃酱油的人运气不会差😁</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.jianshu.com/u/af6911bf71ea" target="_blank" title="简书"><i class="fa fa-fw fa-vk"></i>简书</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/JackyM06" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://gitee.com/JackyM06" target="_blank" title="Gitee"><i class="fa fa-fw fa-git"></i>Gitee</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:ChinaMJK06@163.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5539476061/profile?topnav=1&wvr=6" target="_blank" title="WeiBo"><i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/chinamjk" target="_blank" title="CSDN"><i class="fa fa-fw fa-compass"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                friends
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://powerlrl.github.io" title="Power林" target="_blank">Power林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://marmomento.github.io" title="Momento" target="_blank">Momento</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、js的输出"><span class="nav-text">一、js的输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、js的基本语法"><span class="nav-text">二、js的基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JavaScript中变量一般由var来进行定义"><span class="nav-text">(2)JavaScript中变量一般由var来进行定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-JavaScript-中，常见的是小驼峰法的命名规则，如-lastName-而不是lastname"><span class="nav-text">(3)JavaScript 中，常见的是小驼峰法的命名规则，如 lastName(而不是lastname)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、JavaScript的数据类型"><span class="nav-text">三、JavaScript的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建数组的三种方法"><span class="nav-text">(1)创建数组的三种方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建对象的方法"><span class="nav-text">(2)创建对象的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-声明变量类型"><span class="nav-text">(3)声明变量类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-函数的一般格式"><span class="nav-text">(4)函数的一般格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-给未声明的变量赋值"><span class="nav-text">(5)给未声明的变量赋值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、JavaScript的作用域"><span class="nav-text">四、JavaScript的作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript中作用域的探讨范围是：可访问变量、对象和函数。"><span class="nav-text">JavaScript中作用域的探讨范围是：可访问变量、对象和函数。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、JavaScript事件"><span class="nav-text">五、JavaScript事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HTML中添加事件属性"><span class="nav-text">(1)HTML中添加事件属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在js中为相关元素添加事件属性"><span class="nav-text">(2)在js中为相关元素添加事件属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-常用的事件属性名"><span class="nav-text">(3)常用的事件属性名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、JavaScript数据类型转换"><span class="nav-text">六、JavaScript数据类型转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fab fa-pencil fa fa-user"> Writer</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jacky Mao</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">186k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">2:49</span>
+  
+</div>
+
+
+
+
+ 
+
+
+
+  
+
+
+
+  
+
+
+
+
+        
+<div class="busuanzi-count">
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz',
+        appKey: 'rLM78Nu15QmWgP5T55c7A37t',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("O4H4UwOObkis8VHUUSWTOevh-gzGzoHsz", "rLM78Nu15QmWgP5T55c7A37t");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var newcounter = new Counter();
+              /* Set ACL */
+              var acl = new AV.ACL();
+              acl.setPublicReadAccess(true);
+              acl.setPublicWriteAccess(true);
+              newcounter.setACL(acl);
+              /* End Set ACL */
+              newcounter.set("title", title);
+              newcounter.set("url", url);
+              newcounter.set("time", 1);
+              newcounter.save(null, {
+                success: function(newcounter) {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                },
+                error: function(newcounter, error) {
+                  console.log('Failed to create');
+                }
+              });
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+    
+  
+  <script src="true"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+</body>
+</html>
