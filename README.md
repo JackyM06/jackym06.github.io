@@ -51,6 +51,16 @@ draft: false
 
 图片和字体无需访问外部服务即可构建。历史文章中已有的外链图片继续保留原地址；旧 Valine / LeanCloud 评论和访问统计暂未接入新主题。
 
+HTML 幻灯片可以保留原页面，在 `.mdx` 文章中嵌入，无需重写正文：
+
+```mdx
+import HtmlPresentation from "@/components/HtmlPresentation.astro";
+
+<HtmlPresentation src="https://example.com/slides.html" title="演示标题" />
+```
+
+文章仍需填写上述 frontmatter；没有正文小节时可设置 `hideToc: true`。播放器支持翻页交互、全屏观看和单独打开。外链页面需允许 iframe 嵌入，实际内容由原页面提供。
+
 ## GitHub Pages
 
 工作流位于 `.github/workflows/deploy.yml`：PR 执行构建；只有 `master` 分支执行 Pages 发布。试验分支不会自动上线。

@@ -1,0 +1,272 @@
+---
+type Props = {
+  src: string;
+  title: string;
+};
+
+const { src, title } = Astro.props;
+---
+
+<section
+  class="html-presentation not-prose"
+  data-html-presentation
+  aria-label={title}
+>
+  <div class="presentation-toolbar">
+    <span>幻灯片</span>
+    <div class="presentation-actions">
+      <button type="button" data-presentation-fullscreen aria-pressed="false"
+        >全屏观看</button
+      >
+      <a href={src} target="_blank" rel="noopener noreferrer">单独打开 ↗</a>
+    </div>
+  </div>
+  <div class="presentation-stage" data-presentation-stage data-pagefind-ignore>
+    <iframe
+      src={src}
+      title={title}
+      loading="lazy"
+      allow="fullscreen"
+      allowfullscreen
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+    ></iframe>
+  </div>
+  <p class="presentation-hint">
+    点击幻灯片后，用 ← → 翻页；手机可左右滑动，横屏观看更清楚。
+  </p>
+</section>
+
+<script>
+  let cleanup: (() => void) | undefined;
+
+  function initPresentations() {
+    cleanup?.();
+    const controller = new AbortController();
+    const observers: ResizeObserver[] = [];
+    const restoreExpanded: (() => void)[] = [];
+
+    document
+      .querySelectorAll<HTMLElement>("[data-html-presentation]")
+      .forEach(container => {
+        const stage = container.querySelector<HTMLElement>(
+          "[data-presentation-stage]"
+        );
+        const iframe = container.querySelector("iframe");
+        const button = container.querySelector<HTMLButtonElement>(
+          "[data-presentation-fullscreen]"
+        );
+        if (!stage || !iframe || !button) return;
+
+        // Keep a desktop-sized slide viewport even in a narrow article column.
+        // The slide's original layout stays intact; swipe and keyboard events
+        // continue to be handled by the embedded presentation.
+        const resize = () => {
+          if (!stage.clientWidth || !stage.clientHeight) return;
+          const width = Math.max(960, stage.clientWidth);
+          const scale = stage.clientWidth / width;
+          iframe.style.width = `${width}px`;
+          iframe.style.height = `${stage.clientHeight / scale}px`;
+          iframe.style.transform = `scale(${scale})`;
+        };
+        const observer = new ResizeObserver(resize);
+        observer.observe(stage);
+        observers.push(observer);
+        resize();
+
+        let expanded = false;
+        let previousOverflow = "";
+        const inertSiblings = new Map<HTMLElement, boolean>();
+        const updateButton = () => {
+          const active = expanded || document.fullscreenElement === container;
+          button.textContent = active ? "退出全屏" : "全屏观看";
+          button.setAttribute("aria-pressed", String(active));
+          resize();
+        };
+        const setExpanded = (active: boolean, restoreFocus = true) => {
+          if (expanded === active) return;
+          expanded = active;
+          container.classList.toggle("is-expanded", active);
+          if (active) {
+            previousOverflow = document.documentElement.style.overflow;
+            document.documentElement.style.overflow = "hidden";
+            container.setAttribute("role", "dialog");
+            container.setAttribute("aria-modal", "true");
+            let current: HTMLElement = container;
+            while (current.parentElement) {
+              const parent = current.parentElement;
+              for (const sibling of parent.children) {
+                if (sibling !== current && sibling instanceof HTMLElement) {
+                  inertSiblings.set(sibling, sibling.inert);
+                  sibling.inert = true;
+                }
+              }
+              if (parent === document.body) break;
+              current = parent;
+            }
+          } else {
+            document.documentElement.style.overflow = previousOverflow;
+            container.removeAttribute("role");
+            container.removeAttribute("aria-modal");
+            inertSiblings.forEach((inert, element) => {
+              element.inert = inert;
+            });
+            inertSiblings.clear();
+          }
+          updateButton();
+          if (restoreFocus) button.focus();
+        };
+        restoreExpanded.push(() => setExpanded(false, false));
+
+        button.addEventListener(
+          "click",
+          async () => {
+            if (expanded) {
+              setExpanded(false);
+              return;
+            }
+            try {
+              if (document.fullscreenElement === container) {
+                await document.exitFullscreen();
+              } else {
+                await container.requestFullscreen();
+                iframe.focus();
+              }
+            } catch {
+              // In-app browsers and some mobile browsers do not expose native
+              // fullscreen. Expand the existing player without reloading it.
+              setExpanded(true);
+            }
+          },
+          { signal: controller.signal }
+        );
+
+        document.addEventListener("fullscreenchange", updateButton, {
+          signal: controller.signal,
+        });
+        document.addEventListener(
+          "keydown",
+          event => {
+            if (expanded && event.key === "Escape") setExpanded(false);
+          },
+          { signal: controller.signal }
+        );
+      });
+
+    cleanup = () => {
+      restoreExpanded.forEach(restore => restore());
+      controller.abort();
+      observers.forEach(observer => observer.disconnect());
+    };
+  }
+
+  initPresentations();
+  document.addEventListener("astro:page-load", initPresentations);
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+</script>
+
+<style>
+  .html-presentation {
+    width: min(calc(100vw - 2rem), 72rem);
+    margin-block: 2rem;
+    margin-inline: calc((100% - min(calc(100vw - 2rem), 72rem)) / 2);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--background);
+  }
+
+  .presentation-toolbar,
+  .presentation-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .presentation-toolbar {
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+  }
+
+  .presentation-toolbar > span {
+    color: var(--muted-foreground);
+  }
+
+  .presentation-actions {
+    gap: 0.25rem;
+  }
+
+  .presentation-actions :is(a, button) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.375rem 0.625rem;
+    border: 0;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--foreground);
+    font: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .presentation-actions :is(a, button):hover {
+    background: var(--muted);
+    color: var(--accent);
+  }
+
+  .presentation-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #e9e6dd;
+  }
+
+  .presentation-stage iframe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    border: 0;
+    transform-origin: top left;
+  }
+
+  .presentation-hint {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .html-presentation:fullscreen,
+  .html-presentation.is-expanded {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .html-presentation.is-expanded {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100dvh;
+  }
+
+  .html-presentation:fullscreen .presentation-stage,
+  .html-presentation.is-expanded .presentation-stage {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+</style>
