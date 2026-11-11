@@ -114,10 +114,10 @@ for (const file of articles) {
 
 const about = load(readOriginal("about/index.html"));
 about("a.headerlink").remove();
-const aboutText = td.turndown(about(".post-body").first().html() || "Jacky Mao\n\nBe your own hero.")
+const aboutText = td.turndown(about(".post-body").first().html() || "Jiankai\n\nJiankai's Blog")
   .replace("目前，虽然是支持手机查看博客的，但是会隐藏一些内容，例如目录等。在未来，分类与标签以及功能将会越来越丰富！", "这里收录从 2018 年开始的技术文章，支持按分类、标签和时间浏览，也可以搜索全文。")
   .replace("基于 [Hexo](https://github.com/hexojs/hexo)–>[NexT](https://github.com/theme-next/hexo-theme-next) & [Github pages](https://pages.github.com/)搭建", "当前基于 [Astro](https://astro.build/)、[AstroPaper](https://github.com/satnaing/astro-paper) 与 [GitHub Pages](https://pages.github.com/)搭建。最初使用 Hexo 与 NexT，旧文章的网址继续保留。");
-await writeFile("src/content/pages/about.md", frontmatter({ title: "关于", description: "关于 Jacky Mao 和 Maoli 博客" }) + aboutText + "\n");
+await writeFile("src/content/pages/about.md", frontmatter({ title: "关于", description: "关于 Jiankai 和 Jiankai's Blog" }) + aboutText + "\n");
 
 // Keep old list/pagination bookmarks working after the publishing engine changes.
 for (const file of files.filter(file => /^(?:page|archives|tags|categories)\/.*\/index\.html$/.test(file))) {

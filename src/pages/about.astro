@@ -28,9 +28,128 @@ const { Content } = await render(about);
 
   <Breadcrumb />
 
-  <Main pageTitle={about.data.title} class="app-prose">
+  <Main pageTitle={about.data.title} hideTitle class="about-page app-prose">
     <Content />
   </Main>
 
   <Footer />
 </Layout>
+
+<style is:global>
+  .about-page .career-timeline {
+    margin: 2rem 0;
+    padding: 0;
+    list-style: none;
+    overflow: visible;
+  }
+
+  .about-page .career-timeline > li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    column-gap: 2rem;
+    margin: 0;
+    padding: 0 0 2.5rem;
+  }
+
+  .about-page .career-timeline > li::before {
+    position: absolute;
+    content: "";
+    top: 0.65rem;
+    bottom: -0.65rem;
+    left: 9rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .about-page .career-timeline > li:last-child {
+    padding-bottom: 0;
+  }
+
+  .about-page .career-timeline > li:last-child::before {
+    display: none;
+  }
+
+  .about-page .career-timeline > li::after {
+    position: absolute;
+    content: "";
+    box-sizing: border-box;
+    width: 0.625rem;
+    height: 0.625rem;
+    top: 0.45rem;
+    left: calc(9rem - 0.28125rem);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    background: var(--background);
+  }
+
+  .about-page .career-timeline > .career-current::after {
+    background: var(--accent);
+  }
+
+  .about-page .career-period {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .about-page .career-kind {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .about-page .career-entry h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.125rem;
+    font-style: normal;
+    line-height: 1.6;
+  }
+
+  .about-page .career-entry p {
+    margin: 0;
+  }
+
+  .about-page .career-entry ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .about-page .career-entry li {
+    margin: 0.25rem 0;
+    padding-left: 0;
+  }
+
+  .about-page .career-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .about-page .career-status {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 639px) {
+    .about-page .career-timeline > li {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .about-page .career-timeline > li::before {
+      left: 0.3125rem;
+    }
+
+    .about-page .career-timeline > li::after {
+      left: 0.03125rem;
+    }
+  }
+</style>

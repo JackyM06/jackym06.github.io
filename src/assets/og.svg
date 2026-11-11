@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#212737"/>
+  <path d="M80 125h1040" stroke="#ff6b01" stroke-width="3"/>
+  <text x="80" y="315" font-family="sans-serif" font-size="108" font-weight="700" fill="#eaedf3">Jiankai's Blog</text>
+  <text x="85" y="400" font-family="sans-serif" font-size="38" fill="#ff6b01">Notes, ideas, and things I build.</text>
+  <text x="85" y="540" font-family="sans-serif" font-size="26" fill="#afb9ca">Jiankai</text>
+</svg>

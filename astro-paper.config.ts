@@ -3,9 +3,9 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://jackym06.github.io/",
-    title: "Maoli",
-    description: "Jacky Mao 的个人博客，记录前端工程、音视频、AI 与学习随想。",
-    author: "Jacky Mao",
+    title: "Jiankai's Blog",
+    description: "Jiankai 的个人博客，记录前端工程、音视频、AI 与学习随想。",
+    author: "Jiankai",
     profile: "https://github.com/JackyM06",
     ogImage: "og.png",
     lang: "zh-CN",
@@ -28,7 +28,7 @@ export default defineAstroPaperConfig({
     toc: true,
   },
   socials: [
-    { name: "github", url: "https://github.com/JackyM06", linkTitle: "Jacky Mao 的 GitHub" },
+    { name: "github", url: "https://github.com/JackyM06", linkTitle: "Jiankai 的 GitHub" },
   ],
   shareLinks: [
   ],

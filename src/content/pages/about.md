@@ -1,38 +1,41 @@
 ---
 title: "关于"
-description: "关于 Jacky Mao 和 Maoli 博客"
+description: "我的学习与工作经历，以及邮箱和微信联系方式。"
 ---
 
-<a id="关于我"></a>
+**Jiankai(建凯)**
 
-### 关于我
+我是一名开发者，平时关注前端工程、音视频和 AI。喜欢围绕具体问题动手实践，把解决问题的过程、尝试过的方案和踩过的坑整理下来。
 
-一个不够格的Coder。当程序员是为了生活，而写代码是为了梦想。未来嘛，未来我要当太空人……，哦不好意思走错片场了，未来我要想法子挣钱哈哈 `over`
+我从 2018 年开始写博客，在这里记录从在校学习到工作后的探索。文章既有项目实践，也有学习笔记和阶段性的思考，欢迎交流。
 
-<a id="关于博客"></a>
+## 我的经历
 
-### 关于博客
+<ol class="career-timeline" aria-label="学习与工作经历">
+  <li>
+    <p class="career-period"><time datetime="2017">2017</time> — <time datetime="2021">2021</time></p>
+    <div class="career-entry">
+      <h3>淮南师范学院</h3>
+      <p>计算机科学与技术专业</p>
+    </div>
+  </li>
+  <li class="career-current">
+    <p class="career-period"><time datetime="2021">2021</time> — 至今</p>
+    <div class="career-entry">
+      <div class="career-heading">
+        <h3>快手</h3>
+        <span class="career-status">在职</span>
+      </div>
+      <ul>
+        <li><strong>运营活动开发</strong>：活动页面、交互及相关业务功能开发。</li>
+        <li><strong>低代码 / 无代码平台开发</strong>：平台功能与可视化搭建能力开发，支持业务页面的搭建与维护。</li>
+        <li><strong>业务 Agent 开发</strong>：基于 LangGraph 构建面向业务场景的 Agent 应用。</li>
+      </ul>
+    </div>
+  </li>
+</ol>
 
-<a id="用途"></a>
+## 联系我
 
-#### 用途
-
-自己在算法以及数据结构上遇到的问题与解决问题的思路与方法都会在博客中讨论，当然还有其他学习方面遇到的一些问题和一些技术经验都会在博客里分享。
-
-博客中有不对或者能够改进的地方欢迎评论指出或私信我。
-
-这里收录从 2018 年开始的技术文章，支持按分类、标签和时间浏览，也可以搜索全文。
-
-<a id="基于"></a>
-
-#### 基于
-
-> 当前基于 [Astro](https://astro.build/)、[AstroPaper](https://github.com/satnaing/astro-paper) 与 [GitHub Pages](https://pages.github.com/)搭建。最初使用 Hexo 与 NexT，旧文章的网址继续保留。  
-> 十分感谢 [LeanCloud](https://leancloud.cn/)、[baidu统计](https://tongji.baidu.com/web/welcome/login)、[LocalSearchForum](https://www.localsearchforum.com/)、[busuanzi](http://busuanzi.ibruce.info/)、[DaoVoice](https://www.daocloud.io/)等提供数据支持。  
-> 以及各位大佬网友的经验文章。
-
-<a id="联系方式"></a>
-
-### 联系方式
-
-Email:[ChinaMJK06@163.com](mailto:ChinaMJK06@163.com)
+- 邮箱：[ChinaMJK06@163.com](mailto:ChinaMJK06@163.com)
+- 微信：`joker_mario`

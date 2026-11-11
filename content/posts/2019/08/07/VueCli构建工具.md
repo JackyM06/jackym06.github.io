@@ -43,7 +43,7 @@ tags: ["Vue.js","VueCli","webpack"]
     
     ? Project description (A Vue.js project)  ## 填写项目介绍
     
-    ? Author MaoJacky <34392872+JackyM06@users.noreply.github.com>   ## 填写作者信息，默认读取全局git中的信息
+    ? Author Jiankai <your-email@example.com>   ## 填写作者信息，默认读取全局git中的信息
     
     ? Vue build  ## 选择一个构建方式，初学者建议选择第一个，后文有介绍这两种方式的区别
     	> Runtime + Compiler: recommended for most users

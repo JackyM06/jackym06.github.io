@@ -39,9 +39,13 @@
 }
 
 body { overflow-wrap: anywhere; }
-.app-prose { line-height: 1.9; }
+.app-prose {
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+}
 .app-prose :is(pre, code, kbd) {
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  letter-spacing: normal;
 }
 .app-prose pre { line-height: 1.65; overflow-x: auto; }
 .app-prose :is(img, video, iframe) { max-width: 100%; }

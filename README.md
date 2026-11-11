@@ -1,4 +1,4 @@
-# Maoli 博客
+# Jiankai's Blog
 
 个人技术博客，使用 [Astro](https://astro.build/) 和 [AstroPaper 7.1.0](https://github.com/satnaing/astro-paper) 构建，部署目标为 GitHub Pages。
 
