@@ -1,0 +1,202 @@
+[
+  {
+    "filename": "01-overview.png",
+    "alt": "视频从采集、处理、编码到封装的流程",
+    "width": 1600,
+    "height": 425,
+    "frames": 1,
+    "bytes": 247449
+  },
+  {
+    "filename": "02-pinhole-imaging.png",
+    "alt": "小孔成像原理",
+    "width": 1206,
+    "height": 781,
+    "frames": 1,
+    "bytes": 414345
+  },
+  {
+    "filename": "03-camera-structure.png",
+    "alt": "相机模块的基本组成结构",
+    "width": 1022,
+    "height": 595,
+    "frames": 1,
+    "bytes": 406005
+  },
+  {
+    "filename": "04-lens-group.png",
+    "alt": "凸透镜组与凹透镜组",
+    "width": 1342,
+    "height": 772,
+    "frames": 1,
+    "bytes": 887760
+  },
+  {
+    "filename": "05-focal-length.png",
+    "alt": "不同焦距下的拍摄画面",
+    "width": 1350,
+    "height": 553,
+    "frames": 1,
+    "bytes": 775550
+  },
+  {
+    "filename": "06-cmos-sensor.png",
+    "alt": "CMOS图像传感器",
+    "width": 810,
+    "height": 703,
+    "frames": 1,
+    "bytes": 710101
+  },
+  {
+    "filename": "07-bayer-filter.png",
+    "alt": "拜耳滤镜阵列",
+    "width": 974,
+    "height": 300,
+    "frames": 1,
+    "bytes": 171375
+  },
+  {
+    "filename": "08-image-processing.png",
+    "alt": "从光信号到彩色图像数据",
+    "width": 993,
+    "height": 261,
+    "frames": 1,
+    "bytes": 440986
+  },
+  {
+    "filename": "09-yuv-channels.png",
+    "alt": "YUV亮度与色度通道",
+    "width": 744,
+    "height": 744,
+    "frames": 1,
+    "bytes": 480528
+  },
+  {
+    "filename": "10-visual-sensitivity.png",
+    "alt": "人眼对亮度和色度的感知差异",
+    "width": 301,
+    "height": 167,
+    "frames": 1,
+    "bytes": 77989
+  },
+  {
+    "filename": "11-chroma-subsampling.png",
+    "alt": "YUV色度采样格式对比",
+    "width": 552,
+    "height": 218,
+    "frames": 1,
+    "bytes": 94001
+  },
+  {
+    "filename": "12-rgb-yuv.png",
+    "alt": "RGB与YUV在采集和播放中的转换",
+    "width": 1308,
+    "height": 494,
+    "frames": 1,
+    "bytes": 355060
+  },
+  {
+    "filename": "13-raw-video.gif",
+    "alt": "原始图像帧数据量演示",
+    "width": 400,
+    "height": 400,
+    "frames": 228,
+    "bytes": 17340238
+  },
+  {
+    "filename": "14-video-encoding.png",
+    "alt": "视频编码过程",
+    "width": 389,
+    "height": 192,
+    "frames": 1,
+    "bytes": 26316
+  },
+  {
+    "filename": "15-inter-frame-redundancy.png",
+    "alt": "相邻帧之间的重复画面",
+    "width": 782,
+    "height": 385,
+    "frames": 1,
+    "bytes": 248909
+  },
+  {
+    "filename": "16-frame-differences.png",
+    "alt": "相邻帧之间的画面差异",
+    "width": 750,
+    "height": 439,
+    "frames": 1,
+    "bytes": 143030
+  },
+  {
+    "filename": "17-motion-estimation.png",
+    "alt": "分块搜索与运动估计",
+    "width": 1002,
+    "height": 474,
+    "frames": 1,
+    "bytes": 302362
+  },
+  {
+    "filename": "18-motion-compensation.png",
+    "alt": "运动补偿与残差宏块",
+    "width": 720,
+    "height": 354,
+    "frames": 1,
+    "bytes": 501440
+  },
+  {
+    "filename": "19-ipb-frames.png",
+    "alt": "I帧、P帧与B帧的参考关系",
+    "width": 500,
+    "height": 222,
+    "frames": 1,
+    "bytes": 53495
+  },
+  {
+    "filename": "20-damaged-reference.png",
+    "alt": "参考帧损坏后的画面",
+    "width": 652,
+    "height": 492,
+    "frames": 1,
+    "bytes": 375199
+  },
+  {
+    "filename": "21-gop.png",
+    "alt": "IDR帧与GOP序列",
+    "width": 851,
+    "height": 333,
+    "frames": 1,
+    "bytes": 153279
+  },
+  {
+    "filename": "22-hybrid-encoder.png",
+    "alt": "混合视频编码模型",
+    "width": 423,
+    "height": 241,
+    "frames": 1,
+    "bytes": 53665
+  },
+  {
+    "filename": "23-muxing.png",
+    "alt": "音视频码流的封装过程",
+    "width": 1392,
+    "height": 775,
+    "frames": 1,
+    "bytes": 526126
+  },
+  {
+    "filename": "24-journey-end.jpg",
+    "alt": "视频取经之路完结",
+    "width": 282,
+    "height": 179,
+    "frames": 1,
+    "bytes": 12258
+  },
+  {
+    "filename": "25-media-info.png",
+    "alt": "多媒体文件的编码与封装信息",
+    "width": 394,
+    "height": 344,
+    "frames": 1,
+    "bytes": 61748
+  }
+]

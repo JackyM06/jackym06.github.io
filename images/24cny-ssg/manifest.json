@@ -1,0 +1,306 @@
+[
+  {
+    "filename": "01-csr.png",
+    "alt": "CSR渲染流程",
+    "width": 1654,
+    "height": 1228,
+    "frames": 1,
+    "bytes": 453313
+  },
+  {
+    "filename": "02-ssr.png",
+    "alt": "SSR渲染流程",
+    "width": 1636,
+    "height": 1238,
+    "frames": 1,
+    "bytes": 454552
+  },
+  {
+    "filename": "03-isomorphic-ssr.png",
+    "alt": "同构SSR渲染流程",
+    "width": 1522,
+    "height": 1066,
+    "frames": 1,
+    "bytes": 132611
+  },
+  {
+    "filename": "04-streaming.gif",
+    "alt": "普通渲染与流式渲染对比",
+    "width": 1276,
+    "height": 1416,
+    "frames": 411,
+    "bytes": 4932330
+  },
+  {
+    "filename": "05-ssg.png",
+    "alt": "SSG渲染流程",
+    "width": 2164,
+    "height": 1034,
+    "frames": 1,
+    "bytes": 169640
+  },
+  {
+    "filename": "06-vue-html.png",
+    "alt": "Vue官网预渲染HTML",
+    "width": 1989,
+    "height": 874,
+    "frames": 1,
+    "bytes": 661521
+  },
+  {
+    "filename": "07-vue-cache.png",
+    "alt": "Vue官网缓存响应",
+    "width": 1522,
+    "height": 372,
+    "frames": 1,
+    "bytes": 218334
+  },
+  {
+    "filename": "08-zhihu-request.png",
+    "alt": "知乎SSR请求耗时",
+    "width": 2517,
+    "height": 746,
+    "frames": 1,
+    "bytes": 699600
+  },
+  {
+    "filename": "09-venue.png",
+    "alt": "留存会场页面形态",
+    "width": 1308,
+    "height": 1364,
+    "frames": 1,
+    "bytes": 1528755
+  },
+  {
+    "filename": "10-prerender-preview.png",
+    "alt": "留存会场预渲染页面",
+    "width": 1582,
+    "height": 1502,
+    "frames": 1,
+    "bytes": 1666484
+  },
+  {
+    "filename": "11-traffic.png",
+    "alt": "CNY活动流量特性",
+    "width": 1792,
+    "height": 784,
+    "frames": 1,
+    "bytes": 80145
+  },
+  {
+    "filename": "12-vite-plugin.png",
+    "alt": "useSSG插件构建流程",
+    "width": 1482,
+    "height": 842,
+    "frames": 1,
+    "bytes": 102195
+  },
+  {
+    "filename": "13-client-render.png",
+    "alt": "C端渲染方案",
+    "width": 1042,
+    "height": 402,
+    "frames": 1,
+    "bytes": 41236
+  },
+  {
+    "filename": "14-render-comparison.png",
+    "alt": "SSG与CSR渲染流程对比",
+    "width": 1914,
+    "height": 1602,
+    "frames": 1,
+    "bytes": 1441192
+  },
+  {
+    "filename": "15-hydration-check.png",
+    "alt": "Vue Hydration检测逻辑",
+    "width": 1041,
+    "height": 669,
+    "frames": 1,
+    "bytes": 161943
+  },
+  {
+    "filename": "16-replace-app.png",
+    "alt": "正式app替换app_ssg",
+    "width": 1042,
+    "height": 678,
+    "frames": 1,
+    "bytes": 50968
+  },
+  {
+    "filename": "17-transition.png",
+    "alt": "预渲染页面与正式页面的过渡效果",
+    "width": 2662,
+    "height": 528,
+    "frames": 1,
+    "bytes": 72818
+  },
+  {
+    "filename": "18-webview.png",
+    "alt": "不同WebView资源位",
+    "width": 2984,
+    "height": 1402,
+    "frames": 1,
+    "bytes": 3311570
+  },
+  {
+    "filename": "19-pre-adapter.png",
+    "alt": "Pre-Adapter脚本适配流程",
+    "width": 1896,
+    "height": 472,
+    "frames": 1,
+    "bytes": 51437
+  },
+  {
+    "filename": "20-animation-flicker.gif",
+    "alt": "红包动画切换闪烁",
+    "width": 960,
+    "height": 720,
+    "frames": 146,
+    "bytes": 2429131
+  },
+  {
+    "filename": "21-animation-keyframes.png",
+    "alt": "红包动画轨迹参数",
+    "width": 2433,
+    "height": 237,
+    "frames": 1,
+    "bytes": 141602
+  },
+  {
+    "filename": "22-idle-phase.png",
+    "alt": "红包动画静止区间",
+    "width": 1616,
+    "height": 422,
+    "frames": 1,
+    "bytes": 36348
+  },
+  {
+    "filename": "23-angle-samples.png",
+    "alt": "动画角度采样图",
+    "width": 1848,
+    "height": 788,
+    "frames": 1,
+    "bytes": 149840
+  },
+  {
+    "filename": "24-angle-threshold.png",
+    "alt": "角度变化小于0.5度的区间",
+    "width": 1854,
+    "height": 868,
+    "frames": 1,
+    "bytes": 159735
+  },
+  {
+    "filename": "25-motion-perception.png",
+    "alt": "画面运动轨迹感知示意",
+    "width": 3400,
+    "height": 1322,
+    "frames": 1,
+    "bytes": 467329
+  },
+  {
+    "filename": "26-motion-phases.png",
+    "alt": "动画回落区间",
+    "width": 1848,
+    "height": 928,
+    "frames": 1,
+    "bytes": 168279
+  },
+  {
+    "filename": "27-reset-demo.gif",
+    "alt": "250ms重置动画的效果",
+    "width": 556,
+    "height": 488,
+    "frames": 87,
+    "bytes": 335529
+  },
+  {
+    "filename": "28-offline-timing.png",
+    "alt": "离线包下的动画替换时机",
+    "width": 1848,
+    "height": 1066,
+    "frames": 1,
+    "bytes": 196505
+  },
+  {
+    "filename": "29-null-start-time.gif",
+    "alt": "动画同步后停止播放的问题",
+    "width": 388,
+    "height": 748,
+    "frames": 83,
+    "bytes": 817435
+  },
+  {
+    "filename": "30-start-time-doc.png",
+    "alt": "Animation startTime文档说明",
+    "width": 776,
+    "height": 155,
+    "frames": 1,
+    "bytes": 43489
+  },
+  {
+    "filename": "31-animation-not-started.png",
+    "alt": "预渲染动画未开始时的状态",
+    "width": 2244,
+    "height": 632,
+    "frames": 1,
+    "bytes": 90196
+  },
+  {
+    "filename": "32-animation-synced.gif",
+    "alt": "修复后的动画同步效果",
+    "width": 720,
+    "height": 1404,
+    "frames": 284,
+    "bytes": 5616351
+  },
+  {
+    "filename": "33-theme-flicker.png",
+    "alt": "初五换肤时的预渲染闪烁",
+    "width": 2604,
+    "height": 1066,
+    "frames": 1,
+    "bytes": 1347793
+  },
+  {
+    "filename": "34-two-builds.png",
+    "alt": "常规版与初五版双构建方案",
+    "width": 814,
+    "height": 392,
+    "frames": 1,
+    "bytes": 161010
+  },
+  {
+    "filename": "35-theme-class.png",
+    "alt": "前置脚本切换初五主题",
+    "width": 1172,
+    "height": 762,
+    "frames": 1,
+    "bytes": 303088
+  },
+  {
+    "filename": "36-route-flicker.gif",
+    "alt": "多路由预渲染内容错位",
+    "width": 720,
+    "height": 1608,
+    "frames": 95,
+    "bytes": 4053879
+  },
+  {
+    "filename": "37-multi-ssg.png",
+    "alt": "多页面分别构建SSG",
+    "width": 1336,
+    "height": 930,
+    "frames": 1,
+    "bytes": 1629004
+  },
+  {
+    "filename": "38-route-loading.png",
+    "alt": "二级页面的Loading兜底",
+    "width": 2642,
+    "height": 528,
+    "frames": 1,
+    "bytes": 87736
+  }
+]

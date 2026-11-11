@@ -1,0 +1,182 @@
+[
+  {
+    "filename": "01-darpa-route.png",
+    "alt": "早期自动驾驶比赛的越野环境",
+    "width": 1639,
+    "height": 829,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 2621603
+  },
+  {
+    "filename": "02-sensors.png",
+    "alt": "传感器感知与空间测量示意",
+    "width": 2392,
+    "height": 626,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1926905
+  },
+  {
+    "filename": "03-hog.png",
+    "alt": "HOG行人检测示意",
+    "width": 2220,
+    "height": 768,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1177723
+  },
+  {
+    "filename": "04-hd-map.png",
+    "alt": "高精地图中的道路要素",
+    "width": 1560,
+    "height": 628,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 798337
+  },
+  {
+    "filename": "05-uber-case.png",
+    "alt": "历史事故中的环境与感知示意",
+    "width": 1780,
+    "height": 622,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 702923
+  },
+  {
+    "filename": "06-perception.png",
+    "alt": "目标识别与轨迹预测示意",
+    "width": 997,
+    "height": 549,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 598101
+  },
+  {
+    "filename": "07-multi-camera.png",
+    "alt": "多摄像头输入示意",
+    "width": 2908,
+    "height": 762,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1316612
+  },
+  {
+    "filename": "08-surround-view.png",
+    "alt": "多视角画面的空间映射示意",
+    "width": 1688,
+    "height": 922,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1592052
+  },
+  {
+    "filename": "09-feature-fusion.png",
+    "alt": "多路特征融合流程",
+    "width": 1637,
+    "height": 650,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 877317
+  },
+  {
+    "filename": "10-lift-splat-shoot.png",
+    "alt": "LSS的深度估计与BEV映射示意",
+    "width": 1992,
+    "height": 560,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 819474
+  },
+  {
+    "filename": "11-bev-query.png",
+    "alt": "通过空间位置组织特征的直观示意",
+    "width": 1636,
+    "height": 530,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1197628
+  },
+  {
+    "filename": "12-transformer-bev.png",
+    "alt": "历史Transformer BEV架构示意",
+    "width": 3068,
+    "height": 1466,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1344656
+  },
+  {
+    "filename": "13-query-key.png",
+    "alt": "BEV查询与图像特征关联示意",
+    "width": 2844,
+    "height": 1474,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 4993327
+  },
+  {
+    "filename": "14-temporal-fusion.png",
+    "alt": "历史BEV特征与当前帧融合示意",
+    "width": 2934,
+    "height": 634,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 1290279
+  },
+  {
+    "filename": "15-long-tail.png",
+    "alt": "常见场景与长尾场景分布",
+    "width": 2374,
+    "height": 1116,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 759741
+  },
+  {
+    "filename": "16-end-to-end.png",
+    "alt": "规则模块与数据驱动模型的对比示意",
+    "width": 3020,
+    "height": 1402,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 2991166
+  },
+  {
+    "filename": "17-serial-models.png",
+    "alt": "分阶段模型的串行连接示意",
+    "width": 2862,
+    "height": 666,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 972108
+  },
+  {
+    "filename": "18-joint-training.png",
+    "alt": "共享中间表征与任务联合训练示意",
+    "width": 2650,
+    "height": 1228,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 2058526
+  },
+  {
+    "filename": "19-fast-slow.png",
+    "alt": "快慢模型的任务分工示意",
+    "width": 2168,
+    "height": 930,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 300503
+  },
+  {
+    "filename": "20-vla.png",
+    "alt": "VLA与分层模型的历史对比示意",
+    "width": 1312,
+    "height": 562,
+    "format": "PNG",
+    "frames": 1,
+    "bytes": 715650
+  }
+]

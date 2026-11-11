@@ -1,6 +1,325 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>AI 下的自动驾驶变革之路</title>
+    <url>/2026/11/11/ai-autonomous-driving/</url>
+    <content><![CDATA[<h2 id="地库遛弯时的思考">地库遛弯时的思考</h2>
+<p>一次在地下车库散步时，停放着的各种汽车让我产生了好奇：车上的摄像头和雷达越来越多，它们各自负责什么？自动驾驶系统又如何把这些输入转化为方向和速度？这篇分享便从这些问题开始。</p>
+<p>过去多年，AI持续改变着汽车的感知与决策方式。本文沿着早期赛事、模块化架构、BEV表征、端到端与VLA这条线索，介绍技术演进中的关键问题。这里讨论的是架构思路，具体系统的自动化等级和适用条件仍需要分别判断。</p>
+<p>这些问题引起了我的好奇，今天这篇文章就尝试分享一下自动驾驶的发展历程，看看都说自动驾驶难，那它到底难在哪？</p>
+<a id="more"></a><h2 id="早期自动驾驶的探索">早期自动驾驶的探索</h2>
+<h3 id="从一次失败开始看起">从一次失败开始看起</h3>
+<p>理解这段历史，可以从2004年的DARPA Grand Challenge看起。比赛路线约142英里（约229公里），15辆参赛车辆中没有一辆完成全程。卡内基梅隆大学的Sandstorm行驶了7.4英里，约11.9公里，是当届走得最远的车辆。根据参赛团队当年的<a href="https://www.cs.cmu.edu/news/2004/carnegie-mellons-red-team-sandstorm-robot-sets-distance-record-darpa-grand-challenge" target="_blank" rel="noopener">公开回顾</a>，它最终在道路边坡处受困并损坏了传动部件。</p>
+<p>为什么会这样？</p>
+<p><img src="/images/ai-autonomous-driving/01-darpa-route.png" alt="早期自动驾驶比赛的越野环境" width="1639" height="829" loading="eager" decoding="async"></p>
+<h3 id="最初的技术结构">最初的技术结构</h3>
+<p>一个直观的起点是：为车辆提供目标位置和路线信息，再通过定位、环境感知和控制，让车辆沿合适的路径前进。真实道路中的难点在于，车辆还要持续识别可通行区域、障碍物及地形变化，并据此修正决策。</p>
+<p>在越野比赛中，仅有路径点也不足以保证通行。车辆需要判断当前位置附近哪里能走、哪里有障碍，以及何时转弯或绕行。这使环境感知成为早期系统的重要挑战之一。</p>
+<p>不同传感器提供的信息互补：摄像头擅长获取纹理、颜色和语义，但从二维图像恢复距离需要额外估计；激光雷达可以直接提供空间距离信息；超声波传感器通常用于近距离探测。它们都受安装位置、量程、天气、遮挡和算法处理方式影响，不能仅凭某一项硬件参数判断整套系统的能力。</p>
+<p><img src="/images/ai-autonomous-driving/02-sensors.png" alt="传感器感知与空间测量示意" width="2392" height="626" loading="lazy" decoding="async"></p>
+<p>这类比赛暴露的是一整套系统的工程约束，包括传感器能力、地形建模、规划控制与车辆状态。仅用传感器价格或扫描频率解释某一次失败，会遗漏重要背景。</p>
+<p>到2005年的第二届DARPA Grand Challenge，已有五支队伍完成赛程。这说明系统工程、算法与硬件的迭代可以带来明显进展，也为后续自动驾驶研究提供了实践基础。</p>
+<h3 id="模块化自动驾驶">模块化自动驾驶</h3>
+<p>在随后广泛采用的模块化架构中，常见的职责划分包括：</p>
+<ul>
+<li>定位模块</li>
+<li>感知模块</li>
+<li>规划模块</li>
+<li>控制模块</li>
+</ul>
+<p>定位决定当前在哪，感知决定当前有什么，规划则根据定位和感知做出下一步的决策，最终交给控制模块来控制方向和速度。</p>
+<h2 id="如何认识世界">如何认识世界</h2>
+<p>距离信息可以帮助判断物体在哪里，视觉信息则有助于判断它是什么。激光雷达同样可以参与目标识别，但多类传感器如何表达、融合和验证信息，依然是一个独立问题。先从视觉识别的方法变化看起。</p>
+<h3 id="早期特征识别的局限性">早期特征识别的局限性</h3>
+<p>早期视觉方法经常依赖人工设计的特征。例如物体边缘、纹理，以及局部亮度变化，都可以成为分类器的输入。</p>
+<p><img src="/images/ai-autonomous-driving/03-hog.png" alt="HOG行人检测示意" width="2220" height="768" loading="lazy" decoding="async"></p>
+<p>HOG（方向梯度直方图）就是一种代表：它统计局部图像梯度的方向分布，配合分类器进行行人等目标的检测。</p>
+<p>人工特征具有可解释、计算代价可控等优点，但在复杂姿态、光照、遮挡和目标类别变化下，需要持续设计特征与训练分类器，泛化能力也会受到限制。</p>
+<h3 id="纯视觉的转机">纯视觉的转机</h3>
+<p>2012年的AlexNet是深度视觉模型发展中的重要节点。<a href="https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html" target="_blank" rel="noopener">原始论文</a>展示了卷积神经网络在大规模图像分类上的效果提升。这里更值得关注的是方法变化：</p>
+<ul><li>人工特征方法：由工程师设计有用的特征，再训练或配置识别器。</li><li>深度学习方法：通过数据与训练，让模型学习适合任务的多层特征表示。</li></ul>
+<p>不同数据集上的Top-1、Top-5、分类准确率与检测指标不能混为一个“识别成功率”。视觉模型的进步也不意味着低照度、恶劣天气和遮挡等问题已经解决。</p>
+<h3 id="高精地图的入局">高精地图的入局</h3>
+<p>高精地图提供了另一种补充：提前采集道路几何、车道拓扑和交通设施等信息，再结合车辆定位，为感知与规划提供先验。</p>
+<p><img src="/images/ai-autonomous-driving/04-hd-map.png" alt="高精地图中的道路要素" width="1560" height="628" loading="lazy" decoding="async"></p>
+<p>高精地图需要持续采集、维护与更新。成本、覆盖范围和道路变化带来的时效性问题，会影响它的使用方式；具体精度与更新频率依赖地图产品和地区，不能用固定的价格或周期概括。</p>
+<p>地图先验能够补充车端感知，但车辆仍然需要处理临时施工、异常障碍物和其他动态变化。地图覆盖与系统是否适合在某处启用，是两个需要分别验证的问题。</p>
+<p>2018年的一起测试事故进一步说明：安全不能只看某个感知模块的检测结果，还取决于目标跟踪、预测、制动策略和人员监督。</p>
+<h3 id="一次事故中的系统性教训">一次事故中的系统性教训</h3>
+<p>2018年3月，Uber的一辆自动驾驶测试车在美国亚利桑那州坦佩市撞上了一名推着自行车横穿道路的行人，造成行人死亡。</p>
+<p><img src="/images/ai-autonomous-driving/05-uber-case.png" alt="历史事故中的环境与感知示意" width="1780" height="622" loading="lazy" decoding="async"></p>
+<p>根据<a href="https://www.ntsb.gov/investigations/Pages/HWY18MH010.aspx" target="_blank" rel="noopener">NTSB的调查</a>，系统在碰撞前5.6秒已经检测到目标，但未能准确地将其分类为行人并预测其路径。测试系统还禁用了用于减轻碰撞的自动紧急制动，依赖安全员介入。</p>
+<p><img src="/images/ai-autonomous-driving/06-perception.png" alt="目标识别与轨迹预测示意" width="997" height="549" loading="lazy" decoding="async"></p>
+<p>调查还指出，安全员因手机分心而未能持续监督，是事故的可能原因；风险评估、人员监督与安全文化等问题也参与其中。感知到一个目标，与及时采取安全动作之间，还隔着跟踪、预测、决策和制动等环节。</p>
+<p>因此，讨论多传感器系统时，需要关注各模块如何处理不确定性和异常状态，以及系统在判断不可靠时采取什么措施。</p>
+<p>这一案例不能简单归结为“雷达优先级高于摄像头”或某一种融合方式。更有价值的启示是：感知、规划、控制和安全保障必须作为整体来验证。</p>
+<h3 id="融合的不同层次">融合的不同层次</h3>
+<p>多摄像头系统还有一个常见问题：同一个目标可能跨越多个视角，分别识别后再合并结果，会增加关联和一致性处理的难度。于是，研究者开始探索在统一空间中融合多路输入，让后续任务共享信息。</p>
+<p><img src="/images/ai-autonomous-driving/07-multi-camera.png" alt="多摄像头输入示意" width="2908" height="762" loading="lazy" decoding="async"></p>
+<p>BEV（Bird’s-Eye View，鸟瞰视角）是一种常用的空间表达。传统环视系统可以把相机画面投影到俯视平面；面向行车的BEV感知，还需要处理物体高度、遮挡、深度误差与动态目标等问题。</p>
+<p><img src="/images/ai-autonomous-driving/08-surround-view.png" alt="多视角画面的空间映射示意" width="1688" height="922" loading="lazy" decoding="async"></p>
+<p>直接处理多路高分辨率图像，需要在精度、延迟、内存和功耗之间取舍。具体开销取决于分辨率、帧率和模型实现，不能脱离这些条件，用一个固定的TOPS数字判断某条技术路线是否可行。</p>
+<p>特征级融合提供了一种常见选择：先提取各路输入的特征，再映射到统一的BEV表征中，供检测、地图理解或规划等任务使用。多传感器也可以采用类似思路，但仍需要处理标定、时间同步、遮挡与不同模态之间的差异。</p>
+<p><img src="/images/ai-autonomous-driving/09-feature-fusion.png" alt="多路特征融合流程" width="1637" height="650" loading="lazy" decoding="async"></p>
+<h3 id="特征级融合">特征级融合</h3>
+<p>2020年的<a href="https://research.nvidia.com/labs/toronto-ai/lift-splat-shoot/" target="_blank" rel="noopener">Lift, Splat, Shoot（LSS）</a>提供了一种代表性方法：为图像特征估计离散的深度分布，将它们提升到三维空间，再聚合到BEV网格中。这里的深度是模型学习到的分布，并不要求先得到一幅完全准确的逐像素深度图。</p>
+<p><img src="/images/ai-autonomous-driving/10-lift-splat-shoot.png" alt="LSS的深度估计与BEV映射示意" width="1992" height="560" loading="lazy" decoding="async"></p>
+<p>深度估计和几何映射的误差会影响BEV表征的质量。与此同时，数据、训练目标和聚合方式也会影响最终效果，这推动了后续多种BEV方法的发展。</p>
+<h3 id="BEVFormer与注意力机制">BEVFormer与注意力机制</h3>
+<p><a href="https://arxiv.org/abs/2203.17270" target="_blank" rel="noopener">BEVFormer</a>是Zhiqi Li等研究者于2022年发表的工作，使用时空Transformer从多摄像头图像学习统一BEV表征。空间交叉注意力负责从相关视角聚合特征，时间自注意力负责融合历史BEV信息。</p>
+<p>要直观理解这类方法，可以先提出一个问题：对于BEV网格中的某个位置，哪些相机、哪些图像区域可能提供有用的信息？</p>
+<p>可以借用“先提出待查询的位置，再到图像特征中寻找证据”的类比理解Query机制。这个比喻帮助解释信息组织方式，并不等同于对人类认知机制的描述。</p>
+<p>一个空间网格提供了组织信息的参考框架；模型通过学习，决定从输入中的哪些位置聚合特征，以及如何结合历史信息。</p>
+<p><img src="/images/ai-autonomous-driving/11-bev-query.png" alt="通过空间位置组织特征的直观示意" width="1636" height="530" loading="lazy" decoding="async"></p>
+<p>LSS与基于注意力的方法提供了不同的建模路径。下面的历史图示包含不同BEV架构的概念，主要用于说明图像特征、空间查询和信息聚合之间的关系，具体实现应以各自论文为准：</p>
+<p><img src="/images/ai-autonomous-driving/12-transformer-bev.png" alt="历史Transformer BEV架构示意" width="3068" height="1466" loading="lazy" decoding="async"></p>
+<p>首先，由图像骨干网络提取特征。骨干网络可以采用CNN或其他结构，具体选择依赖模型设计；这些特征为后续的空间关联提供输入。</p>
+<p>然后，为BEV网格设置查询。模型根据查询对应的空间位置，从相关相机视角中聚合特征，逐步形成BEV表示。</p>
+<p><img src="/images/ai-autonomous-driving/13-query-key.png" alt="BEV查询与图像特征关联示意" width="2844" height="1474" loading="lazy" decoding="async"></p>
+<p>这种描述适合作为直观入门。实际计算还会涉及位置编码、相机几何、注意力采样和时序对齐等细节。</p>
+<p>BEVFormer的实际效果预览：</p>
+<figure class="article-video" style="margin:24px 0"><video controls="" playsinline="" preload="metadata" style="display:block;width:100%;height:auto" aria-label="BEVFormer官方演示"><source src="/media/ai-autonomous-driving/bevformer-demo.mp4" type="video/mp4">浏览器暂不支持内嵌视频，请访问下方项目链接。</video><figcaption style="font-size:0.85em;color:#666;text-align:center">BEVFormer官方项目演示 · <a href="https://github.com/fundamentalvision/BEVFormer" target="_blank" rel="noopener">查看项目与出处</a></figcaption></figure>
+<h3 id="更进一步-时空融合">更进一步：时空融合</h3>
+<p>单帧图像只描述一个时刻，引入历史帧可以帮助理解被暂时遮挡的物体和运动状态。BEVFormer通过时间自注意力融合历史BEV信息，论文中也报告了对速度估计等任务的改善。历史特征如何与当前车辆坐标系对齐，是时序融合中的重要问题。</p>
+<p><img src="/images/ai-autonomous-driving/14-temporal-fusion.png" alt="历史BEV特征与当前帧融合示意" width="2934" height="634" loading="lazy" decoding="async"></p>
+<h2 id="破土而生-端到端">破土而生：端到端</h2>
+<h3 id="无图规则时代">无图规则时代</h3>
+<p>感知能力的提升，使一些系统能够在不依赖高精地图的情况下构建局部道路理解，再据此进行规划。这里的“无图”通常指减少对高精地图的依赖，系统仍可能使用导航路线或其他地图信息。</p>
+<p>传统规划系统通常组合规则、搜索、优化和预测等方法。它需要处理交通信号、让行、绕障等大量条件；随着场景变复杂，规则交互和边界情况的维护难度也会增加。</p>
+<p>长尾场景出现频率低，却可能包含较高风险。挑战在于如何获取足够的数据、构造有效测试，并让系统在不确定时保持合适的行为。</p>
+<p><img src="/images/ai-autonomous-driving/15-long-tail.png" alt="常见场景与长尾场景分布" width="2374" height="1116" loading="lazy" decoding="async"></p>
+<h3 id="端到端-End-To-End">端到端（End To End）</h3>
+<p>端到端驾驶的研究早于近年的量产方案。例如NVIDIA在2016年发表的<a href="https://arxiv.org/abs/1604.07316" target="_blank" rel="noopener">End to End Learning for Self-Driving Cars</a>，研究了从摄像头图像直接预测转向指令的神经网络。不同系统对“端到端”的覆盖范围并不完全相同，可以是感知到规划，也可以进一步涉及控制输出。</p>
+<p>这类方案尝试从驾驶数据中学习观测与动作之间的关系。例如面对前方停着的车辆，模型需要综合车道边界、对向来车、可通行空间和行为约束，给出合适的轨迹或动作。模型是否学到了可靠行为，需要通过验证来判断。</p>
+<p>当系统在某些场景中表现不足时，可以通过数据收集、标注、训练与回归测试继续迭代。数据覆盖、训练目标和评测质量，都会影响这个循环的效果。</p>
+<p><img src="/images/ai-autonomous-driving/16-end-to-end.png" alt="规则模块与数据驱动模型的对比示意" width="3020" height="1402" loading="lazy" decoding="async"></p>
+<p>把多个任务连接起来，会增加训练、部署和验证的复杂度。实时计算、异常处理、数据分布变化与安全机制，都需要与模型设计一起考虑。</p>
+<p>在分别训练的串行模型中，上游输出的误差可能被下游放大。联合训练与共享特征，试图让不同任务围绕共同目标协作：</p>
+<p><img src="/images/ai-autonomous-driving/17-serial-models.png" alt="分阶段模型的串行连接示意" width="2862" height="666" loading="lazy" decoding="async"></p>
+<p>BEV可以作为共享中间表征，但端到端方法并不要求必须使用BEV。对于可微的模型部分，联合训练时可以通过损失函数和反向传播更新参数；推理时则使用已经训练好的参数，不能把它理解为车辆每一帧都会自动反向纠错。</p>
+<p><img src="/images/ai-autonomous-driving/18-joint-training.png" alt="共享中间表征与任务联合训练示意" width="2650" height="1228" loading="lazy" decoding="async"></p>
+<h3 id="快模型与慢模型">快模型与慢模型</h3>
+<p>为某类场景补充数据后，也需要确认其他场景的行为没有退化。长尾覆盖、数据平衡和回归验证，是数据驱动系统持续迭代的重要工作。</p>
+<p>一种探索方向是分层协作：高频运行的模型负责实时轨迹或动作输出，另一类模型以较低频率提供语义理解、场景推理或高层约束。具体系统可以有不同分工；如何对齐时序、控制延迟，并处理推理不确定性，需要单独设计。</p>
+<p><img src="/images/ai-autonomous-driving/19-fast-slow.png" alt="快慢模型的任务分工示意" width="2168" height="930" loading="lazy" decoding="async"></p>
+<h3 id="VLA">VLA</h3>
+<p>在端到端与分层方案之外，Vision-Language-Action（VLA）也是一个受到关注的研究方向。</p>
+<p>它关注如何把视觉观测、语言条件与动作学习连接起来，而不同研究在输入、输出和训练方法上可能有很大差异。</p>
+<p><img src="/images/ai-autonomous-driving/20-vla.png" alt="VLA与分层模型的历史对比示意" width="1312" height="562" loading="lazy" decoding="async"></p>
+<p>VLA的常用全称是<strong>Vision-Language-Action</strong>。以机器人领域的<a href="https://openvla.github.io/" target="_blank" rel="noopener">OpenVLA</a>为例，模型结合图像与语言指令，预测可以解码为连续控制量的动作。动作既可以出现在训练数据和历史上下文中，也通常是模型要生成的输出。</p>
+<p>BEV是一种空间表征，端到端描述的是任务连接或训练方式，VLA强调视觉、语言与动作的联系。它们讨论的维度不同，实际系统可以组合使用。对于驾驶任务，语言理解能力还需要与车端实时性、动作约束和安全验证结合起来。</p>
+<p>模型能否在车端部署，需要综合考虑参数规模、数值精度、内存带宽、功耗和任务频率。芯片标称TOPS会受计算口径影响，单个算力数字不能直接证明一套模型已经满足部署要求。</p>
+<h2 id="未来仍需解决的问题">未来仍需解决的问题</h2>
+<p>自动驾驶技术的演进，与AI在感知、表征和决策学习上的发展紧密相连。从人工特征到深度学习，从单模块输出到时空融合和联合训练，系统能够利用的信息和建模方式都在变化。</p><p>技术路线的进步，需要用可重复的测试和实际运行表现来验证。量产车上的L2级辅助驾驶仍要求驾驶人持续监督道路与系统；有关等级的区别可参阅<a href="https://www.nhtsa.gov/vehicle-safety/automated-vehicle-safety" target="_blank" rel="noopener">NHTSA的自动化等级说明</a>。架构名称与无人驾驶能力之间，不能直接画等号。</p>
+<h2 id="参考资料与延伸阅读">参考资料与延伸阅读</h2><h3 id="论文与公开资料">论文与公开资料</h3><ul><li><a href="https://www.cs.cmu.edu/news/2004/carnegie-mellons-red-team-sandstorm-robot-sets-distance-record-darpa-grand-challenge" target="_blank" rel="noopener">CMU：2004年Sandstorm参赛回顾</a></li><li><a href="https://www.darpa.mil/about/innovation-timeline/grand-challenge" target="_blank" rel="noopener">DARPA：Grand Challenge历史</a></li><li><a href="https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html" target="_blank" rel="noopener">AlexNet原始论文</a></li><li><a href="https://www.ntsb.gov/investigations/Pages/HWY18MH010.aspx" target="_blank" rel="noopener">NTSB：2018年坦佩测试车事故调查</a></li><li><a href="https://research.nvidia.com/labs/toronto-ai/lift-splat-shoot/" target="_blank" rel="noopener">Lift, Splat, Shoot项目页</a></li><li><a href="https://arxiv.org/abs/2203.17270" target="_blank" rel="noopener">BEVFormer论文</a>与<a href="https://github.com/fundamentalvision/BEVFormer" target="_blank" rel="noopener">官方实现</a></li><li><a href="https://arxiv.org/abs/1604.07316" target="_blank" rel="noopener">End to End Learning for Self-Driving Cars</a></li><li><a href="https://openvla.github.io/" target="_blank" rel="noopener">OpenVLA项目页</a></li></ul><h3 id="延伸观看与讨论">延伸观看与讨论</h3><ul><li><a href="https://www.bilibili.com/video/BV1wWfDYiEUi/" target="_blank" rel="noopener">所长Wy：【深度解析】智能驾驶烧了1000亿，发生了什么？</a></li><li><a href="https://www.bilibili.com/video/BV1JxBrYDETG/" target="_blank" rel="noopener">硬件茶谈：全自动驾驶离我们还有多远？端到端能让我们迈向自动驾驶吗？</a></li><li>知乎讨论：<a href="https://zhuanlan.zhihu.com/p/509207308" target="_blank" rel="noopener">509207308</a>、<a href="https://zhuanlan.zhihu.com/p/580193232" target="_blank" rel="noopener">580193232</a></li></ul>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>大型运营活动的预渲染实践：用 SSG 改善首屏体验</title>
+    <url>/2026/11/11/24cny-ssg/</url>
+    <content><![CDATA[<h2 id="一-前言">一、前言</h2><p>大型运营活动通常同时面临流量峰值、复杂交互和紧张的上线周期。用户打开页面后，如何尽早看到活动内容，是首屏性能优化的重要目标。</p><p>本文以一次已结束的春节运营活动为例，介绍如何通过<strong>构建期预渲染（SSG，Static Site Generation）</strong>提前生成可展示的HTML，并处理正式应用接管、容器适配、动画连续性、主题切换和多路由等问题。希望这些实现思路能为类似活动提供参考。</p><a id="more"></a><h2 id="二-CSR-SSR与SSG">二、CSR、SSR与SSG</h2><p>对于前端开发者而言，应该对这两种渲染模式不陌生：CSR（Client Side Rendering，客户端渲染）和SSR（Server Side Rendering，服务端渲染），而SSG 则是在这两者之间各取优势的折中方案，为什么这么说呢？我们不妨先来回顾下CSR和SSR的工作方式：</p><h3 id="2-1-客户端渲染-CSR">2.1 客户端渲染：CSR</h3><p>CSR是SPA项目中常见的渲染方式。构建产物中的HTML通常只保留挂载节点和资源引用，页面的主要内容由JavaScript创建。浏览器需要先下载并执行脚本，再初始化框架和渲染页面；如果首屏依赖接口数据，还要等待数据请求完成。</p><p><img src="/images/24cny-ssg/01-csr.png" alt="CSR渲染流程" width="1654" height="1228" loading="eager" decoding="async"></p><p>CSR的好处是部署简单，开发成本低，使用场景非常广泛。但带来的问题也很明显，页面中不论是静态渲染还是Server数据内容，都必须等到<strong>JS执行</strong>阶段才能渲染，渲染链路太长导致白屏时间也变长。</p><h3 id="2-2-服务端渲染-SSR">2.2 服务端渲染：SSR</h3><p><strong>SSR是在服务器上渲染整个 HTML 并将其发送到客户端的技术</strong>。 一个典型的SSR的工作流程：访问页面后，浏览器的请求会打到Server， Server在获取数据后渲染出相应的HTML，然后返回给浏览器。这样浏览器解析DOM之后，就能看到完整内容了。</p><p><img src="/images/24cny-ssg/02-ssr.png" alt="SSR渲染流程" width="1636" height="1238" loading="lazy" decoding="async"></p><p>可以说在以前SSR才是真正的主流，例如JSP、ASP框架都是实现SSR的技术框架。但随着前后端分离、SPA框架的兴起，SSR逐渐被CSR所代替。随着时间的发展，CSR的缺点越来越明显，SSR又被重新搬回到了技术的舞台上，落实到以SPA框架为主流模式的现如今，SSR和早期已经发生了一些变化，更加细节的行为其实是下面这种叫“<strong>同构SSR</strong>”的渲染方式。</p><p><img src="/images/24cny-ssg/03-isomorphic-ssr.png" alt="同构SSR渲染流程" width="1522" height="1066" loading="lazy" decoding="async"></p><p>同构SSR是指：请求打到基于Node.js的SSR专用Server后，Server会通过前端产物执行同构代码，这个过程中Server会请求接口获取数据「可选」，然后生成 HTML 返回给浏览器。（特定场景下为了提高SSR构建HTML的效率，可能会选择生成页面中指定的一部分DOM）</p><p>此时浏览器可以先展示服务端生成的内容。依赖前端框架的交互通常还需要等待JavaScript加载和执行，再通过Hydration将静态DOM与客户端应用关联起来。</p><p>对于主要内容依赖JavaScript渲染的页面，SSR可以将内容展示提前到HTML解析阶段。实际收益取决于数据请求、服务端渲染、网络响应和客户端初始化等环节，应在相同业务与设备条件下测量。</p><p>同时基于HTTP能力，SSR生成的页面经过特殊处理能够利用上HTML流式加载的特性（下文中的SSG也同样可以利用上这个能力）：浏览器在收到部分HTML时就开始解析,而不是等待整个HTML文档从而渐进式地渲染页面，将页面渲染前置。下图展示了同一个SSR页面，在普通渲染和流式渲染两种方式展示上的区别：</p><p><img src="/images/24cny-ssg/04-streaming.gif" alt="普通渲染与流式渲染对比" width="1276" height="1416" loading="lazy" decoding="async"></p><p><strong>SSR也有请求时的服务成本。</strong>如果每次访问都需要查询数据并生成HTML，流量峰值会放大服务端压力。SSR页面能否使用CDN和浏览器缓存，取决于内容是否与用户关联，以及缓存策略和缓存键的设计；稳定、可共享的SSR响应同样可以缓存。</p><h3 id="2-3-构建期预渲染-SSG">2.3 构建期预渲染：SSG</h3><p>SSG将可展示HTML的生成提前到构建阶段，适合页面结构和公共内容相对稳定的场景。它可以使用服务端渲染器，也可以通过无头浏览器运行SPA并导出DOM。本文案例采用后者：构建时渲染通用页面框架，用户相关内容展示兜底UI，再输出静态HTML。</p><p>用户访问时，浏览器在解析HTML后就能展示页面框架。随后加载JavaScript，通过Hydration或独立挂载的方式完成交互初始化。它将首屏内容可见的时间前移；页面是否已经可交互，仍需要单独衡量。</p><p><img src="/images/24cny-ssg/05-ssg.png" alt="SSG渲染流程" width="2164" height="1034" loading="lazy" decoding="async"></p><p>SSG也适用于文档、内容站等场景。以当时Vue文档站的访问记录为例，请求返回的HTML中已经包含了预渲染DOM：</p><p><img src="/images/24cny-ssg/06-vue-html.png" alt="Vue官网预渲染HTML" width="1989" height="874" loading="lazy" decoding="async"></p><p>静态HTML便于配置CDN和浏览器缓存。下面的历史访问记录中，后续请求返回304，说明客户端保存的资源仍然有效，可以继续复用。<strong>304本身不能证明命中了CDN边缘缓存</strong>；判断CDN命中还需要结合Age、X-Cache等响应头或平台日志。</p><p><img src="/images/24cny-ssg/07-vue-cache.png" alt="Vue官网缓存响应" width="1522" height="372" loading="lazy" decoding="async"></p><p>另一组历史SSR页面访问记录中，请求耗时约为400ms。两组记录来自不同页面，只能展示各自当时的访问表现。比较SSR与SSG的性能时，应尽量保持页面、数据、设备和网络条件一致，并区分首次访问与缓存命中场景。</p><p><img src="/images/24cny-ssg/08-zhihu-request.png" alt="知乎SSR请求耗时" width="2517" height="746" loading="lazy" decoding="async"></p><p>渲染方案需要结合业务选择。对于公共内容稳定、访问峰值明显的活动，SSG有助于降低请求时的渲染成本，并复用静态资源分发能力。对于实时性或个性化要求较强的页面，SSR仍有适用空间。预渲染也不会自动解决脚本体积、接口耗时和主线程阻塞等问题。</p><h2 id="三-为什么选择SSG">三、为什么选择SSG</h2><h3 id="3-1-活动背景">3.1 活动背景</h3><p>案例来自2024年的一次春节运营活动。页面头部包括主视觉动效、三个按钮位和一个集字区域，主题在初五零点从蓝紫色切换至橙红色：</p><p><img src="/images/24cny-ssg/09-venue.png" alt="活动页面形态" width="1308" height="1364" loading="lazy" decoding="async"></p><h3 id="3-2-页面结构特性">3.2 页面结构特性</h3><p>在效果图中，进行简单拆解之后就能发现首屏的大部分内容其实都是静态、无需接口数据的，首屏部分通过SSG构建出一份让<strong>用户至少能够知道H5意图</strong>的预渲染页面，效果可以参考下图:</p><p><img src="/images/24cny-ssg/10-prerender-preview.png" alt="活动预渲染页面" width="1582" height="1502" loading="lazy" decoding="async"></p><h3 id="3-3-活动流量特性">3.3 活动流量特性</h3><p>大型运营活动通常具有活动周期短、流量波动大的特点，集中投放会进一步放大访问峰值：</p><p><img src="/images/24cny-ssg/11-traffic.png" alt="活动流量特性" width="1792" height="784" loading="lazy" decoding="async"></p><p>如果采用每次请求都生成HTML的SSR方案，需要为活动峰值准备相应的服务资源，并设计好个性化内容与缓存的关系。对于本例中较稳定的首屏框架，构建期生成HTML可以减少请求时的渲染工作；配合客户端离线包，还可以提前分发预渲染HTML和静态资源。</p><h3 id="3-4-实现方案简介">3.4 实现方案简介</h3><p><strong>基于首屏静态内容占比较高、流量峰值明显的特点，案例选择了构建期预渲染。</strong>预渲染内容让用户先理解页面用途，再由正式应用完成数据填充和交互初始化。相比只展示Loading，这种方式能更早呈现活动框架。</p><p><strong>SSG构建方案</strong></p><p>该项目基于Vite，因此通过一个构建插件（useSSG）组织预渲染流程：</p><p><img src="/images/24cny-ssg/12-vite-plugin.png" alt="useSSG插件构建流程" width="1482" height="842" loading="lazy" decoding="async"></p><ul><li>读取项目的基本配置，这其中包括了预渲染DevServer和无头浏览器的启动参数</li><li>启动预渲染DevServer，保证页面可以在编译机上可初步访问</li><li>由于上一步编译过程中，页面内的所有静态资源地址都会被替换为CDN地址，但实际在后面预渲染阶段我们的资源完全可以访问本地资源，因此在这里我们为DevServer设置了一层代理，将CDN的请求代理到本地</li><li>为页面注入一个<strong>全局的“PRERENDER_FLAG”变量</strong>，如果当前页面为预渲染阶段时，各个模块会依赖这个变量去做特殊处理，例如在PRERENDER_FLAG=true时，我们无需去请求各类业务接口、直播模块保持展示Loading等</li><li>启动Puppeteer无头浏览器，访问DevServer，并抓取预渲染HTML</li><li>接下来对抓取后的预渲染的HTML做初步处理，在部分情况下预渲染的html里会有http的链接，我们在这一步统一替换成https</li><li>对HTML做必要的内容处理与产物校验，确保资源引用和预渲染内容完整。</li><li>最终我们将预渲染的HTML生成完毕，SSG构建完成，编译机进入下一步流程</li></ul><p><strong>C端渲染方案概览</strong></p><p>最初的方案是：先展示预渲染HTML，JavaScript加载完成后通过Hydration接管现有DOM。以Vue 2为例，可以在挂载根节点带有<code>data-server-rendered="true"</code>时自动进入Hydration，或通过<code>app.$mount("#app", true)</code>显式启用。实际项目还需要保证预渲染DOM与客户端初始结构匹配。</p><p><img src="/images/24cny-ssg/13-client-render.png" alt="C端渲染方案" width="1042" height="402" loading="lazy" decoding="async"></p><p>SSG的渲染流程以及于CSR的差异点如下图：</p><p><img src="/images/24cny-ssg/14-render-comparison.png" alt="SSG与CSR渲染流程对比" width="1914" height="1602" loading="lazy" decoding="async"></p><p>但最终事情走向真的这么简单吗 👀？最终方案其实在下文遇到的一个个问题中发生了一些有意思的变化，让我们接着往下看。</p><h2 id="四-遇到的问题和解决策略">四、遇到的问题和解决策略</h2><p>我们在实施SSG方案的过程中，也遇到了一些有意思的问题，这里和大家分享一下我们的解决方式和思路，希望能够帮助大家排雷~</p><h3 id="4-1-Hydration的一致性要求与替代方案">4.1 Hydration的一致性要求与替代方案</h3><blockquote><p><strong>注：下文内容基于Vue2.7讨论</strong></p></blockquote><p><strong>问题背景</strong></p><p>Hydration在Vue中，它指的是Vue<strong>接管预渲染内容，使其变为由 Vue 管理的动态 DOM</strong> 的过程。在预期中，我们预渲染的内容可以通过Vue提供的Hydration能力无缝的切换至正式页面，在测试环境测试的过程中，我们也顺利达到了这个效果。但在页面上线后却吃了瘪：我们发现<strong>页面并没从预渲染完全切换至正式内容</strong>，有部分组件内容依然是预渲染的状态没有任何交互。</p><p><strong>原因解析</strong></p><p>排查时需要重点关注预渲染DOM与客户端初始虚拟DOM的一致性。比如构建阶段通过v-if隐藏复杂内容、运行时再根据接口数据展示，或两端列表数据不同，都可能造成结构不匹配。Hydration对这些差异的处理与框架版本有关，应使用真实生产构建进行验证。</p><p>Vue 2官方文档说明：开发环境会检查客户端虚拟DOM与服务端DOM是否匹配，不匹配时退出Hydration并重新渲染；生产环境为性能考虑会移除这项开发期断言。因此，开发环境中的回退表现不能直接代替生产验证。</p><p>本案例使用Vue 2.7，在正式构建中出现了部分内容仍停留在预渲染状态的问题。这个经验提示我们，应分别验证条件渲染、列表渲染及首屏数据准备的时序，而不能仅以测试环境能正常接管作为验收依据。</p><p><img src="/images/24cny-ssg/15-hydration-check.png" alt="Vue Hydration检测逻辑" width="1041" height="669" loading="lazy" decoding="async"></p><p><strong>渐入“佳”境</strong></p><p>知道了这个问题的原因之后，一开始我们的想法是尽量让预渲染DOM和VDOM保持一致，一个讨巧的办法是通过v-show去代替v-if，这样既可以保持DOM不变，又能做到视觉上的屏蔽。但随着时间的推移，我们发现v-for也产生DOM不匹配的问题，这个就不好通过上面这种方式解决，一时之间陷入了两难。</p><p><strong>最终解题方式：偷梁换柱</strong></p><p>案例最终采用了独立挂载的方式：<strong>保留预渲染页面（app_ssg），在其上方创建正式应用（app），等正式应用完成首屏初始化后，再移除预渲染节点。</strong></p><p><img src="/images/24cny-ssg/16-replace-app.png" alt="正式app替换app_ssg" width="1042" height="678" loading="lazy" decoding="async"></p><p>这个方法能够将预渲染和正式页面完全隔离开来，双方不再受Hydration的诸多限制。同时我们为app和app_ssg做了淡入淡出的效果，使得预渲染切换至正式页面时拥有更丝滑的用户体验。</p><p><img src="/images/24cny-ssg/17-transition.png" alt="预渲染页面与正式页面的过渡效果" width="2662" height="528" loading="lazy" decoding="async"></p><p>这让两份DOM相互独立，也带来了短暂的双份DOM和重新初始化开销。页面状态与动画需要额外衔接。是否采用这种方式，应结合首屏复杂度、内存占用以及框架已有的Hydration能力评估。</p><h3 id="4-2-WebView适配">4.2 WebView适配</h3><p>同一个活动页面可能被放入独立落地页、半屏弹层、直播间内嵌页和搜索入口等不同容器。容器形态变化会影响顶部栏高度、状态栏占位以及部分模块的显隐：</p><p><img src="/images/24cny-ssg/18-webview.png" alt="不同WebView资源位" width="2984" height="1402" loading="lazy" decoding="async"></p><p>本例主要需要处理两类差异：</p><ul><li>不同容器的顶部栏和安全区域高度不同。</li><li>直播间内嵌场景不再展示独立的直播区域。</li></ul><p>假如说我们在构建阶段就已经生成并固定好了页面样式，这其中包括（顶部栏的高度、直播区域的显隐），就没有办法同时满足这四个资源位，同时在预渲染页面中还有一些需要通过UA OR Cookie中动态获取的数据，例如状态栏的高度。</p><p>为此，我们的解法是在预渲染构建的HTML中注入处理的JavaScript脚本（Pre-Adapter JS），这段脚本中，我们所做的事就是前置判断好当前的容器环境，并计算出响应的顶部栏高度、状态栏高度并反应在预渲染和正式渲染的页面CSS中，这样我们就可以在预渲染阶段将对应容器的适配做好：</p><p><img src="/images/24cny-ssg/19-pre-adapter.png" alt="Pre-Adapter脚本适配流程" width="1896" height="472" loading="lazy" decoding="async"></p><h3 id="4-3-动效不同步问题">4.3 动效不同步问题</h3><p>在活动页面的头部，有一个红包重复摇晃的动画。这个动画比较简单，是通过CSS实现的，所以这块内容我们是按预期写到预渲染页面里去。但在页面线上回测的过程中出现了这么一个问题：<strong>红包的摇晃动画从预渲染切换到正式页面后，会偶现闪烁的情况</strong>(为了能明显看到效果，录屏为0.3倍速)：</p><p><strong><img src="/images/24cny-ssg/20-animation-flicker.gif" alt="红包动画切换闪烁" width="960" height="720" loading="lazy" decoding="async"></strong></p><p>坦白来说，这个问题我们在测试环境并没有发现，甚至在线上回测初期也没有出现。想到这，我们内心突然出现了一个词：“离线包”，难道是命中了离线包导致的？回过味来之后突然想起来，由于使用了“偷梁换柱”的处理，预渲染和正式页面的红包明明是两个不<strong>同的DOM节点</strong>，动效的运行理论上也是独立的，好像本来就应该会出现闪烁的情况，之前没有出现反而才是有问题的。这个诡异的问题，促使我们做了一番探究...</p><p><strong>原因思考</strong></p><p>首先来看这个动效的轨迹参数：</p><p><img src="/images/24cny-ssg/21-animation-keyframes.png" alt="红包动画轨迹参数" width="2433" height="237" loading="lazy" decoding="async"></p><p>整个动效的时长为1300ms, 在0ms到1000ms之间会使红包在旋转角度在-2度 到 2度之间变化，后面1000ms到1300ms红包是处于不动的状态，也就是说如果在这个时间段内发生了由app_ssg变为app的情况时，就不会出现闪烁的情况，因为本身红包的状态就没变化</p><p><img src="/images/24cny-ssg/22-idle-phase.png" alt="红包动画静止区间" width="1616" height="422" loading="lazy" decoding="async"></p><p>但理论上来说，在非首次访问有缓存的情况下app_ssg 替换为 app的时机需要等到1s以后的概率是比较低的（替换时机：JS加载完成并执行），但是顺着这个思路我们突然发现了华点：人眼毕竟是人眼，在动效变化非常小的情况下人眼是不是没办法看太出来，比如旋转0.5deg 和 0deg，为了验证这个设想，我在这里模拟了一个动效角度小于等于0.5时，频繁切换DOM的<a href="https://codepen.io/jackym06/full/VwNmGKw" target="_blank" rel="noopener"><u>Domo</u></a>，大家可以体验一下，实际观感确实没有明显感觉到闪烁。</p><p>接下来，我们将动效根据贝塞尔曲线和变换节点，将红包的渲染角度转化为散列图表（<a href="https://codepen.io/jackym06/full/LYvbgWx" target="_blank" rel="noopener"><u>通过GSAP计算得到的60fps数据源</u></a>），如下图：</p><p><img src="/images/24cny-ssg/23-angle-samples.png" alt="动画角度采样图" width="1848" height="788" loading="lazy" decoding="async"></p><p>我们把这一整个动效的1300ms拆分，图中标记黄色的部分为动效角度变化 &lt;= 0.5deg的部分，当动效在约<strong>670ms左右之后</strong>，将长期进入角度在0.5度以内的变化范围：</p><p><img src="/images/24cny-ssg/24-angle-threshold.png" alt="角度变化小于0.5度的区间" width="1854" height="868" loading="lazy" decoding="async"></p><p>但670ms我们其实是不认可的，如果说在JS没命中缓存的情况下耗时在670ms+还能说得过去，但如果命中缓存还是这个耗时其实是不太合理的，所以这个推论<strong>并不完全正确</strong>。</p><p>继续对照录屏可以观察到：同样的角度变化，发生在动画回落区间时，比发生在持续增大区间时更不容易被察觉。这是对本例动效的观感分析，不能直接推广为固定的视觉阈值。</p><p><img src="/images/24cny-ssg/25-motion-perception.png" alt="画面运动轨迹感知示意" width="3400" height="1322" loading="lazy" decoding="async"></p><p>将替换时机与角度曲线放在一起分析，本例中相对不明显的区间可以提前到约250ms。下面的图展示了这次采样中标记出的回落区间：</p><p><img src="/images/24cny-ssg/26-motion-phases.png" alt="动画回落区间" width="1848" height="928" loading="lazy" decoding="async"></p><p>这里写了一个<a href="https://codepen.io/jackym06/full/qBwqQZx" target="_blank" rel="noopener"><u>250ms进行动效重置的效果</u></a>的Demo来进行佐证：</p><p><img src="/images/24cny-ssg/27-reset-demo.gif" alt="250ms重置动画的效果" width="556" height="488" loading="lazy" decoding="async"></p><p>事情到了这里，“<strong>闪烁问题为什么之前没出现，有了离线包之后却特别明显</strong>”的问题原因也逐渐清晰了起来：在有了离线包的加持后，app_ssg替换到app的时机通常就在第一个区间（60ms &nbsp;~ 250ms）内，并且在这个区间内角度是逐渐变大的，所以如果在此时移动动画被重置，看起来就会特别明显。</p><p><img src="/images/24cny-ssg/28-offline-timing.png" alt="离线包下的动画替换时机" width="1848" height="1066" loading="lazy" decoding="async"></p><p><strong>问题解法</strong></p><p>知道原因后，我们接下来的目标就是：尽量让正式页面的动效继续沿着预渲染页面的动画轨迹进行播放。</p><p>假设这个动效是通过视频实现的，那么这个问题就很好实现，我们将预渲染的动效进度记下来，切换到实际页面后，在将动效的进度切到预渲染记录的进度继续开始播放。 但由于之前并没有对Animation做过细粒度控制的经验，我们尚不清楚CSS动效是否存在类似视频“进度”的概念，如果存在是否能支持设置类似视频的currentTime, 从而达到修改进度的效果？</p><p>通过调研，浏览器实际上提供了一组Animation &nbsp;API, 只要DOM上含有动效，就可以通过getAnimations 方法获得这个动效的Animation 对象。对象中有两个关键属性：</p><ul><li><code>currentTime</code>：动画当前的时间位置，单位为毫秒，时间未确定时可能为null。</li><li><code>startTime</code>：动画在所属时间线上的起始时间，未确定时为null，并非Date.now()形式的墙上时钟时间。</li></ul><p>当两边动画使用相同配置和时间线时，可以复用有效的startTime，或依据currentTime对齐进度。本例在初次尝试同步时，出现过动画没有正常播放的情况：</p><p><img src="/images/24cny-ssg/29-null-start-time.gif" alt="动画同步后停止播放的问题" width="388" height="748" loading="lazy" decoding="async"></p><p>经过debug我们发现，从预渲染DOM获取的动效startTime并没有预期返回时间戳，而是<strong>返回了null</strong>。回过头来我们又去翻了一遍api文档，原来是有这么一行被我们忽视了：</p><p><img src="/images/24cny-ssg/30-start-time-doc.png" alt="Animation startTime文档说明" width="776" height="155" loading="lazy" decoding="async"></p><p>动画的起始时间尚未确定时，startTime可能为null。如果未经判断就将它赋给正式页面的动画，会破坏预期的播放状态。案例中的录屏也显示，在发生问题时，预渲染动画还没有开始播放。</p><p><img src="/images/24cny-ssg/31-animation-not-started.png" alt="预渲染动画未开始时的状态" width="2244" height="632" loading="lazy" decoding="async"></p><p>之所以我们没在本地和测试环境中发现，是因为这两个环境没有离线包，而线上是有离线包的，因此返回JS的速度很快，替换的时机也很早。最终我们在复制前<strong>对预渲染的startTime进行了前置判断，如果是非null的情况下才赋值给正式页面</strong>，从而解决了这个问题，效果如下：&nbsp;</p><p><img src="/images/24cny-ssg/32-animation-synced.gif" alt="修复后的动画同步效果" width="720" height="1404" loading="lazy" decoding="async"></p><h3 id="4-4-初五换肤问题">4.4 初五换肤问题</h3><p><strong>问题背景</strong></p><p>大家如果稍微留意前面的内容，就会知道活动页面其实会在初五的时候将页面主题色换至橙色。但是我们在SSG构建预渲染页面的时候显然是在活动前，也就是蓝色主题。如果我们不做任何处理，就会在初五出现异常的蓝色预渲染闪烁：</p><p><img src="/images/24cny-ssg/33-theme-flicker.png" alt="初五换肤时的预渲染闪烁" width="2604" height="1066" loading="lazy" decoding="async"></p><p><strong>第一种解决方案</strong></p><p>如果从构建的角度出发，我们可以在事先构建两套的预渲染页面（常规版和初五版），然后设置一个定时任务或者人工操作，当时间进入初五0点后，将流量全部切到初五版的渲染页面上。</p><p><img src="/images/24cny-ssg/34-two-builds.png" alt="常规版与初五版双构建方案" width="814" height="392" loading="lazy" decoding="async"></p><p>但是这种方式带来的问题也是很明显的，一方面初五的预渲染页面没有办法利用用户之前访问过的页面缓存，另一方面流量切换的成本也非常的高，而且容易出现一些问题。</p><p><strong>第二种解决方案</strong></p><p>考虑到换肤后的样式差异实际上不算太大，所以我们最终用了另一种比较讨巧的方式来解决换肤问题：</p><p>在Webview适配中提到的前置JS适配逻辑中，我们加入了对换肤条件的判断：判断当前时间是否为初五及以后，如果是的话为页面设置一个特殊的CSS类。同时，我们提前将初五的预设样式注入到页面中，这样就可以在初五的时候，预渲染页面自动切换到初五主题。</p><p><img src="/images/24cny-ssg/35-theme-class.png" alt="前置脚本切换初五主题" width="1172" height="762" loading="lazy" decoding="async"></p><p>本例两套主题的样式差异较小，因此选择了前置脚本配合预设CSS的方案。这样可以复用同一份HTML与缓存，减少切流和缓存预热的工作。对于需要严格按时切换的活动，还应考虑客户端时间偏差以及兜底策略。</p><h3 id="4-5-多路由项目下的SSG">4.5 多路由项目下的SSG</h3><p>我们的项目下，除了有主会场页面之外还有一个中奖名单页面，也就是多路由项目。由于我们在构建时只对主页生成了预渲染HTML，如果我们打开中奖名单时依然会展示主页的预渲染内容，这样就会造成了特别奇怪的闪烁：</p><p><img src="/images/24cny-ssg/36-route-flicker.gif" alt="多路由预渲染内容错位" width="720" height="1608" loading="lazy" decoding="async"></p><p>在另一个多场次活动中，不同场次复用相似的页面布局和功能，但都有独立入口、且同样重要。针对这种情况，可以<strong>为每个主要路由分别生成预渲染HTML</strong>，避免入口与首屏内容不匹配：</p><p><img src="/images/24cny-ssg/37-multi-ssg.png" alt="多页面分别构建SSG" width="1336" height="930" loading="lazy" decoding="async"></p><p>回到本案例，中奖名单是访问量较低的二级页面，因此采取较轻的兜底方式：<strong>在Pre-Adapter脚本中识别当前Path，如果进入中奖名单，就先隐藏主页的预渲染DOM，展示Loading，等待对应路由的正式内容就绪。</strong></p><p><img src="/images/24cny-ssg/38-route-loading.png" alt="二级页面的Loading兜底" width="2642" height="528" loading="lazy" decoding="async"></p><h2 id="五-总结">五、总结</h2><p>对于首屏公共内容较多、流量峰值明显的大型运营活动，构建期预渲染是一种值得评估的首屏优化方式。这个案例中，真正需要持续打磨的是构建产物与运行时环境之间的衔接：</p><ul><li>构建阶段提供稳定的页面框架，并为用户数据设计合理的兜底UI。</li><li>通过前置适配处理容器、主题和路由差异。</li><li>在正式应用接管时验证DOM、数据和动画的连续性。</li><li>覆盖首次访问、浏览器缓存、离线包命中以及低端设备等场景。</li></ul><p>评估效果时，应同时关注首屏内容可见时间、FCP、LCP和关键交互就绪时间，并对不同访问场景分组比较。预渲染把内容展示提前，后续脚本、接口与交互性能仍需要继续优化。具体收益应以同一业务的对照测试为准。</p><h2 id="参考资料">参考资料</h2><ul><li><a href="https://vuejs.org/guide/scaling-up/ssr.html" target="_blank" rel="noopener">Vue：SSR与SSG</a></li><li><a href="https://v2.ssr.vuejs.org/guide/hydration.html" target="_blank" rel="noopener">Vue 2：客户端Hydration</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Animation/startTime" target="_blank" rel="noopener">MDN：Animation.startTime</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/304" target="_blank" rel="noopener">MDN：304 Not Modified</a></li></ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>一段视频的“取经之路”</title>
+    <url>/2026/11/11/video-journey/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>由于在工作中经常遇到有运营同学问一些视频相关的问题，恰好对于这一块也没有仔细的了解过，因此带着好奇心，去探索了一下视频的的生成过程。</p>
+<p>本文将从视频成像开始讲起，中间会涉及：成像、图像处理、视频编码（最重要）以及最终的视频封装：</p>
+<ol>
+<li>「25%」相机成像原理</li>
+<li>「25%」在视频领域的图像处理方法</li>
+<li>「40%」视频编码原理
+<ol>
+<li>运动估计和运动补偿</li>
+<li>编码中的IPB帧</li>
+<li>混合编码模型</li>
+</ol>
+</li>
+<li>「10%」视频封装处理</li>
+</ol>
+<h3 id="概览">概览</h3>
+<p>在视频开始取经之前，先看看它的”取经之路“具体该怎么走？</p>
+<p><img src="/images/video-journey/01-overview.png" alt="视频从采集、处理、编码到封装的流程" width="1600" height="425" decoding="async" loading="eager"></p>
+<p>首先，大家通常说的视频文件，往往包括的画面和音频，画面由摄像头采集，音频由麦克风采集。而音画是需要同步采集的，但音频采样的频率会比画面采样频率高出很多，所以在采样时会按时钟进行控制，从而达到同步的效果，音画在采样后会分别形成采样帧，这是一个模拟信号转数字信号的过程。</p>
+<p>然后视频画面依次经过<strong>图像处理</strong>、视频编码后会形成<strong>视频包队列</strong>（也称之为”视频码流“），而声音则依次经过音频处理、音频编码，形成音频码流，最后经过<strong>封装</strong>，就会形成一个<strong>视频文件</strong>。</p>
+<p>不难看出画面和声音其实是两个不同的制作流程，由于篇幅关系，今天只聊画面部分的制作流程。</p>
+<h2 id="Part-1-从拍摄设备到采样帧">Part 1 从拍摄设备到采样帧</h2>
+<h3 id="什么是成像">什么是成像？</h3>
+<p>视频拍摄的过程可以理解为相机按一定的频率进行拍照，形成一幅幅连续的画面。而拍照时，相机会负责将显示中的光信号转为计算机能够处理的数字信号，这个处理过程称之为“成像”。显然，成像是从拍摄设备到采样帧过程中最重要的一步。</p>
+<h3 id="相机成像原理">相机成像原理</h3>
+<h4 id="理论基础">理论基础</h4>
+<p>在开始相机成像原理之前，需要回顾一个初中物理小知识 ：光是具有沿直线光具有沿直线传播的性质，例如用一个带有小孔的板遮挡在墙体与物之间，墙体上就会形成物的倒影， 前后移动中间的板，墙体上倒影的大小也会随之发生变化，这就是小孔成像原理。</p>
+<p><img src="/images/video-journey/02-pinhole-imaging.png" alt="小孔成像原理" width="1206" height="781" decoding="async" loading="lazy"></p>
+<h4 id="相机结构">相机结构</h4>
+<p>相机正是基于 <strong>小孔成像</strong> 原理来进行工作的，下图是一个相机的基本组成结构：</p>
+<p><img src="/images/video-journey/03-camera-structure.png" alt="相机模块的基本组成结构" width="1022" height="595" decoding="async" loading="lazy"></p>
+<ul>
+<li>位于相机最底部的是CMOS图像传感器，可以理解为小孔成像中的墙，负责感知光线</li>
+<li>其次是镜座 用于固定相机模块</li>
+<li>再然后是透镜组，可以理解为小孔成像中的“孔”，负责收束光线</li>
+<li>在上一层是光学防抖和对焦马达， 他能够让透镜组随着当前环境处于相对CMOS的合适位置和距离，从而尽可能稳定的成像</li>
+<li>光圈位于最外层，用于控制透镜组能够收束光线的范围</li>
+</ul>
+<p>依据小孔成像，不难看出这里面最重要的元件就是透镜组和CMOS图像传感器，接下来就了解下这两个重要的元件是如何配合从而搞定成像的?</p>
+<h4 id="透镜组">透镜组</h4>
+<p><img src="/images/video-journey/04-lens-group.png" alt="凸透镜组与凹透镜组" width="1342" height="772" decoding="async" loading="lazy"></p>
+<p>透镜组通常由一组凸透镜和一组凹透镜构成，其中凸透镜组汇聚外部光线，凹透镜将这些光线均匀的发散到底部的CMOS传感器上，使得CMOS能够尽可能多得获取拍摄画面的细节。</p>
+<p>凸透镜组和凹透镜组之间的距离能够控制拍摄时的进光数量。光线数量越多，画面也就越广、越丰富。光线数量越少，画面也就越窄、表现在图片上会越细腻。</p>
+<p>事实上，这个镜组之间的距离其实就是大家拍照时经常调整的参数“焦距“， 这也是为什么短焦距能拍出广角照片、长焦距能拍出远景的原因。</p>
+<p><img src="/images/video-journey/05-focal-length.png" alt="不同焦距下的拍摄画面" width="1350" height="553" decoding="async" loading="lazy"></p>
+<p>以上就是相机中透镜组和结构和成像中的作用，“小孔”部分完结之后，再来“墙”的部分</p>
+<h4 id="CMOS图像传感器">CMOS图像传感器</h4>
+<p><img src="/images/video-journey/06-cmos-sensor.png" alt="CMOS图像传感器" width="810" height="703" decoding="async" loading="lazy"></p>
+<p>CMOS图像传感器负责捕获到来自透镜组的光信号，并将光信号转化为图像数字信号交由计算机处理，也就是说它的主要工作是捕获和转化。</p>
+<p>但是在捕获过程中存在一个问题：CMOS只能获取到光线的强度，无法理解光线的颜色的，也就是说这种情况下CMOS只能通过光的强度还原出一副黑白照片。</p>
+<p>为了获取彩色图像，CMOS传感器每个像素上方会铺设一层“拜耳滤镜”，形成一个拜耳滤镜阵列。 拜耳滤镜阵列由三种不同颜色的滤镜构成，这种滤镜的特点是只允许相同的颜色通过。通过这个方法，相当于CMOS上的每个像素点都被滤镜定义了属于自己的颜色。</p>
+<p><img src="/images/video-journey/07-bayer-filter.png" alt="拜耳滤镜阵列" width="974" height="300" decoding="async" loading="lazy"></p>
+<p>最后CMOS会把这些光数据和Bayer滤镜数据传送给图像处理器（ISP），经过ISP一阵操作之后，就会能得到一个彩色图像数据，这个数据就是视频画面需要的采样帧，且每个像素都通过RGB色彩编码有自己准确的颜色值。</p>
+<p><img src="/images/video-journey/08-image-processing.png" alt="从光信号到彩色图像数据" width="993" height="261" decoding="async" loading="lazy"></p>
+<p>至此，这段视频的的取经之路第一步就走完了。</p>
+<h3 id="取经之路-通关文牒">取经之路 - 通关文牒</h3>
+<p>还记得上面有提到，这个彩色图像中，每个像素都通过RGB进行色彩编码。但是，RGB有一个问题：数据占用大。例如一幅尺寸为1920 * 1080像素、位深为8bit的图像，体积会达到1920 * 1080 * (3*8bit)，约为6.22MB左右。这个大小在视频领域是非常可怕的，例如每秒30帧的视频， 数据处理量将会达到186MB/s。</p>
+<p>所以还需要进一步对图像进行处理...</p>
+<h2 id="Part-2-从采样帧到图像处理">Part 2 从采样帧到图像处理</h2>
+<p>为了解决RGB编码数据占用过大的问题，这一步主要工作内容其实就是将RGB换成了另一种压缩率更高的编码 - YUV。</p>
+<h3 id="什么是YUV">什么是YUV？</h3>
+<p>YUV是一种不同于RGB的颜色编码，Y 表示亮度，U表示蓝色色度(Cb)， V表示红色色度(Cb)。U+V的组合能够形成一个没有亮度的颜色，这个颜色也就是U+V的组合称为色度。</p>
+<p><img src="/images/video-journey/09-yuv-channels.png" alt="YUV亮度与色度通道" width="744" height="744" decoding="async" loading="lazy"></p>
+<p>不难看出YUV和RGB一样，都具有三个通道构成，在位深一样的情况下YUV是怎么做到比RGB的数据占用更小的呢？</p>
+<p>在解释这个问题之前，要先了解一个关于眼睛感知的研究结论：人的感观对于亮度信息的敏感度要远高于对色度信息的敏感度</p>
+<p><img src="/images/video-journey/10-visual-sensitivity.png" alt="人眼对亮度和色度的感知差异" width="301" height="167" decoding="async" loading="lazy"></p>
+<p>在这个结论的基础下，<strong>YUV可以适当降度色度的数据占比，并保证图像对人体感观不会造成太大的影响</strong>。</p>
+<p>一般情况下YUV按照色度与亮度数据占比的不同，可以分为下面三种类型：</p>
+<ul>
+<li>4:4:4: 每个具有亮度的像素都有自己的独占的色度 （ 数据占用 = RGB）</li>
+<li>4:2:2: 每2个具有亮度的像素共用1个色度 （ 数据占用 = ⅔ RGB）</li>
+<li>4:2:0: 每4个具有亮度的像素共用1个色度 （ 数据占用 = ½ RGB）</li>
+</ul>
+<p><img src="/images/video-journey/11-chroma-subsampling.png" alt="YUV色度采样格式对比" width="552" height="218" decoding="async" loading="lazy"></p>
+<p>在极大的压缩色度信息的数据占用后，由于人眼的视觉敏感度的特性，整个图像并不会有打开的差异。采用YUV编码后，YUV4:2:0仅为RGB编码数据体积的½， 且YUV只需要把色度去除就可以完美兼容黑白显示设备。</p>
+<h3 id="YUV在图像处理中角色">YUV在图像处理中角色</h3>
+<p>由于采集到的图像帧为RGB编码，因此需要在图像处理这一步，将RGB编码转换为YUV编码，而且，由于显示器也只能识别RGB编码，所以在实际播放中视频的过程中，还需要进一步将YUV编码转为RGB才能被正确播放。没错，YUV这视频中，其实充当的是中间编码的作用，旨在使视频画面能够的数据能比RGB编码有所下降。</p>
+<p><img src="/images/video-journey/12-rgb-yuv.png" alt="RGB与YUV在采集和播放中的转换" width="1308" height="494" decoding="async" loading="lazy"></p>
+<p>至此，图像处理的工作就结束了，但是取经之路还在继续...</p>
+<h3 id="取经之路-通关文牒-1">取经之路 - 通关文牒</h3>
+<p>例如一个1920*1080尺寸60fps的视频，即使通过YUV4:2:0色彩编码，它每秒的数据量约178Mb，仍然非常庞大，所以视频还需要进一步处理！</p>
+<p><img src="/images/video-journey/13-raw-video.gif" alt="原始图像帧数据量演示" width="400" height="400" decoding="async" loading="lazy"></p>
+<h2 id="Part-3-从图像帧队列到视频编码">Part 3 从图像帧队列到视频编码</h2>
+<h3 id="什么是视频编码">什么是视频编码？</h3>
+<p>除了图像编码能够带来数据减少之外，视频中的图像帧队列其实还可以从方面进行压缩，这种压缩压缩的过程，称之为“视频编码”，通常一些视频厂商都有自己的一套视频编码方案，从而形成一种固定的范式，这就是“编码格式”</p>
+<p><img src="/images/video-journey/14-video-encoding.png" alt="视频编码过程" width="389" height="192" decoding="async" loading="lazy"></p>
+<p>现实中常见的编码格式也很多，比如：</p>
+<ul>
+<li>H.264 最常见，压缩率一般，浏览器支持较好</li>
+<li>H.265 通常仅在视频平台才能见到, 压缩率很高，但收费</li>
+<li>VP9 谷歌自研，压缩率和H265几乎一致，免费。但是由于代码和H.265过于相似，各大厂商为了规避版权问题，不敢使用</li>
+</ul>
+<h3 id="视频编码的依据">视频编码的依据</h3>
+<p>压缩的主要依据是由于视频中存在四种类型的冗余：</p>
+<ol>
+<li>帧间冗余 (视频文件会有、GIF文件会有)</li>
+<li>帧内冗余 (图片文件会有、视频由于由画面构成，而每个画面里会有帧内冗余)</li>
+<li>感知冗余 (图片文件、音频文件会有)</li>
+<li>编码冗余 (所有文件都有)</li>
+</ol>
+<p>针对不同类型的冗余信息，在各个视频编码的标准算法中都有专门的技术来应对，从而通过不同的角度来提高压缩比：</p>
+<ol>
+<li>运动估计和运动补偿 -&gt; 帧间冗余</li>
+<li>变换编码 -&gt; 帧内冗余、感知冗余</li>
+<li>熵编码 -&gt; 编码冗余</li>
+</ol>
+<p>由于篇幅关系，今天重点聊聊帧间冗余的技术。</p>
+<h3 id="什么是帧间冗余">什么是帧间冗余？</h3>
+<p>图像帧队列中，连续的帧间往往有着大量的相同信息，主要区别就是帧内人物的运动。如图，除了字幕外，这两帧画面中，只有洪世贤的眼睛和嘴巴有细微的变化，其余的画面部分都是重复的。这种连续帧之间重复出现的画面信息称之为帧间冗余。</p>
+<p><img src="/images/video-journey/15-inter-frame-redundancy.png" alt="相邻帧之间的重复画面" width="782" height="385" decoding="async" loading="lazy"></p>
+<p>这种情况下视频没有必要对每一帧图像单独进行编码存储，只需要对相邻画面中发生变化的部分编码即可，这方面的工作是由运动估计和运动补偿来实现的 。</p>
+<p><img src="/images/video-journey/16-frame-differences.png" alt="相邻帧之间的画面差异" width="750" height="439" decoding="async" loading="lazy"></p>
+<h3 id="运动估计和运动补偿">运动估计和运动补偿</h3>
+<p>运动估计简单来说就是搜索当前帧与参照帧相同的部分，它的工作机制是将当前帧分割成若干个不重叠的小图像子块（宏块），然后在参考帧某个范围内搜索最相似的宏块。</p>
+<p><img src="/images/video-journey/17-motion-estimation.png" alt="分块搜索与运动估计" width="1002" height="474" decoding="async" loading="lazy"></p>
+<p>当前帧中的宏块运动估计成功后，会与参考帧中的匹配块进行像素级相减，得到一个残差宏块，由于残差宏块中缺失了大量相似像素，所以极大的减少了当前帧的数据量，而这个相减过程叫运动补偿。</p>
+<p><img src="/images/video-journey/18-motion-compensation.png" alt="运动补偿与残差宏块" width="720" height="354" decoding="async" loading="lazy"></p>
+<h3 id="编码器是如何寻找参考帧的">编码器是如何寻找参考帧的？</h3>
+<p>运动估计和运动补偿的操作都需要寻找一个参考帧才可以进行工作。因此编码过程中会把当前帧按参考帧寻找方式的不同，分为3种类型：</p>
+<ul>
+<li>I帧 (关键帧)</li>
+<li>P帧 (前向预测帧)</li>
+<li>B帧 (双向预测帧)</li>
+</ul>
+<p>I 帧会包含完整的图像信息，因此他不需要参考帧，通常作为其他帧的参考帧， 他没有什么压缩空间。P帧以 前面的I、P帧作为参考帧。B帧以 前面的I、P帧 和 后面的I、P帧 作为参考帧，由于前后分别参照了两帧，会减少大量的相似宏块，所以它的压缩率是最高的。</p>
+<p><img src="/images/video-journey/19-ipb-frames.png" alt="I帧、P帧与B帧的参考关系" width="500" height="222" decoding="async" loading="lazy"></p>
+<p>在编码阶段确定好每种帧的类型之后，解码时，解码器就可以按照不同的帧类型去寻找对应的参考帧，从而进行图像的反解。</p>
+<h3 id="B帧存在的问题">B帧存在的问题</h3>
+<p>由于B帧依赖了后面的帧作为参照帧，这样就会存在1个问题 ：在视频流中一般是边播放、边解码的，当解码到 B 帧时，需要等待它依赖的后面的 I、P 帧先解码完成，这样一来整个解码器就没有办法立即完成B帧的解码，导致视频无法继续播放。</p>
+<p>为了解决这个问题，编码阶段，编码器为每一帧生成两种时间戳：</p>
+<ul>
+<li>DTS（解码时间戳)：告诉播放器该在什么时候解码这一帧的数据</li>
+<li>PTS（显示时间戳)：告诉播放器该在什么时候显示这一帧的数据</li>
+</ul>
+<p>有了DTS和PTS后，解码器就能够在B帧来临前就准备好后面的参照帧，使B帧在规定的时间点被解码。</p>
+<h3 id="边界Case-参照帧损坏">边界Case：参照帧损坏</h3>
+<p>当参照帧出现损坏时，所有依赖这个帧的P、B帧都将被错误的解码，这种情况下有可能出现整个视频都无法播放或者花屏的情况，那么这个问题该如何解决呢？</p>
+<p><img src="/images/video-journey/20-damaged-reference.png" alt="参考帧损坏后的画面" width="652" height="492" decoding="async" loading="lazy"></p>
+<p>不同的编码格式解决的方式可能不太一样，这里主要来看看最广泛的H264是如何因对的：H.264编码的方案是将图像帧队列，按画面的连续性划分为一段段序列，每个序列的第一帧是I帧。当解码到这个I帧时，会立即将参考帧队列清空，将已解码的数据全部输出或抛弃，开始一个新的序列。将这类特殊的I帧称为IDR帧，而这个序列被称之为GOP。</p>
+<p><img src="/images/video-journey/21-gop.png" alt="IDR帧与GOP序列" width="851" height="333" decoding="async" loading="lazy"></p>
+<h3 id="变换编码和熵编码">变换编码和熵编码</h3>
+<p>视频编码中，也为图像画面用上了和JPEG等图像压缩标准类似的变换编码（DTC变换）和熵编码从而进一步减少数据量。由于篇幅关系，这里不再展开这两类算法。</p>
+<p>为了更好的理解这几种编码和算法的关系，接下来来看看这几种算法是如何在视频编码器里按“混合编码模型”工作的 ？</p>
+<h3 id="混合编码模型">混合编码模型</h3>
+<p>当前输入的图像首先要经过分块，分块得到的图像块要与在帧存储起中已经编码过参照帧进行运动估计和运动补偿后产生差值图像，然后对该差值图像块进行DCT变换和量化。</p>
+<p>如果当前帧不会被作为参照帧，那么就会送熵编码器进行编码，然后保存到缓存器中，等待传送给封装器。</p>
+<p>如果这个帧会被作为参照帧，那么会进行反量化和反变化，完成还原后，送到帧存储器了，供其他帧参照。</p>
+<p><img src="/images/video-journey/22-hybrid-encoder.png" alt="混合视频编码模型" width="423" height="241" decoding="async" loading="lazy"></p>
+<p>此时，取经之路的第三步也就顺利完结了，但是此时离最终的视频文件还需要走一步 💡</p>
+<h3 id="取经之路-通关文牒-2">取经之路 - 通关文牒</h3>
+<p>经过视频编码后，生成了一段段压缩率非常高的数据包队列Packet queue（或码流），此时可能还有音频编码也完成了，而这些不同类型的码流正迫切需要一个容器来统一存放...</p>
+<h2 id="Part-4-从视频编码到音视频封装">Part 4 从视频编码到音视频封装</h2>
+<h3 id="什么是封装">什么是封装？</h3>
+<p>封装格式的主要作用正是把视频码流和音频码流以及一些元数据（例如文件大小、编码类型、分辨率、字幕、创作时间等等）按照一定的规范存储在一个文件中。</p>
+<p><img src="/images/video-journey/23-muxing.png" alt="音视频码流的封装过程" width="1392" height="775" decoding="async" loading="lazy"></p>
+<h3 id="主流封装格式">主流封装格式</h3>
+<p>目前市面上有需要不同类型的封装格式，但它们所支持的视频编码格式和音频编码格式可能会有些许不同：</p>
+<h3 id="MP4">MP4</h3>
+<p>MP4是网络中传播最广泛的封装格式之一。全称为 MPEG-4 Part 14，</p>
+<ul>
+<li>视频编码格式：H.264，H.265，MPEG4、 VP9等</li>
+<li>音频编码格式：MP3, AAC 等</li>
+</ul>
+<h3 id="MOV">MOV</h3>
+<p>MOV 是随着苹果公司开发的 QuickTime Player 一起推出的，因此用 Mac 自带录屏软件录制或者手机拍摄的视频其格式都是 mov 。</p>
+<ul>
+<li>视频编码格式：H.264、H.265、MPEG4等</li>
+<li>音频编码格式：AAC 等。</li>
+</ul>
+<h3 id="AVI">AVI</h3>
+<p>AVI： Audio Video Interleave，由微软推出，用于对抗苹果 Quicktime 的技术。AVI分装格式下，会生成一个索引码流的索引，这个索引被放在了文件的最后面，这也就导致AVI不利于流式播放，需要将整个文件都就绪后再能进行播放。</p>
+<ul>
+<li>视频编码格式：MPEG-4，H.264/MPEG-4 AVC，FLV, VC-1等，</li>
+<li>音频编码格式：PCM, MP3, AAC, WMA等</li>
+</ul>
+<h2 id="最后">最后</h2>
+<p><img src="/images/video-journey/24-journey-end.jpg" alt="视频取经之路完结" width="282" height="179" decoding="async" loading="lazy"></p>
+<p>最终在不同的封装格式下，生成了不同后缀的多媒体文件。至此，这段视频的取经之路也顺利完结，可能会被分发到网络上被家家户户观看。同时也可以随手找一些视频文件看看它们的编码、封装格式，能找到取经路上的足迹。</p>
+<p><img src="/images/video-journey/25-media-info.png" alt="多媒体文件的编码与封装信息" width="394" height="344" decoding="async" loading="lazy"></p>
+<p>不难看出，不论是图像处理还是视频编码，其实就是在不断的减少视频占用的体积。目前，随着压缩率高的视频编码推出，大家已经可以在网页中能看到就能画质越来越高的视频（4K、8K）等。</p>
+<p>不过，在网页场景中，浏览器往往默认仅支持少量的音视频编码。像那些压缩率比较高的编码，需要开发者发者自行去进行编解码，然后通过Canvas等其他手段去播放，浏览器也提供了相关的API，例如WebCodecs。如果大家想要自己去写一个编解码器，可以尝试用这组API（逃）。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://blog.csdn.net/leixiaohua1020/article/details/28114081" target="_blank" rel="noopener">https://blog.csdn.net/leixiaohua1020/article/details/28114081</a></li>
+<li><a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">https://blog.csdn.net/leixiaohua1020/article/details/18893769</a></li>
+<li><a href="https://www.bilibili.com/video/BV1rK4y1C7bQ" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1rK4y1C7bQ</a></li>
+<li><a href="https://codeantenna.com/a/E8LfDOqIlP" target="_blank" rel="noopener">https://codeantenna.com/a/E8LfDOqIlP</a></li>
+<li><a href="https://xie.infoq.cn/article/e63fd59c1c9e7f23cadcb4c10" target="_blank" rel="noopener">https://xie.infoq.cn/article/e63fd59c1c9e7f23cadcb4c10</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/503942575" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/503942575</a></li>
+<li><a href="https://cloud.tencent.com/developer/news/739759" target="_blank" rel="noopener">https://cloud.tencent.com/developer/news/739759</a></li>
+<li><a href="https://juejin.cn/post/7081936943025487903" target="_blank" rel="noopener">https://juejin.cn/post/7081936943025487903</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/67305755" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/67305755</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>浅谈现代浏览器的网页生命周期</title>
     <url>/2022/05/18/%E6%B5%85%E8%B0%88%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在Android、IOS和Windows等的平台上，系统可以随意启动和中止应用程序的运行，这使得这些平台能够重新分配资源，以提供最好的操作体验给用户，当系统做这类干预时应用程序通常是知晓的，这是因为操作系统为应用程序提供了标准化的应用生命周期。</p>
@@ -714,7 +1033,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Web音视频串流</title>
+    <title>做直播，我们是认真的：Web 音视频串流</title>
     <url>/2021/04/21/Web%E9%9F%B3%E8%A7%86%E9%A2%91%E4%B8%B2%E6%B5%81/</url>
     <content><![CDATA[<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>这次分享主要是对在浏览器环境中实现直播的相关技术介绍，其中包括了对音视频的格式以及推送、播放技术的探索。分享过程中还会对目前自己已经实现的一套Web直播方案进行分析。最后还会简单介绍现在比较热门的WebRTC技术。</p>
 <h2 id="音视频串流简介"><a href="#音视频串流简介" class="headerlink" title="音视频串流简介"></a>音视频串流简介</h2><p>音视频串流从广义角度来说，就是能够实现设备A将音视频画面同步传输给设备B进行播放，例如电视投屏、会议投屏。而今天所介绍的Web音视频串流主要是实现允许用户在浏览器环境就能完成串流。</p>
