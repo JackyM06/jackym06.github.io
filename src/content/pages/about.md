@@ -44,3 +44,4 @@ Hi，欢迎关注我的博客！我是一名前端开发工程师，工作之余
 
 - [Power林](https://powerlrl.github.io/)
 - [Momento](https://marmomento.github.io/)
+- [Lasy](https://lasyislazy.github.io/blog/)
