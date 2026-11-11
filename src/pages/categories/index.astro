@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { slugifyStr } from "@/utils/slugify";
+import config from "@/config";
+
+const posts = getSortedPosts(await getCollection("posts"));
+const categories = [...new Set(posts.flatMap(post => post.data.categories))];
+---
+<Layout title={`分类 | ${config.site.title}`}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle="文章分类" pageDesc="按主题浏览学习记录与技术实践。">
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {categories.map(category => (
+        <li>
+          <a href={`/categories/${slugifyStr(category)}/`} class="border-border hover:border-accent flex items-center justify-between rounded border px-5 py-4">
+            <span class="text-accent font-medium">{category}</span>
+            <span class="text-muted-foreground text-sm">{posts.filter(post => post.data.categories.includes(category)).length} 篇</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </Main>
+  <Footer />
+</Layout>

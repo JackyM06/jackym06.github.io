@@ -1,0 +1,303 @@
+{
+  "baseCommit": "408f565",
+  "theme": "AstroPaper 7.1.0",
+  "articles": [
+    {
+      "title": "第一篇博客纪念",
+      "route": "/2018/06/11/关于搭建博客的心得/",
+      "file": "content/posts/2018/06/11/关于搭建博客的心得.md",
+      "source": "2018/06/11/关于搭建博客的心得/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "数据结构迷宫问题C++链栈实现",
+      "route": "/2018/06/12/数据结构迷宫问题/",
+      "file": "content/posts/2018/06/12/数据结构迷宫问题.md",
+      "source": "2018/06/12/数据结构迷宫问题/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "哈夫曼树",
+      "route": "/2018/06/13/哈夫曼树/",
+      "file": "content/posts/2018/06/13/哈夫曼树.md",
+      "source": "2018/06/13/哈夫曼树/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "二叉树的基本操作",
+      "route": "/2018/06/28/二叉树的基本操作/",
+      "file": "content/posts/2018/06/28/二叉树的基本操作.md",
+      "source": "2018/06/28/二叉树的基本操作/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "快速排序",
+      "route": "/2018/06/28/快速排序/",
+      "file": "content/posts/2018/06/28/快速排序.md",
+      "source": "2018/06/28/快速排序/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "图的基本操作",
+      "route": "/2018/07/08/图的基本操作/",
+      "file": "content/posts/2018/07/08/图的基本操作.md",
+      "source": "2018/07/08/图的基本操作/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Hexo搭建手册",
+      "route": "/2018/07/25/Hexo搭建手册/",
+      "file": "content/posts/2018/07/25/Hexo搭建手册.md",
+      "source": "2018/07/25/Hexo搭建手册/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "JS入门",
+      "route": "/2019/01/19/JS入门/",
+      "file": "content/posts/2019/01/19/JS入门.md",
+      "source": "2019/01/19/JS入门/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "JS正则表达式",
+      "route": "/2019/01/20/JS正则表达式/",
+      "file": "content/posts/2019/01/20/JS正则表达式.md",
+      "source": "2019/01/20/JS正则表达式/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "关于JSON",
+      "route": "/2019/01/26/关于JSON/",
+      "file": "content/posts/2019/01/26/关于JSON.md",
+      "source": "2019/01/26/关于JSON/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "JS函数",
+      "route": "/2019/02/17/JS函数/",
+      "file": "content/posts/2019/02/17/JS函数.md",
+      "source": "2019/02/17/JS函数/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Express框架",
+      "route": "/2019/07/16/Express框架/",
+      "file": "content/posts/2019/07/16/Express框架.md",
+      "source": "2019/07/16/Express框架/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "MongoDB",
+      "route": "/2019/07/16/MongoDB/",
+      "file": "content/posts/2019/07/16/MongoDB.md",
+      "source": "2019/07/16/MongoDB/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Node.js基本语法",
+      "route": "/2019/07/16/Node-js基本语法/",
+      "file": "content/posts/2019/07/16/Node-js基本语法.md",
+      "source": "2019/07/16/Node-js基本语法/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "JavaScript异步编程",
+      "route": "/2019/07/20/JavaScript异步编程/",
+      "file": "content/posts/2019/07/20/JavaScript异步编程.md",
+      "source": "2019/07/20/JavaScript异步编程/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Vue.js框架",
+      "route": "/2019/08/06/Vue-js框架/",
+      "file": "content/posts/2019/08/06/Vue-js框架.md",
+      "source": "2019/08/06/Vue-js框架/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "WebPack打包工具",
+      "route": "/2019/08/06/WebPack打包工具/",
+      "file": "content/posts/2019/08/06/WebPack打包工具.md",
+      "source": "2019/08/06/WebPack打包工具/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "VueCli构建工具",
+      "route": "/2019/08/07/VueCli构建工具/",
+      "file": "content/posts/2019/08/07/VueCli构建工具.md",
+      "source": "2019/08/07/VueCli构建工具/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Vue-Router路由构建",
+      "route": "/2019/08/10/Vue-Router路由构建/",
+      "file": "content/posts/2019/08/10/Vue-Router路由构建.md",
+      "source": "2019/08/10/Vue-Router路由构建/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "VueX（Vue状态管理模式）",
+      "route": "/2019/09/03/VueX（Vue状态管理模式）/",
+      "file": "content/posts/2019/09/03/VueX（Vue状态管理模式）.md",
+      "source": "2019/09/03/VueX（Vue状态管理模式）/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Axios网络框架",
+      "route": "/2019/09/07/Axios网络框架/",
+      "file": "content/posts/2019/09/07/Axios网络框架.md",
+      "source": "2019/09/07/Axios网络框架/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "CSS补缺备忘",
+      "route": "/2020/02/27/CSS 之 补缺篇/",
+      "file": "content/posts/2020/02/27/CSS 之 补缺篇.md",
+      "source": "2020/02/27/CSS 之 补缺篇/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "Node.js通过cron模块实现定时执行脚本",
+      "route": "/2020/05/04/Node-js通过cron模块实现定时执行脚本/",
+      "file": "content/posts/2020/05/04/Node-js通过cron模块实现定时执行脚本.md",
+      "source": "2020/05/04/Node-js通过cron模块实现定时执行脚本/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "vue-clipboard2实现复制功能",
+      "route": "/2020/05/04/vue-clipboard2实现复制功能/",
+      "file": "content/posts/2020/05/04/vue-clipboard2实现复制功能.md",
+      "source": "2020/05/04/vue-clipboard2实现复制功能/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "在Node.js中实现邮箱验证码功能",
+      "route": "/2020/05/04/在Node-js中实现邮箱验证码功能/",
+      "file": "content/posts/2020/05/04/在Node-js中实现邮箱验证码功能.md",
+      "source": "2020/05/04/在Node-js中实现邮箱验证码功能/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "在VueCli3项目中使用Bootstrap",
+      "route": "/2020/05/04/在VueCli3项目中使用Bootstrap/",
+      "file": "content/posts/2020/05/04/在VueCli3项目中使用Bootstrap.md",
+      "source": "2020/05/04/在VueCli3项目中使用Bootstrap/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "在Vue中使用Echarts",
+      "route": "/2020/05/04/在Vue中使用Echarts/",
+      "file": "content/posts/2020/05/04/在Vue中使用Echarts.md",
+      "source": "2020/05/04/在Vue中使用Echarts/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "在Vue中点击某个元素以外的元素时让这个元素隐藏或关闭",
+      "route": "/2020/05/04/在Vue中点击某个元素以外的元素时让这个元素隐藏或关闭/",
+      "file": "content/posts/2020/05/04/在Vue中点击某个元素以外的元素时让这个元素隐藏或关闭.md",
+      "source": "2020/05/04/在Vue中点击某个元素以外的元素时让这个元素隐藏或关闭/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "在WEB项目中防御XSS攻击",
+      "route": "/2020/05/04/在WEB项目中防御XSS攻击/",
+      "file": "content/posts/2020/05/04/在WEB项目中防御XSS攻击.md",
+      "source": "2020/05/04/在WEB项目中防御XSS攻击/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "深入理解Promise",
+      "route": "/2020/09/10/深入理解Promise/",
+      "file": "content/posts/2020/09/10/深入理解Promise.md",
+      "source": "2020/09/10/深入理解Promise/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "TypeScript渐进式入门",
+      "route": "/2021/04/02/TypeScript渐进式入门/",
+      "file": "content/posts/2021/04/02/TypeScript渐进式入门.md",
+      "source": "2021/04/02/TypeScript渐进式入门/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "装饰器工具函数[持续更新]",
+      "route": "/2021/04/02/装饰器工具函数-持续更新/",
+      "file": "content/posts/2021/04/02/装饰器工具函数-持续更新.md",
+      "source": "2021/04/02/装饰器工具函数-持续更新/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "做直播，我们是认真的：Web 音视频串流",
+      "route": "/2021/04/21/Web音视频串流/",
+      "file": "content/posts/2021/04/21/Web音视频串流.md",
+      "source": "2021/04/21/Web音视频串流/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "写了个支持图片裁切与合并的工具类",
+      "route": "/2021/04/27/写了个支持图片裁切与合并的工具类/",
+      "file": "content/posts/2021/04/27/写了个支持图片裁切与合并的工具类.md",
+      "source": "2021/04/27/写了个支持图片裁切与合并的工具类/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "测一测你的代码：关于前端自动化测试",
+      "route": "/2021/09/06/测一测你的代码：关于前端自动化测试/",
+      "file": "content/posts/2021/09/06/测一测你的代码：关于前端自动化测试.md",
+      "source": "2021/09/06/测一测你的代码：关于前端自动化测试/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "没想到你是这样的npm install",
+      "route": "/2021/11/16/没想到你是这样的npm install/",
+      "file": "content/posts/2021/11/16/没想到你是这样的npm install.md",
+      "source": "2021/11/16/没想到你是这样的npm install/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "浅谈现代浏览器的网页生命周期",
+      "route": "/2022/05/18/浅谈现代浏览器的网页生命周期/",
+      "file": "content/posts/2022/05/18/浅谈现代浏览器的网页生命周期.md",
+      "source": "2022/05/18/浅谈现代浏览器的网页生命周期/index.html",
+      "recoveredFromHTML": true
+    },
+    {
+      "title": "大型运营活动的预渲染实践：用 SSG 改善首屏体验",
+      "route": "/2026/11/11/24cny-ssg/",
+      "file": "content/posts/2026/11/11/24cny-ssg.md",
+      "source": "content/posts/大型运营活动的预渲染实践：用 SSG 改善首屏体验.md",
+      "recoveredFromHTML": false
+    },
+    {
+      "title": "AI 下的自动驾驶变革之路",
+      "route": "/2026/11/11/ai-autonomous-driving/",
+      "file": "content/posts/2026/11/11/ai-autonomous-driving.md",
+      "source": "content/posts/AI 下的自动驾驶变革之路.md",
+      "recoveredFromHTML": false
+    },
+    {
+      "title": "一段视频的“取经之路”",
+      "route": "/2026/11/11/video-journey/",
+      "file": "content/posts/2026/11/11/video-journey.md",
+      "source": "content/posts/一段视频的“取经之路”.md",
+      "recoveredFromHTML": false
+    }
+  ],
+  "redirects": {
+    "/archives/2019/page/2/": "/archives/2019/",
+    "/archives/page/2/": "/archives/",
+    "/archives/page/3/": "/archives/",
+    "/archives/page/4/": "/archives/",
+    "/categories/Web前端/": "/categories/",
+    "/categories/Web前端/page/2/": "/categories/Web前端/",
+    "/categories/Web前端/page/3/": "/categories/Web前端/",
+    "/categories/Web安全/": "/categories/前端工程/",
+    "/categories/其他/": "/categories/随笔/",
+    "/categories/技术分享/": "/categories/",
+    "/categories/数据结构/": "/categories/算法与数据结构/",
+    "/categories/自动化测试/": "/categories/前端工程/",
+    "/page/2/": "/posts/2/",
+    "/page/3/": "/posts/3/",
+    "/page/4/": "/posts/4/"
+  }
+}

@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Card from "@/components/Card.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import config from "@/config";
+
+export async function getStaticPaths() {
+  const posts = getSortedPosts(await getCollection("posts"));
+  const periods = [...new Set(posts.flatMap(post => {
+    const [year, month] = post.id.split("/");
+    return [year, `${year}/${month}`];
+  }))];
+  return periods.map(period => ({
+    params: { period },
+    props: { period, posts: posts.filter(post => post.id.startsWith(`${period}/`)) },
+  }));
+}
+const { period, posts } = Astro.props;
+const title = `${period.replace("/", " 年 ")}${period.includes("/") ? " 月" : " 年"}归档`;
+---
+<Layout title={`${title} | ${config.site.title}`}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle={title} pageDesc={`共 ${posts.length} 篇文章。`}>
+    <ul>{posts.map(post => <Card {...post} />)}</ul>
+  </Main>
+  <Footer />
+</Layout>
