@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
 import config from "@/config";
+import WechatContact from "@/components/WechatContact.astro";
 import "@/styles/global.css";
 
 type Props = {
@@ -109,6 +110,7 @@ const rssHref = getAssetPath("rss.xml");
     class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"
   >
     <slot />
+    <WechatContact />
     <script>
       import "@/scripts/theme";
     </script>

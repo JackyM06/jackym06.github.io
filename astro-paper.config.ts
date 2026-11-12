@@ -29,6 +29,7 @@ export default defineAstroPaperConfig({
   },
   socials: [
     { name: "github", url: "https://github.com/JackyM06", linkTitle: "Jiankai 的 GitHub" },
+    { name: "wechat", url: "/about/#wechat", linkTitle: "Jiankai 的微信" },
   ],
   shareLinks: [
   ],

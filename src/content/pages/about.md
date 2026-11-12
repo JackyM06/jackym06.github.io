@@ -38,7 +38,14 @@ Hi，欢迎关注我的博客！我是一名前端开发工程师，工作之余
 ## 联系我
 
 - 邮箱：[ChinaMJK06@163.com](mailto:ChinaMJK06@163.com)
-- 微信：`joker_mario`
+- 微信：`joker_mario`（[查看二维码](#wechat)）
+
+<figure id="wechat" style="max-width: 20rem;">
+  <a href="/images/wechat-qr.jpg" data-wechat-contact aria-haspopup="dialog" aria-controls="wechat-contact-dialog" aria-label="查看 Jiankai 的微信二维码">
+    <img src="/images/wechat-qr.jpg" alt="Jiankai 的微信二维码，微信号 joker_mario" width="888" height="1131" loading="lazy" decoding="async">
+  </a>
+  <figcaption>微信扫码添加好友，点击图片可查看和保存二维码。</figcaption>
+</figure>
 
 ## 友情链接
 
