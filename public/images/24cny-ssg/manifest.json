@@ -280,12 +280,12 @@
     "bytes": 303088
   },
   {
-    "filename": "36-route-flicker.gif",
-    "alt": "多路由预渲染内容错位",
-    "width": 720,
-    "height": 1608,
-    "frames": 95,
-    "bytes": 4053879
+    "filename": "36-route-flicker.svg",
+    "alt": "多路由预渲染内容错位示意",
+    "width": 1200,
+    "height": 660,
+    "frames": 1,
+    "bytes": 4129
   },
   {
     "filename": "37-multi-ssg.png",

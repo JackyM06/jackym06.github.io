@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">多路由预渲染内容错位示意</title>
+  <desc id="desc">用户打开中奖名单，浏览器先显示共用 HTML 中的活动主页预渲染内容，JavaScript 就绪后才切换到中奖名单，造成首屏闪烁。本图为流程示意。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="660" rx="24" fill="#f8fafc"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <text x="48" y="62" fill="#0f172a" font-size="32" font-weight="700">多路由预渲染内容错位</text>
+    <text x="48" y="103" fill="#475569" font-size="22">目标是中奖名单，首屏却先展示了活动主页</text>
+    <text x="48" y="163" fill="#334155" font-size="23" font-weight="600">① 打开二级路由</text>
+    <text x="448" y="163" fill="#9a3412" font-size="23" font-weight="600">② 解析共用 HTML</text>
+    <text x="848" y="163" fill="#166534" font-size="23" font-weight="600">③ 正式应用就绪</text>
+
+    <rect x="48" y="188" width="304" height="330" rx="16" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <path d="M 64 188 H 336 Q 352 188 352 204 V 242 H 48 V 204 Q 48 188 64 188" fill="#e2e8f0"/>
+    <text x="200" y="224" text-anchor="middle" fill="#334155" font-size="21">请求目标：中奖名单</text>
+    <circle cx="200" cy="345" r="28" fill="none" stroke="#e2e8f0" stroke-width="6"/>
+    <path d="M 200 317 A 28 28 0 0 1 228 345" fill="none" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+    <text x="200" y="414" text-anchor="middle" fill="#64748b" font-size="22">等待页面内容</text>
+
+    <rect x="448" y="188" width="304" height="330" rx="16" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+    <path d="M 464 188 H 736 Q 752 188 752 204 V 242 H 448 V 204 Q 448 188 464 188" fill="#ffedd5"/>
+    <text x="600" y="224" text-anchor="middle" fill="#9a3412" font-size="21">主页预渲染内容</text>
+    <text x="600" y="298" text-anchor="middle" fill="#9a3412" font-size="27" font-weight="700">春节活动主页</text>
+    <rect x="522" y="324" width="156" height="94" rx="14" fill="#ef4444"/>
+    <text x="600" y="380" text-anchor="middle" fill="#fff" font-size="28" font-weight="700">开红包</text>
+    <rect x="493" y="447" width="214" height="42" rx="21" fill="#ffedd5"/>
+    <text x="600" y="475" text-anchor="middle" fill="#9a3412" font-size="20" font-weight="600">首屏内容错位</text>
+
+    <rect x="848" y="188" width="304" height="330" rx="16" fill="#fff" stroke="#86b89a" stroke-width="2"/>
+    <path d="M 864 188 H 1136 Q 1152 188 1152 204 V 242 H 848 V 204 Q 848 188 864 188" fill="#dcfce7"/>
+    <text x="1000" y="224" text-anchor="middle" fill="#166534" font-size="21">当前路由的正式内容</text>
+    <text x="1000" y="298" text-anchor="middle" fill="#0f172a" font-size="27" font-weight="700">中奖名单</text>
+    <g fill="#e2e8f0">
+      <circle cx="892" cy="347" r="13"/>
+      <rect x="920" y="339" width="185" height="16" rx="8"/>
+      <circle cx="892" cy="397" r="13"/>
+      <rect x="920" y="389" width="145" height="16" rx="8"/>
+      <circle cx="892" cy="447" r="13"/>
+      <rect x="920" y="439" width="165" height="16" rx="8"/>
+    </g>
+    <path d="M 367 355 H 431" fill="none" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M 767 355 H 831" fill="none" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="800" y="319" text-anchor="middle" fill="#64748b" font-size="18">JS 就绪</text>
+    <text x="600" y="570" text-anchor="middle" fill="#475569" font-size="22">仅为主页生成预渲染 HTML，二级路由也会先收到同一份主页内容。</text>
+    <text x="600" y="613" text-anchor="middle" fill="#64748b" font-size="19">流程示意</text>
+  </g>
+</svg>

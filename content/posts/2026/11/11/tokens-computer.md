@@ -1,6 +1,6 @@
 ---
 title: "Token 是怎么计算的"
-pubDatetime: 2026-11-11T17:44:06+08:00
+pubDatetime: 2026-06-15T00:00:00+08:00
 description: "从文言文是否更省 Token 的问题出发，梳理 Tokenizer、BPE、实际计数方法，以及 Prompt Cache 与 KV Cache 的区别。"
 categories: ["人工智能"]
 tags: ["AI", "Token", "Tokenizer", "BPE"]

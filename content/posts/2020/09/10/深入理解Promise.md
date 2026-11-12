@@ -1,6 +1,6 @@
 ---
 title: "深入理解Promise"
-pubDatetime: 2020-09-10T10:37:26+08:00
+pubDatetime: 2020-08-17T17:55:40+08:00
 description: "ES6提供的Promise对象是异步控制相较于回调的更好的一种方法。包括ES8提供的asyncFunction本质上也是基于Promise和生成器的结合，因此在已经了解Promise对象的常用API基础上，更加深入的去了解如何使用Promise去解决一些常见的难题对于开发将会有一些帮助。"
 categories: ["前端基础"]
 tags: ["JavaScript"]
