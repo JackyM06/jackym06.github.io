@@ -25,7 +25,7 @@ const { page, category } = Astro.props;
 <Layout title={`${category} | ${config.site.title}`}>
   <Header />
   <Breadcrumb />
-  <Main pageTitle={category} pageDesc={`此分类共 ${page.total} 篇文章。`}>
+  <Main pageTitle={category} pageDesc={`此分类共 ${page.total} 篇文章`}>
     <ul>{page.data.map(post => <Card {...post} />)}</ul>
   </Main>
   <Pagination {page} />

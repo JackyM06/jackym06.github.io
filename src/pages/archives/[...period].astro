@@ -26,7 +26,7 @@ const title = `${period.replace("/", " 年 ")}${period.includes("/") ? " 月" : 
 <Layout title={`${title} | ${config.site.title}`}>
   <Header />
   <Breadcrumb />
-  <Main pageTitle={title} pageDesc={`共 ${posts.length} 篇文章。`}>
+  <Main pageTitle={title} pageDesc={`共 ${posts.length} 篇文章`}>
     <ul>{posts.map(post => <Card {...post} />)}</ul>
   </Main>
   <Footer />

@@ -27,9 +27,9 @@ Hi，欢迎关注我的博客！我是一名前端开发工程师，工作之余
         <span class="career-status">在职</span>
       </div>
       <ul>
-        <li><strong>运营活动开发</strong>：活动页面、交互及相关业务功能开发。</li>
-        <li><strong>低代码 / 无代码平台开发</strong>：平台功能与可视化搭建能力开发，支持业务页面的搭建与维护。</li>
-        <li><strong>业务 Agent 开发</strong>：基于 LangGraph 构建面向业务场景的 Agent 应用。</li>
+        <li><strong>运营活动开发</strong>：活动页面、交互及相关业务功能开发</li>
+        <li><strong>低代码 / 无代码平台开发</strong>：平台功能与可视化搭建能力开发，支持业务页面的搭建与维护</li>
+        <li><strong>业务 Agent 开发</strong>：基于 LangGraph 构建面向业务场景的 Agent 应用</li>
       </ul>
     </div>
   </li>
@@ -38,14 +38,7 @@ Hi，欢迎关注我的博客！我是一名前端开发工程师，工作之余
 ## 联系我
 
 - 邮箱：[ChinaMJK06@163.com](mailto:ChinaMJK06@163.com)
-- 微信：`joker_mario`（[查看二维码](#wechat)）
-
-<figure id="wechat" style="max-width: 20rem;">
-  <a href="/images/wechat-qr.jpg" data-wechat-contact aria-haspopup="dialog" aria-controls="wechat-contact-dialog" aria-label="查看 Jiankai 的微信二维码">
-    <img src="/images/wechat-qr.jpg" alt="Jiankai 的微信二维码，微信号 joker_mario" width="888" height="1131" loading="lazy" decoding="async">
-  </a>
-  <figcaption>微信扫码添加好友，点击图片可查看和保存二维码。</figcaption>
-</figure>
+- 微信：`joker_mario`（<a id="wechat" href="/images/wechat-qr.jpg" data-wechat-contact aria-haspopup="dialog" aria-controls="wechat-contact-dialog" aria-label="查看 Jiankai 的微信二维码">查看二维码</a>）
 
 ## 友情链接
 

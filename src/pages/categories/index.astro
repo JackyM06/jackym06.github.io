@@ -15,7 +15,7 @@ const categories = [...new Set(posts.flatMap(post => post.data.categories))];
 <Layout title={`分类 | ${config.site.title}`}>
   <Header />
   <Breadcrumb />
-  <Main pageTitle="文章分类" pageDesc="按主题浏览学习记录与技术实践。">
+  <Main pageTitle="文章分类" pageDesc="按主题浏览学习记录与技术实践">
     <ul class="grid gap-4 sm:grid-cols-2">
       {categories.map(category => (
         <li>
