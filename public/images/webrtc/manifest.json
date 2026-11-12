@@ -1,0 +1,275 @@
+[
+  {
+    "filename": "01-nat-network.webp",
+    "alt": "内网设备经过 NAT 访问外网的网络结构",
+    "width": 890,
+    "height": 343,
+    "bytes": 20612,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 6,
+      "media": "image22.png",
+      "sha256": "b4455fc2f899110f9a13c3be5abdb5203905216a18b88a71555cc2b41b4fcfe7"
+    }
+  },
+  {
+    "filename": "02-nat-mapping.webp",
+    "alt": "NAT 在出站时改写来源地址并记录映射关系",
+    "width": 864,
+    "height": 466,
+    "bytes": 32406,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 6,
+      "media": "image23.png",
+      "sha256": "a787f3860f97abe50129caf8b1164d6ecfca332939660ecb9bc3a3c4132c9fcd"
+    }
+  },
+  {
+    "filename": "03-reused-mapping.webp",
+    "alt": "同一个本地端口访问不同目标时复用外部映射",
+    "width": 915,
+    "height": 693,
+    "bytes": 39404,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 8,
+      "media": "image30.png",
+      "sha256": "898361534fa54672f56d14782449ee44201ed9b0fffb8af25db808a86150fc28"
+    }
+  },
+  {
+    "filename": "04-destination-mapping.webp",
+    "alt": "访问不同目标时生成不同的外部端口映射",
+    "width": 910,
+    "height": 663,
+    "bytes": 41868,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 8,
+      "media": "image31.png",
+      "sha256": "88b651760c6a54771193d0ec42cd48c16e7fcd10c4b45c9e8f281e1c73cd1265"
+    }
+  },
+  {
+    "filename": "05-private-address-fails.webp",
+    "alt": "两台设备处于不同内网时无法通过对方的私有地址直接访问",
+    "width": 1062,
+    "height": 1074,
+    "bytes": 54280,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 9,
+      "media": "image42.png",
+      "sha256": "c2df3a7967f4ce0a6e00bc3719e5d7a19dd0bd082ed48f5c123a298f2a45dc06"
+    }
+  },
+  {
+    "filename": "06-first-probe.webp",
+    "alt": "A 向 B 发出探测包，B 丢弃请求，A 一侧记录允许 B 回包的状态",
+    "width": 1242,
+    "height": 1109,
+    "bytes": 64148,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 9,
+      "media": "image43.png",
+      "sha256": "1d766b3264d3721b280309de174c58d2ca323aca4d955d1ded8c6735032b9336"
+    }
+  },
+  {
+    "filename": "07-return-probe.webp",
+    "alt": "B 向 A 发送探测包并抵达 A，B 一侧同时允许 A 回包",
+    "width": 1227,
+    "height": 1081,
+    "bytes": 60448,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 9,
+      "media": "image44.png",
+      "sha256": "b5faa86f872de479faede3a633c2d44e10e0666052bc7dda52bd66a7462824db"
+    }
+  },
+  {
+    "filename": "08-turn-relay.webp",
+    "alt": "两端主动向 TURN 中继发送数据，经中继完成双向通信",
+    "width": 1183,
+    "height": 1074,
+    "bytes": 74790,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 12,
+      "media": "image56.png",
+      "sha256": "4357b212838b30ac59c4928c72203d4764b1308b7b85ce6489d8a6a85c797075"
+    }
+  },
+  {
+    "filename": "09-offer-answer.webp",
+    "alt": "双方收集候选，交换 Offer 和 Answer，并进行 STUN 连通性检查",
+    "width": 941,
+    "height": 1047,
+    "bytes": 42594,
+    "source": {
+      "presentation": "WebRTC连接原理（大组分享）.pptx",
+      "slide": 14,
+      "media": "image61.png",
+      "sha256": "f3632764ed24bcb9ce90b053271357b47b463ddb78885c6cd4f4f8dffdd8ba92"
+    }
+  },
+  {
+    "filename": "10-rtp-packet.webp",
+    "alt": "RTP 报文中的序列号、时间戳与媒体载荷字段",
+    "width": 592,
+    "height": 372,
+    "bytes": 18428,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 6,
+      "media": "image7.png",
+      "sha256": "cc042bda21aa4234d22744e2cc9c12ac6376583c3552dfa19d8c00a15de4787a"
+    }
+  },
+  {
+    "filename": "11-jitter-buffer.webp",
+    "alt": "发送端的视频帧拆包，数据包乱序到达，经接收缓冲区组帧后送给解码器",
+    "width": 3432,
+    "height": 1986,
+    "bytes": 264302,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 7,
+      "media": "image8.png",
+      "sha256": "899d2a315532888682c5e176a1cb93e4a9915d71dd4ff633661ddb337462b752"
+    }
+  },
+  {
+    "filename": "12-frame-dependencies.webp",
+    "alt": "视频编码中 I 帧、P 帧与 B 帧的预测依赖关系示意",
+    "width": 2870,
+    "height": 576,
+    "bytes": 97998,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 8,
+      "media": "image9.png",
+      "sha256": "a15b3796c4df8a85d1cd0dc64e19d9002a08478d39e6fd4646fe6148de597626"
+    }
+  },
+  {
+    "filename": "13-rtcp-rtt.webp",
+    "alt": "用 SR 和接收报告计算 RTT，并扣除接收端等待时间",
+    "width": 605,
+    "height": 453,
+    "bytes": 25884,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 15,
+      "media": "image11.png",
+      "sha256": "1d11e5e075d0068a0cd571983c57dd9fbaaa648a07031bf70a4fa691beac75eb"
+    }
+  },
+  {
+    "filename": "14-delay-gradient.webp",
+    "alt": "通过相邻帧的发送间隔与到达间隔计算延迟变化",
+    "width": 460,
+    "height": 240,
+    "bytes": 9982,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 19,
+      "media": "image16.png",
+      "sha256": "d8f821a190ac3f97e250848e0c9ac64fff8034450953c1983b0593e1c2940df1"
+    }
+  },
+  {
+    "filename": "15-network-normal.webp",
+    "alt": "没有明显排队时，数据包的发送间隔和接收间隔保持接近",
+    "width": 1065,
+    "height": 735,
+    "bytes": 30180,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 20,
+      "media": "image18.png",
+      "sha256": "01c3cbe7e532653d5d7ea12bd4cb78db9674ed8b7e3982084f183da886909571"
+    }
+  },
+  {
+    "filename": "16-network-queue.webp",
+    "alt": "某个数据包在路由器中排队，导致它与前一个包的到达间隔拉长",
+    "width": 995,
+    "height": 763,
+    "bytes": 33582,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 20,
+      "media": "image19.png",
+      "sha256": "17a8d1c43609658752443daeffc333fa31bb25adc6a672d4ac93e15c1645b95c"
+    }
+  },
+  {
+    "filename": "17-gcc-overview.webp",
+    "alt": "早期 GCC 中基于丢包与基于延迟的带宽估计框架",
+    "width": 1300,
+    "height": 599,
+    "bytes": 34644,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 17,
+      "media": "image14.png",
+      "sha256": "4cff9580e10cd71a28ffb58e10396fcd40c1dead4df2a87978e5f44aa2d96d6c"
+    }
+  },
+  {
+    "filename": "18-overuse-detection.webp",
+    "alt": "平滑后的延迟变化与自适应阈值共同确定 overuse、underuse 和 normal 状态",
+    "width": 437,
+    "height": 194,
+    "bytes": 7402,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 22,
+      "media": "image21.png",
+      "sha256": "064d3d8dd8791684f70a3abd8b2d1f726fa2fb32da9a4e6f17bce44922034e80"
+    }
+  },
+  {
+    "filename": "19-dcep-handshake.webp",
+    "alt": "DCEP 通过 OPEN 和 ACK 消息协商数据通道",
+    "width": 642,
+    "height": 627,
+    "bytes": 23378,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 28,
+      "media": "image24.png",
+      "sha256": "a2b5670114f2215ce366a1be30bffb7f79ddd214445d0701aeb58ed7ebae2c7b"
+    }
+  },
+  {
+    "filename": "20-sctp-data.webp",
+    "alt": "SCTP DATA 数据块中的 TSN、流标识、流序号与载荷",
+    "width": 599,
+    "height": 397,
+    "bytes": 15102,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 30,
+      "media": "image29.png",
+      "sha256": "80e263ae2d72f7546c8d53f83b95f6ef4d0ed9b180fbee3e4989796a50fb4f58"
+    }
+  },
+  {
+    "filename": "21-sctp-sack.webp",
+    "alt": "SCTP SACK 确认块中的累积确认点与缺口确认区间",
+    "width": 603,
+    "height": 722,
+    "bytes": 25298,
+    "source": {
+      "presentation": "WebRTC数据与安全.pptx",
+      "slide": 31,
+      "media": "image30.png",
+      "sha256": "86da7a067897e2ceaaaac6af6cfbfa990645092e205cfd74a5d7afb2533aea7a"
+    }
+  }
+]

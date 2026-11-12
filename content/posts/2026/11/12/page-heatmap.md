@@ -1,6 +1,6 @@
 ---
 title: "从点击到停留：低代码页面的热力图实践"
-pubDatetime: 2026-11-12T00:00:00+08:00
+pubDatetime: 2022-04-13T00:00:00+08:00
 description: "回顾一次低代码平台热力图建设，介绍点击坐标的跨设备还原、浏览深度到触达率的转换，以及可见停留时长的采集和聚合。"
 categories: ["前端工程"]
 tags: ["热力图", "低代码", "数据可视化", "埋点"]
@@ -11,8 +11,7 @@ draft: false
 用户在页面上点了哪里，又在哪些地方停了下来？把这些行为画回页面，就会得到这样的热力图：
 
 <figure style="max-width: 32rem; margin-inline: auto;">
-  <img src="/images/page-heatmap/heatmap-overview.png" alt="分享中的热力图效果示意：电脑、平板和手机网页上叠加了表示行为分布的彩色热区" width="503" height="380" decoding="async">
-  <figcaption>用颜色把行为数据叠回页面，直接观察不同位置的分布。图片来自当时的分享。</figcaption>
+  <img src="/images/page-heatmap/heatmap-overview.png" alt="电脑、平板和手机网页上叠加了表示行为分布的彩色热区" width="503" height="380" decoding="async">
 </figure>
 
 以点击热图为例，聚集了较多点击的位置会形成明显的热区。我们可以直接对照按钮、图片和文字，观察用户实际操作的位置。
@@ -21,8 +20,6 @@ draft: false
 
 我想解决的就是这段人工比对的过程，让数据直接对应到页面内容上。下面先从几个常见的页面问题说起，再展开采集、统计和渲染的实现。
 
-文中保留了当时分享里的案例图、Demo 和原理图，代码、字段与计算示例做了简化。案例示意用于说明问题，回看这套方案时想到的改进，会在对应位置单独说明。
-
 ## 1. 为什么需要三种不同类型的热力图？
 
 ### 1.1 看起来像按钮，却点不动
@@ -30,8 +27,7 @@ draft: false
 页面里有一个奖杯图标，样式很像可点击的入口，实际上却只是装饰。用户点了几次没有反应，可能会以为页面出了问题。
 
 <figure>
-  <img src="/images/page-heatmap/case-misleading-click.png" alt="分享中的无效点击案例：左侧装饰图标形成点击热区，右侧示意点击入口提供弹窗反馈" width="630" height="271" loading="lazy" decoding="async">
-  <figcaption>左侧示意装饰元素吸引了点击，右侧给出提供交互反馈的一种处理思路。</figcaption>
+  <img src="/images/page-heatmap/case-misleading-click.png" alt="左侧装饰图标形成点击热区，右侧示意点击入口提供弹窗反馈" width="630" height="271" loading="lazy" decoding="async">
 </figure>
 
 如果只看真正按钮的点击量，这些尝试可能根本不会出现在数据里。点击热图要做的，就是把采集到的点击位置标回页面，让我们有机会发现“用户想点”和“页面允许点”的差距。
@@ -41,8 +37,7 @@ draft: false
 还有一种情况：页面中间出现了大块留白或明显的分隔，用户以为已经看完，便离开了。设计者放在下方的重要内容，可能还没来得及出现。
 
 <figure>
-  <img src="/images/page-heatmap/case-false-bottom.png" alt="分享中的页面断层案例：左侧下方内容容易被忽略，右侧用更连续的布局和向下箭头提示页面尚未结束" width="631" height="343" loading="lazy" decoding="async">
-  <figcaption>页面的“结束感”可能出现在真正底部之前，布局连续性和滚动引导都值得检查。</figcaption>
+  <img src="/images/page-heatmap/case-false-bottom.png" alt="左侧下方内容容易被忽略，右侧用更连续的布局和向下箭头提示页面尚未结束" width="631" height="343" loading="lazy" decoding="async">
 </figure>
 
 这时，页面底部没有点击，并不能说明用户对那里的内容不感兴趣。我们得先知道有多少访问到达过那里。浏览触达热图沿页面高度展示这个比例，帮助我们找到内容在哪一段开始很少被触达。
@@ -52,8 +47,7 @@ draft: false
 即使用户确实浏览到了某段内容，也可能只是一闪而过。比如一张活动规则海报，本来就不需要点击；如果内容分散、重点不明显，仅靠点击量和浏览深度，仍然很难判断哪些部分值得继续检查。
 
 <figure>
-  <img src="/images/page-heatmap/case-scattered-content.png" alt="分享中的内容分散案例：左侧内容零散，右侧尝试将相关信息集中，并突出主要内容" width="630" height="271" loading="lazy" decoding="async">
-  <figcaption>布局调整示意：右侧尝试把相关内容集中展示，实际效果还需要结合数据验证。</figcaption>
+  <img src="/images/page-heatmap/case-scattered-content.png" alt="左侧内容零散，右侧尝试将相关信息集中，并突出主要内容" width="630" height="271" loading="lazy" decoding="async">
 </figure>
 
 因此，还需要记录各个区域在可视范围里停留了多久。停留热图把这些时长的差异画出来，让我们能进一步观察重点内容是一闪而过，还是获得了较长的可见时间。
@@ -175,8 +169,7 @@ function projectPoint(
 下面是当时同一组点击数据在不同宽度下的展示效果。可以对照绿色和蓝色元素观察：页面尺寸变了，热区仍然对应元素内部的相近位置。
 
 <figure>
-  <img src="/images/page-heatmap/click-cross-device.png" alt="原方案 Demo：同一组点击热区在 768、414 和 375 三种页面宽度下的位置对比" width="877" height="576" loading="lazy" decoding="async">
-  <figcaption>跨设备展示：元素尺寸发生变化，点击热区仍对应元素内部的位置。</figcaption>
+  <img src="/images/page-heatmap/click-cross-device.png" alt="同一组点击热区在 768、414 和 375 三种页面宽度下的位置对比" width="877" height="576" loading="lazy" decoding="async">
 </figure>
 
 ### 3.4 把还原后的点画成热区
@@ -206,14 +199,13 @@ heatmap.setData({
 所以绘制时还要根据当前状态选择可见元素。下面是当时的演示：切换 Tab 后，面板里的热区随展示内容更新，两个面板的数据不会同时叠在一个位置上。
 
 <figure>
-  <img src="/images/page-heatmap/click-tab-states.png" alt="原方案 Demo：Tab 1 和 Tab 2 展示不同面板时，各自对应不同的点击热区" width="1007" height="581" loading="lazy" decoding="async">
-  <figcaption>同一页面的不同交互状态，需要展示各自对应的热区。</figcaption>
+  <img src="/images/page-heatmap/click-tab-states.png" alt="Tab 1 和 Tab 2 展示不同面板时，各自对应不同的点击热区" width="1007" height="581" loading="lazy" decoding="async">
 </figure>
 
 <details>
-  <summary>查看原方案的 Tab 切换动图</summary>
+  <summary>查看 Tab 切换动图</summary>
   <figure style="max-width: 22rem; margin-inline: auto;">
-    <img src="/images/page-heatmap/click-tab-demo.gif" alt="原方案 Demo 动图：Tab 切换时，点击热区跟随可见面板更新" width="414" height="898" loading="lazy" decoding="async">
+    <img src="/images/page-heatmap/click-tab-demo.gif" alt="Tab 切换时，点击热区跟随可见面板更新" width="414" height="898" loading="lazy" decoding="async">
   </figure>
 </details>
 
@@ -224,8 +216,7 @@ heatmap.setData({
 下面的 Demo 将触达率画成自上而下的颜色覆盖层。点选某个高度时，可以查看曾到达这里的样本占比。
 
 <figure>
-  <img src="/images/page-heatmap/reach-demo.png" alt="原方案 Demo：左侧为普通页面，右侧为浏览触达热图，提示线标出当前位置的触达率" width="832" height="714" loading="lazy" decoding="async">
-  <figcaption>浏览触达热图的叠加效果，右侧提示线显示当前深度的触达率。</figcaption>
+  <img src="/images/page-heatmap/reach-demo.png" alt="左侧为普通页面，右侧为浏览触达热图，提示线标出当前位置的触达率" width="832" height="714" loading="lazy" decoding="async">
 </figure>
 
 ### 4.1 记录视口底部到过的最深位置
@@ -238,8 +229,7 @@ heatmap.setData({
 ```
 
 <figure style="max-width: 28rem; margin-inline: auto;">
-  <img src="/images/page-heatmap/scroll-depth.png" alt="原方案示意图：最深浏览距离从页面顶部量到访问过程中视口底部到过的最深位置" width="940" height="1182" loading="lazy" decoding="async">
-  <figcaption>浏览深度包含视口高度，只记录滚动距离会漏掉当前屏幕中的内容。</figcaption>
+  <img src="/images/page-heatmap/scroll-depth.png" alt="最深浏览距离从页面顶部量到访问过程中视口底部到过的最深位置" width="940" height="1182" loading="lazy" decoding="async">
 </figure>
 
 首次进入页面时就应记录一次，否则没有滚动便离开的访问会被遗漏。如果页面在内部容器中滚动，需要监听并测量那个容器；只监听文档滚动无法覆盖它。
@@ -291,8 +281,7 @@ heatmap.setData({
 下面是当时的 Demo。它与触达热图的外观相似，点选后显示的数值变成了当前区块的平均浏览时长。为了让这个时长对应回具体位置，采集时需要先把页面分块。
 
 <figure style="max-width: 32rem; margin-inline: auto;">
-  <img src="/images/page-heatmap/dwell-demo.png" alt="原方案 Demo：左侧为普通页面，右侧为停留热图，提示线显示当前区块的平均浏览时长" width="575" height="533" loading="lazy" decoding="async">
-  <figcaption>可见停留热图的叠加效果，颜色与具体时长共同帮助理解结果。</figcaption>
+  <img src="/images/page-heatmap/dwell-demo.png" alt="左侧为普通页面，右侧为停留热图，提示线显示当前区块的平均浏览时长" width="575" height="533" loading="lazy" decoding="async">
 </figure>
 
 ### 5.1 按区块累计可见时长
@@ -300,8 +289,7 @@ heatmap.setData({
 早期方案将整页沿纵向均分为 100 份，约每秒采样一次，为当时处于可视区域内的区块累计时长。下面的原理图用 12 个区块举例，可以看到活动说明附近的区块停留较久，下方没有停留记录的区块则为零。
 
 <figure style="max-width: 28rem; margin-inline: auto;">
-  <img src="/images/page-heatmap/dwell-blocks.png" alt="原方案分块计时示意：活动说明附近的区块累计四到五秒，下方未停留的区块为零秒" width="880" height="1182" loading="lazy" decoding="async">
-  <figcaption>原图用 12 个连续编号的区块解释计时原理；后续方案进一步引入楼层标识。</figcaption>
+  <img src="/images/page-heatmap/dwell-blocks.png" alt="活动说明附近的区块累计四到五秒，下方未停留的区块为零秒" width="880" height="1182" loading="lazy" decoding="async">
 </figure>
 
 这里也能看出，<strong>多个区块可以同时出现在视口中。</strong>用户停留一秒，三个区块都可能各增加一秒，因此各区块时长的总和可以超过页面访问时长。在同一次访问、同一计量范围内，单个区块的有效可见时长应不超过这次访问的有效时长。

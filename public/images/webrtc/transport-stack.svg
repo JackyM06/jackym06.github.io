@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 530" role="img" aria-labelledby="title desc">
+  <title id="title">WebRTC 媒体与数据通道的安全封装</title>
+  <desc id="desc">左侧编码后的音视频使用 SRTP 和 SRTCP 保护，右侧应用消息依次经过 SCTP 与 DTLS。两条路径共用 ICE 选定的底层传输。DTLS 握手也为 SRTP 协商密钥，媒体包本身不封装在 DTLS 中。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10" fill="none" stroke="#64748b" stroke-width="1.6"/></marker>
+  </defs>
+  <rect width="720" height="530" rx="20" fill="#f8fafc"/>
+  <g font-family="system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <text x="32" y="46" font-size="25" font-weight="650" fill="#0f172a">媒体与普通消息的传输路径</text>
+    <text x="32" y="78" font-size="17" fill="#64748b">媒体和 DataChannel 使用各自的安全封装</text>
+    <g fill="#fff" stroke="#cbd5e1" stroke-width="1.5">
+      <rect x="32" y="112" width="300" height="60" rx="10"/>
+      <rect x="388" y="112" width="300" height="60" rx="10"/>
+      <rect x="388" y="222" width="300" height="60" rx="10"/>
+    </g>
+    <g fill="#e0f2fe" stroke="#7dd3fc" stroke-width="1.5">
+      <rect x="32" y="222" width="300" height="70" rx="10"/>
+      <rect x="388" y="332" width="300" height="60" rx="10"/>
+    </g>
+    <rect x="32" y="442" width="656" height="60" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <g font-size="23" fill="#0f172a" text-anchor="middle">
+      <text x="182" y="151">编码后的音视频</text>
+      <text x="538" y="151">应用消息</text>
+      <text x="538" y="261">SCTP</text>
+      <text x="182" y="266" font-weight="650" fill="#075985">SRTP / SRTCP</text>
+      <text x="538" y="371" font-weight="650" fill="#075985">DTLS</text>
+      <text x="360" y="481" font-size="22">ICE 选定的传输路径</text>
+    </g>
+    <g fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M182 174V211"/>
+      <path d="M538 174V211"/>
+      <path d="M538 284V321"/>
+      <path d="M182 294V431"/>
+      <path d="M538 394V431"/>
+    </g>
+    <rect x="51" y="335" width="262" height="48" rx="8" fill="#f8fafc"/>
+    <text x="182" y="353" font-size="16" fill="#475569" text-anchor="middle">DTLS 握手为媒体协商密钥</text>
+    <text x="182" y="378" font-size="16" fill="#475569" text-anchor="middle">媒体包随后使用 SRTP 传输</text>
+  </g>
+</svg>
