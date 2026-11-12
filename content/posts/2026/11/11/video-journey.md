@@ -1,7 +1,7 @@
 ---
 title: "一段视频的“取经之路”"
 pubDatetime: 2022-09-19T00:00:00+08:00
-description: "从相机成像、RGB与YUV图像处理，到运动估计、IPB帧、混合视频编码模型和音视频封装，梳理一段视频的完整生成过程。"
+description: "从相机成像、RGB与YUV图像处理，到运动估计、IPB帧、混合视频编码模型和音视频封装，梳理一段视频的完整生成过程"
 categories: ["音视频与图像"]
 tags: ["音视频"]
 featured: true

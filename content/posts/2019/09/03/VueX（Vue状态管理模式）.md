@@ -2,7 +2,7 @@
 title: "VueX（Vue状态管理模式）"
 pubDatetime: 2019-09-03T20:32:18+08:00
 modDatetime: 2019-09-07T17:46:08+08:00
-description: "围绕共享状态管理，介绍 Vuex 的 Store、Mutation、Getter、Action 和模块组织方式。"
+description: "围绕共享状态管理，介绍 Vuex 的 Store、Mutation、Getter、Action 和模块组织方式"
 categories: ["前端应用"]
 tags: ["Vue.js","VueCli","VueX"]
 ---

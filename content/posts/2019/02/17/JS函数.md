@@ -2,7 +2,7 @@
 title: "JS函数"
 pubDatetime: 2019-02-17T12:31:18+08:00
 modDatetime: 2019-08-07T19:52:26+08:00
-description: "整理 JavaScript 函数的定义、参数与调用方式，并通过代码示例说明箭头函数和闭包。"
+description: "整理 JavaScript 函数的定义、参数与调用方式，并通过代码示例说明箭头函数和闭包"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "在Node.js中实现邮箱验证码功能"
 pubDatetime: 2020-05-04T12:30:27+08:00
-description: "以注册验证为例，介绍 Node.js 中邮箱验证码的生成、邮件发送、存储与校验流程。"
+description: "以注册验证为例，介绍 Node.js 中邮箱验证码的生成、邮件发送、存储与校验流程"
 categories: ["服务端开发"]
 tags: ["Node.js","Express框架","nodemailer"]
 ---

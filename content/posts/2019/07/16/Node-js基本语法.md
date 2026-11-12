@@ -2,7 +2,7 @@
 title: "Node.js基本语法"
 pubDatetime: 2019-07-16T09:59:16+08:00
 modDatetime: 2019-08-07T20:06:10+08:00
-description: "从 HTTP 服务入手，介绍 Node.js 的文件读写、路径处理与模块加载。"
+description: "从 HTTP 服务入手，介绍 Node.js 的文件读写、路径处理与模块加载"
 categories: ["服务端开发"]
 tags: ["Node.js","Common.js"]
 ---

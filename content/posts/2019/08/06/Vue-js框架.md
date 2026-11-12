@@ -2,7 +2,7 @@
 title: "Vue.js框架"
 pubDatetime: 2019-08-06T20:00:27+08:00
 modDatetime: 2019-08-07T19:50:44+08:00
-description: "Vue 2 基础笔记，通过示例介绍数据绑定、常用指令与自定义指令的使用。"
+description: "Vue 2 基础笔记，通过示例介绍数据绑定、常用指令与自定义指令的使用"
 categories: ["前端应用"]
 tags: ["Vue.js","前端框架"]
 ---

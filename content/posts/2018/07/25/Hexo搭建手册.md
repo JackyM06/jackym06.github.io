@@ -1,7 +1,7 @@
 ---
 title: "Hexo搭建手册"
 pubDatetime: 2018-07-25T11:36:19+08:00
-description: "记录用 Hexo 搭建个人博客的过程，包括安装、部署到 GitHub、发布文章和配置主题。"
+description: "记录用 Hexo 搭建个人博客的过程，包括安装、部署到 GitHub、发布文章和配置主题"
 categories: ["前端工程"]
 tags: ["Hexo"]
 ---

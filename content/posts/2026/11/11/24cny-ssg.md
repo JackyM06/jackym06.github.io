@@ -1,7 +1,7 @@
 ---
 title: "大型运营活动的预渲染实践：用 SSG 改善首屏体验"
 pubDatetime: 2026-11-12T00:00:00+08:00
-description: "以一次大型运营活动为例，介绍构建期预渲染的方案选型、Vite与Puppeteer实现，以及页面接管、WebView适配、动效同步、换肤和多路由处理，为首屏性能优化提供实践参考。"
+description: "以一次大型运营活动为例，介绍构建期预渲染的方案选型、Vite与Puppeteer实现，以及页面接管、WebView适配、动效同步、换肤和多路由处理，为首屏性能优化提供实践参考"
 categories: ["前端工程"]
 tags: ["SSG","Vue.js"]
 featured: true

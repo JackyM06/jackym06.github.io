@@ -2,7 +2,7 @@
 title: "关于JSON"
 pubDatetime: 2019-01-26T16:10:33+08:00
 modDatetime: 2019-08-07T19:54:44+08:00
-description: "介绍 JSON 的数据格式与语法规则，并补充 javascript:void(0) 在链接中的作用。"
+description: "介绍 JSON 的数据格式与语法规则，并补充 javascript:void(0) 在链接中的作用"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

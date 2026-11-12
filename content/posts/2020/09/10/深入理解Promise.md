@@ -1,7 +1,7 @@
 ---
 title: "深入理解Promise"
 pubDatetime: 2020-08-17T17:55:40+08:00
-description: "通过超时控制、手写 Promise 和 Ajax 封装，进一步理解链式调用、异常传播与 async/await。"
+description: "通过超时控制、手写 Promise 和 Ajax 封装，进一步理解链式调用、异常传播与 async/await"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

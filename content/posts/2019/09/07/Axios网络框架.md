@@ -1,7 +1,7 @@
 ---
 title: "Axios网络框架"
 pubDatetime: 2019-09-07T17:40:52+08:00
-description: "整理 Axios 的请求配置与并发用法，并通过独立实例和请求、响应拦截器封装网络调用。"
+description: "整理 Axios 的请求配置与并发用法，并通过独立实例和请求、响应拦截器封装网络调用"
 categories: ["前端应用"]
 tags: ["Node.js","axios","Vue.js"]
 ---

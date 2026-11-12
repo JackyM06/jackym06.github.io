@@ -1,7 +1,7 @@
 ---
 title: "在WEB项目中防御XSS攻击"
 pubDatetime: 2020-05-04T12:32:00+08:00
-description: "结合输入内容被当作代码执行的场景，介绍 XSS 风险，以及使用 xss 模块过滤内容的做法。"
+description: "结合输入内容被当作代码执行的场景，介绍 XSS 风险，以及使用 xss 模块过滤内容的做法"
 categories: ["前端工程"]
 tags: ["xss"]
 ---

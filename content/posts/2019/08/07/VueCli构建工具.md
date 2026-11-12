@@ -1,7 +1,7 @@
 ---
 title: "VueCli构建工具"
 pubDatetime: 2019-08-07T19:35:35+08:00
-description: "介绍 Vue CLI 2 与 3 的项目创建方式，并说明运行时构建与完整构建的区别。"
+description: "介绍 Vue CLI 2 与 3 的项目创建方式，并说明运行时构建与完整构建的区别"
 categories: ["前端工程"]
 tags: ["Vue.js","VueCli","webpack"]
 ---

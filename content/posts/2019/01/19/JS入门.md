@@ -2,7 +2,7 @@
 title: "JS入门"
 pubDatetime: 2019-01-19T21:03:30+08:00
 modDatetime: 2019-08-07T19:52:52+08:00
-description: "JavaScript 基础笔记，涵盖变量与数据类型、作用域、事件和常见输出方式。"
+description: "JavaScript 基础笔记，涵盖变量与数据类型、作用域、事件和常见输出方式"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

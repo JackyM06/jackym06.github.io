@@ -1,7 +1,7 @@
 ---
 title: "WebRTC 传输原理：媒体与 DataChannel 怎样工作"
 pubDatetime: 2023-04-13T16:54:00+08:00
-description: "结合分享中的媒体与协议配图，理解 RTP 和抖动缓冲、丢包恢复、GCC 拥塞控制、DataChannel 交付策略，以及 DTLS 和 SRTP 的安全边界。"
+description: "结合分享中的媒体与协议配图，理解 RTP 和抖动缓冲、丢包恢复、GCC 拥塞控制、DataChannel 交付策略，以及 DTLS 和 SRTP 的安全边界"
 categories: ["音视频与图像"]
 tags: ["WebRTC", "音视频", "拥塞控制", "DataChannel"]
 featured: false

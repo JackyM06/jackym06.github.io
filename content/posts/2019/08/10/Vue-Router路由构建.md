@@ -1,7 +1,7 @@
 ---
 title: "Vue-Router路由构建"
 pubDatetime: 2019-08-10T21:00:45+08:00
-description: "通过示例介绍 Vue Router 的路由配置、参数传递、页面缓存与导航守卫。"
+description: "通过示例介绍 Vue Router 的路由配置、参数传递、页面缓存与导航守卫"
 categories: ["前端应用"]
 tags: ["Vue.js","前端框架","VueRouter","Vue-Cli"]
 ---

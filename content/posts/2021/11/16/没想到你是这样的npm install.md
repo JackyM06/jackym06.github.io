@@ -1,7 +1,7 @@
 ---
 title: "没想到你是这样的npm install"
 pubDatetime: 2021-11-15T00:00:00+08:00
-description: "沿 npm install 的执行过程，梳理锁文件、依赖树、缓存与完整性校验，并比较 Yarn 和 pnpm 的实现思路。"
+description: "沿 npm install 的执行过程，梳理锁文件、依赖树、缓存与完整性校验，并比较 Yarn 和 pnpm 的实现思路"
 categories: ["前端工程"]
 tags: ["Node.js","Npm","Yarn","pnPM"]
 ---

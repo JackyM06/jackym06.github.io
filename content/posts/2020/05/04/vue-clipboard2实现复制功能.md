@@ -1,7 +1,7 @@
 ---
 title: "vue-clipboard2实现复制功能"
 pubDatetime: 2020-05-04T12:29:59+08:00
-description: "在 Vue 项目中接入 vue-clipboard2，通过指令把文本复制到剪贴板。"
+description: "在 Vue 项目中接入 vue-clipboard2，通过指令把文本复制到剪贴板"
 categories: ["前端应用"]
 tags: ["Vue.js","vue-clipboard2"]
 ---

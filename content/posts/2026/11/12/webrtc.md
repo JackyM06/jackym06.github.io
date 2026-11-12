@@ -1,7 +1,7 @@
 ---
 title: "WebRTC 连接原理：NAT 穿透与 ICE 建连"
 pubDatetime: 2023-04-13T16:54:00+08:00
-description: "结合分享中的手绘过程图，理解 NAT 地址映射与过滤、UDP 打洞、TURN 中继，以及 ICE 和 Offer Answer 如何组织 WebRTC 的连接建立。"
+description: "结合分享中的手绘过程图，理解 NAT 地址映射与过滤、UDP 打洞、TURN 中继，以及 ICE 和 Offer Answer 如何组织 WebRTC 的连接建立"
 categories: ["音视频与图像"]
 tags: ["WebRTC", "NAT", "ICE", "网络协议"]
 featured: false

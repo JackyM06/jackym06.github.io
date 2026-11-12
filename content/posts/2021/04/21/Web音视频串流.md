@@ -1,7 +1,7 @@
 ---
 title: "做直播，我们是认真的：Web 音视频串流"
 pubDatetime: 2021-04-19T00:00:00+08:00
-description: "梳理浏览器直播中的编码封装与传输协议，结合 WebSocket 和 RTMP 方案介绍推流、转发与播放。"
+description: "梳理浏览器直播中的编码封装与传输协议，结合 WebSocket 和 RTMP 方案介绍推流、转发与播放"
 categories: ["音视频与图像"]
 tags: ["Node.js","音视频","直播"]
 ---

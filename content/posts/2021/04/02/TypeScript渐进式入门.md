@@ -1,7 +1,7 @@
 ---
 title: "TypeScript渐进式入门"
 pubDatetime: 2021-04-02T00:42:49+08:00
-description: "面向 JavaScript 开发者的 TypeScript 基础笔记，逐步介绍基础类型、接口与函数的类型约束。"
+description: "面向 JavaScript 开发者的 TypeScript 基础笔记，逐步介绍基础类型、接口与函数的类型约束"
 categories: ["前端基础"]
 tags: ["TypeScript","Webpack"]
 ---

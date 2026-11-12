@@ -2,7 +2,7 @@
 title: "JS正则表达式"
 pubDatetime: 2019-01-20T21:22:05+08:00
 modDatetime: 2019-08-07T19:54:00+08:00
-description: "介绍正则表达式的匹配规则与常用方法，并记录异常处理、严格模式、表单验证和 this 的用法。"
+description: "介绍正则表达式的匹配规则与常用方法，并记录异常处理、严格模式、表单验证和 this 的用法"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

@@ -2,7 +2,7 @@
 title: "WebPack打包工具"
 pubDatetime: 2019-08-06T20:02:33+08:00
 modDatetime: 2019-08-07T20:10:44+08:00
-description: "结合模块化示例，介绍 webpack 的打包配置、Loader 与插件，以及样式、图片和 Vue 文件的处理。"
+description: "结合模块化示例，介绍 webpack 的打包配置、Loader 与插件，以及样式、图片和 Vue 文件的处理"
 categories: ["前端工程"]
 tags: ["Vue.js","VueCli","webpack"]
 ---

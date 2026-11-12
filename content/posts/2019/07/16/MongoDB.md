@@ -2,7 +2,7 @@
 title: "MongoDB"
 pubDatetime: 2019-07-16T10:05:02+08:00
 modDatetime: 2019-08-07T20:06:06+08:00
-description: "记录 MongoDB 的安装与常用命令，并通过 Node.js 和 Mongoose 实现文档的增删改查。"
+description: "记录 MongoDB 的安装与常用命令，并通过 Node.js 和 Mongoose 实现文档的增删改查"
 categories: ["服务端开发"]
 tags: ["Node.js","数据库"]
 ---

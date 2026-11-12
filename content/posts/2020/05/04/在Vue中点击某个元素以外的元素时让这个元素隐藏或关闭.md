@@ -1,7 +1,7 @@
 ---
 title: "在Vue中点击某个元素以外的元素时让这个元素隐藏或关闭"
 pubDatetime: 2020-05-04T12:31:27+08:00
-description: "通过 document 点击监听与节点范围判断，在 Vue 中实现点击元素外部时隐藏目标元素的交互。"
+description: "通过 document 点击监听与节点范围判断，在 Vue 中实现点击元素外部时隐藏目标元素的交互"
 categories: ["前端应用"]
 tags: ["Vue.js"]
 ---
