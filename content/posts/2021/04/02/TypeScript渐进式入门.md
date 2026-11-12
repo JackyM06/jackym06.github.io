@@ -1,7 +1,7 @@
 ---
 title: "TypeScript渐进式入门"
 pubDatetime: 2021-04-02T00:42:49+08:00
-description: "本部分主要是一些基础概念，掌握后可以从JavaScript语法习惯转变为TypeScript。 基础类型表示形式： 1const foo:string = \"test\" 字符串：string 数字：number 布尔值：boolean 空值：void (主要用于表示函数无返回值或返回值为null时的定义) 任意值：an"
+description: "面向 JavaScript 开发者的 TypeScript 基础笔记，逐步介绍基础类型、接口与函数的类型约束。"
 categories: ["前端基础"]
 tags: ["TypeScript","Webpack"]
 ---

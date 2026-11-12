@@ -1,7 +1,7 @@
 ---
 title: "在VueCli3项目中使用Bootstrap"
 pubDatetime: 2020-05-04T12:31:42+08:00
-description: "在VueCli3项目中使用Bootsrap 在Vue开发中，为了实现响应式效果加入了Bootstrap框架"
+description: "在 Vue CLI 3 项目中接入 Bootstrap，记录依赖安装、构建配置与样式引入方式。"
 categories: ["前端应用"]
 tags: ["Vue.js","Bootstrap"]
 ---

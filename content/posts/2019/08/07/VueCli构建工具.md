@@ -1,7 +1,7 @@
 ---
 title: "VueCli构建工具"
 pubDatetime: 2019-08-07T19:35:35+08:00
-description: "一、VueCli构建工具如果我们所有的项目都像原来那样配置，难免过于繁琐。所以Vue官方提供了一个构建工具——VueCli来快速构建一个工具 。他可以帮助我们快速安装webPack的插件、loader等等配套的包。以及帮我们自动化构建配置目录等等。"
+description: "介绍 Vue CLI 2 与 3 的项目创建方式，并说明运行时构建与完整构建的区别。"
 categories: ["前端工程"]
 tags: ["Vue.js","VueCli","webpack"]
 ---

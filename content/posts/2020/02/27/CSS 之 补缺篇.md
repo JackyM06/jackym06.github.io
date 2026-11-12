@@ -1,7 +1,7 @@
 ---
 title: "CSS补缺备忘"
 pubDatetime: 2020-02-27T23:20:22+08:00
-description: "CSS 之 补缺备忘用个人补缺时记录。"
+description: "记录文本排版、背景与表格等 CSS 用法，配合示例补充容易遗漏的属性细节。"
 categories: ["前端基础"]
 tags: ["CSS"]
 ---

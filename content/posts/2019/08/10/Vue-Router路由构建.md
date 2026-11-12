@@ -1,7 +1,7 @@
 ---
 title: "Vue-Router路由构建"
 pubDatetime: 2019-08-10T21:00:45+08:00
-description: "一、前端路由和后端路由1.1 路由路由就是通过互联的网络把信息从源地址传输到目的地址的活动。在Web的路由中，最重要的就是有一个路由映射表。这个映射表能够完整的表现出映射关系，便于路由管理。"
+description: "通过示例介绍 Vue Router 的路由配置、参数传递、页面缓存与导航守卫。"
 categories: ["前端应用"]
 tags: ["Vue.js","前端框架","VueRouter","Vue-Cli"]
 ---

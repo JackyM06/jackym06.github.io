@@ -2,7 +2,7 @@
 title: "VueX（Vue状态管理模式）"
 pubDatetime: 2019-09-03T20:32:18+08:00
 modDatetime: 2019-09-07T17:46:08+08:00
-description: "一、初识VueX1.1 关于VueXVueX是适用于在Vue项目开发时使用的状态管理工具。试想一下，如果在一个项目开发中频繁的使用组件传参的方式来同步data中的值，一旦项目变得很庞大，管理和维护这些值将是相当棘手的工作。为此，Vue为这些被多个组件频繁使用的值提供了一个统一管理的工具——VueX。在具有VueX的Vu"
+description: "围绕共享状态管理，介绍 Vuex 的 Store、Mutation、Getter、Action 和模块组织方式。"
 categories: ["前端应用"]
 tags: ["Vue.js","VueCli","VueX"]
 ---

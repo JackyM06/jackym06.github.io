@@ -1,7 +1,7 @@
 ---
 title: "没想到你是这样的npm install"
 pubDatetime: 2021-11-15T00:00:00+08:00
-description: "前言使用npm install这个条命令对于我们前端开发者来说应该是形成“肌肉记忆”，之前一直对 npm 的相关知识停留在“会用”的阶段，但是内部的原理却不甚了解。直到项目中出现了一次由 npm 包引起的问题后，才开始下决心对 npm 包其中的工作流程做一个详细的梳理。 npm install 大概会经过以下图例中的几"
+description: "沿 npm install 的执行过程，梳理锁文件、依赖树、缓存与完整性校验，并比较 Yarn 和 pnpm 的实现思路。"
 categories: ["前端工程"]
 tags: ["Node.js","Npm","Yarn","pnPM"]
 ---

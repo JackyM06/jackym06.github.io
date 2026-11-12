@@ -1,7 +1,7 @@
 ---
 title: "Node.js通过cron模块实现定时执行脚本"
 pubDatetime: 2020-05-04T22:00:27+08:00
-description: "Node.js通过cron模块实现定时执行脚本 实际开发中，可能会由定时执行某段代码的需求。下面分享如何使用cron在Node.js中如何实现该需求"
+description: "以每天统计网站访问量为例，介绍在 Node.js 中配置 cron 定时任务并执行脚本的方法。"
 categories: ["服务端开发"]
 tags: ["Node.js","cron"]
 ---

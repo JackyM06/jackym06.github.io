@@ -2,7 +2,7 @@
 title: "JS函数"
 pubDatetime: 2019-02-17T12:31:18+08:00
 modDatetime: 2019-08-07T19:52:26+08:00
-description: "一、JavaScript函数定义JavaScript中必须使用function来定义函数 function name([a[,b][,c]...]){ 代码 }函数参数js函数对参数的值类型没由进行任何检查。函数再定义是列出的参数被称为“显式参数(Parameters)”，而调用时真实传递的值被称为“隐式参数(Argu"
+description: "整理 JavaScript 函数的定义、参数与调用方式，并通过代码示例说明箭头函数和闭包。"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

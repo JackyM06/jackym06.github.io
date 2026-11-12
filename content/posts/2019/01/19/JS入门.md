@@ -2,7 +2,7 @@
 title: "JS入门"
 pubDatetime: 2019-01-19T21:03:30+08:00
 modDatetime: 2019-08-07T19:52:52+08:00
-description: "一、js的输出JavaSctipt没有任何打印输出的函数或方法 window.alert()浏览器警告框 document.write()方法可以将内容写入到Html中（如果在写入流结束后再使用将会覆盖整个HTML） innerHTML 写入与读取HTML元素 console.log()在浏览器控制台输出"
+description: "JavaScript 基础笔记，涵盖变量与数据类型、作用域、事件和常见输出方式。"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

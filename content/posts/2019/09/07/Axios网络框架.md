@@ -1,7 +1,7 @@
 ---
 title: "Axios网络框架"
 pubDatetime: 2019-09-07T17:40:52+08:00
-description: "一、axios网络框架 包含了对XMLHttpRequest浏览器的支持 能够在node.js环境中发起http请求 支持Promise API 支持拦截请求和响应 支持转换请求和响应数据 支持取消请求 支持自动转换JSON数据 axios更适合在Vue框架中使用，如果使用ajax需要引用整个jquery，而一个jqu"
+description: "整理 Axios 的请求配置与并发用法，并通过独立实例和请求、响应拦截器封装网络调用。"
 categories: ["前端应用"]
 tags: ["Node.js","axios","Vue.js"]
 ---

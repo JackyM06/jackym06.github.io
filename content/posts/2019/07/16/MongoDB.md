@@ -2,7 +2,7 @@
 title: "MongoDB"
 pubDatetime: 2019-07-16T10:05:02+08:00
 modDatetime: 2019-08-07T20:06:06+08:00
-description: "一、起步 MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。 MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。"
+description: "记录 MongoDB 的安装与常用命令，并通过 Node.js 和 Mongoose 实现文档的增删改查。"
 categories: ["服务端开发"]
 tags: ["Node.js","数据库"]
 ---

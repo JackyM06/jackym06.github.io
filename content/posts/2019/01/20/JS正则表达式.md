@@ -2,7 +2,7 @@
 title: "JS正则表达式"
 pubDatetime: 2019-01-20T21:22:05+08:00
 modDatetime: 2019-08-07T19:54:00+08:00
-description: "一、正则表达式RegExp 对象正则表达式是描述字符模式的对象。正则表达式用于对字符串模式匹配及检索替换，是对字符串执行模式匹配的强大工具。"
+description: "介绍正则表达式的匹配规则与常用方法，并记录异常处理、严格模式、表单验证和 this 的用法。"
 categories: ["前端基础"]
 tags: ["JavaScript"]
 ---

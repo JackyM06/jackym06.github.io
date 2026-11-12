@@ -1,7 +1,7 @@
 ---
 title: "在Vue中使用Echarts"
 pubDatetime: 2020-05-04T22:00:46+08:00
-description: "在Vue中使用Echarts 实际的Vue项目开发中可能需要用到Echarts来制作图表。本文将分享在VueCli3中使用Echarts的小经验。"
+description: "在 Vue CLI 3 中接入 ECharts 与 vue-echarts，通过折线图和饼图示例说明配置和组件用法。"
 categories: ["前端应用"]
 tags: ["Vue.js","echarts"]
 ---

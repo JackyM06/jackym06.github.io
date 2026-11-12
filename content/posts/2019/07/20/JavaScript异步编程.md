@@ -2,7 +2,7 @@
 title: "JavaScript异步编程"
 pubDatetime: 2019-07-20T20:45:48+08:00
 modDatetime: 2019-08-07T19:56:08+08:00
-description: "一、回调函数为了实现JS中的异步操作，主要的解决方案就是利用回调函数的方法 回调函数是先调用，后定义的方式使用的。 如： 123456789function d1(interval,callback)&#123; setTimeout(()=>&#123; callback('hello world') &#125;,"
+description: "对照回调函数、Promise 和 async/await 的用法，演示异步任务的串行执行、并发与错误处理。"
 categories: ["前端基础"]
 tags: ["JavaScript","ES6"]
 ---

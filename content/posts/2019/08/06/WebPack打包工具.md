@@ -2,7 +2,7 @@
 title: "WebPack打包工具"
 pubDatetime: 2019-08-06T20:02:33+08:00
 modDatetime: 2019-08-07T20:10:44+08:00
-description: "一、模块化开发1.1 关于模块化模块化是现在Web前端开发的趋势，它可以解决以前Js多文件协同开发会出现的命名问题等等。 再模块化下，每一个Js文件都是独立的文件，每个独立的js文件可以导入和导出数据。 像在Node.js环境下用CommonJS开发流程一样，ES6也制定了一些关于模块化开发的标准以保证他们可以再浏览器"
+description: "结合模块化示例，介绍 webpack 的打包配置、Loader 与插件，以及样式、图片和 Vue 文件的处理。"
 categories: ["前端工程"]
 tags: ["Vue.js","VueCli","webpack"]
 ---

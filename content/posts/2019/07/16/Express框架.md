@@ -2,7 +2,7 @@
 title: "Express框架"
 pubDatetime: 2019-07-16T10:03:27+08:00
 modDatetime: 2019-08-07T20:04:06+08:00
-description: "一、引入Express框架1.安装并加载Express模块1npm install express -g 1234let express = require('express')let app = express() //相当于http.createServer()module.exports = app"
+description: "从创建服务开始，记录 Express 的路由、模板与静态资源配置，以及 Session、中间件和错误处理。"
 categories: ["服务端开发"]
 tags: ["Node.js","Express框架"]
 ---
