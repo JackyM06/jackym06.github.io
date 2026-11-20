@@ -1,0 +1,961 @@
+---
+import { getAssetPath } from "@/utils/withBase";
+import geometry from "./tibet-place-names/geometry.json";
+import mapData from "./tibet-place-names/places.json";
+
+const { categories, places } = mapData;
+const initialPlace = places[0];
+---
+
+<tibet-place-map
+  id="tibet-place-map"
+  class="not-prose"
+  role="group"
+  aria-label="藏语地名地图"
+>
+  <div class="map-toolbar">
+    <ul class="map-legend" aria-label="图例">
+      {
+        categories.map(category => (
+          <li>
+            <svg class="legend-symbol" viewBox="-8 -8 16 16" aria-hidden="true">
+              <path class={category.id} d={category.symbol} />
+            </svg>
+            {category.name}
+          </li>
+        ))
+      }
+    </ul>
+    <div class="map-zoom" role="group" aria-label="地图缩放">
+      <button
+        type="button"
+        data-zoom-out
+        aria-label="缩小地图"
+        aria-controls="tibet-map-overlay"
+        disabled>−</button
+      >
+      <button
+        type="button"
+        data-zoom-in
+        aria-label="放大地图"
+        aria-controls="tibet-map-overlay"
+        disabled>+</button
+      >
+    </div>
+  </div>
+  <div
+    class="map-canvas"
+    style={`aspect-ratio: ${geometry.width} / ${geometry.height}`}
+  >
+    <svg
+      class="map-base"
+      viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <mask
+          id="tibet-place-map-relief"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width={geometry.width}
+          height={geometry.height}
+        >
+          <image
+            href={getAssetPath("images/tibet-place-names/relief.webp")}
+            width={geometry.width}
+            height={geometry.height}
+          />
+        </mask>
+      </defs>
+      <rect
+        class="relief"
+        width={geometry.width}
+        height={geometry.height}
+        mask="url(#tibet-place-map-relief)"></rect>
+      <path class="lakes" d={geometry.lakes}></path>
+      <path class="rivers" d={geometry.rivers}></path>
+      <path class="major-river" d={geometry.highlights.yarlung}></path>
+      {
+        Object.entries(geometry.highlights).map(([river, path]) => (
+          <path class="river-highlight" data-river={river} d={path} />
+        ))
+      }
+    </svg>
+    <svg
+      id="tibet-map-overlay"
+      class="map-overlay"
+      role="img"
+      aria-label="西藏及川滇青甘的藏语地名分布，北方朝上"
+    >
+      <g class="map-regions" aria-hidden="true"></g>
+      <g class="map-leaders" aria-hidden="true"></g>
+      <g class="map-symbols" aria-hidden="true"></g>
+      <g class="map-labels" aria-hidden="true"></g>
+    </svg>
+    <span class="map-north" aria-hidden="true">↑ 北</span>
+  </div>
+  <div class="map-reading">
+    <label class="place-picker">
+      <span>选一个地名</span>
+      <select name="place" aria-controls="tibet-place-map-detail">
+        {
+          categories.map(category => (
+            <optgroup label={category.name}>
+              {places
+                .filter(place => place.type === category.id)
+                .map(place => (
+                  <option value={place.id}>
+                    {place.area ? `${place.name}（${place.area}）` : place.name}
+                  </option>
+                ))}
+            </optgroup>
+          ))
+        }
+      </select>
+    </label>
+    <div id="tibet-place-map-detail" role="status" aria-atomic="true">
+      <p class="place-meaning">{initialPlace.meaning}</p>
+      <p class="place-note">{initialPlace.note}</p>
+    </div>
+    <div class="place-context" hidden>
+      <p class="place-scene" aria-live="polite"></p>
+      <ul class="place-landmarks" aria-label="相关地点"></ul>
+      <button type="button" class="place-parent" hidden></button>
+      <p class="place-sources" aria-label="参考资料"></p>
+    </div>
+  </div>
+  <p class="map-credit">
+    地形阴影由 <a href="https://registry.opendata.aws/terrain-tiles/">Mapzen</a>
+    高程数据生成（USGS 等提供原始数据） · 水系
+    <a href="https://www.naturalearthdata.com/downloads/10m-physical-vectors/"
+      >Natural Earth</a
+    > · 地名位置参考
+    <a href="https://arhiiv.eki.ee/knab/valik/cn54inf.htm">KNAB</a> 等
+  </p>
+</tibet-place-map>
+
+<script>
+  import mapData from "./tibet-place-names/places.json";
+
+  const { categories, places, regions } = mapData;
+  const byId = new Map(places.map(place => [place.id, place]));
+  const symbolsByType = new Map(
+    categories.map(category => [category.id, category.symbol])
+  );
+  const zoomLevels = [1, 1.5, 2, 3, 4, 6, 10, 16, 24];
+  const landmarkZoom = 6;
+  const landmarkFocusIndex = zoomLevels.indexOf(16);
+  const wheelPixelsPerStep = 48;
+  const wheelGesturePause = 200;
+
+  type Place = (typeof places)[number];
+  type Position = { place: Place; x: number; y: number };
+  type Rect = { left: number; right: number; top: number; bottom: number };
+  type Drag = {
+    pointerId: number;
+    x: number;
+    y: number;
+    center: [number, number];
+    moved: boolean;
+  };
+
+  function element<K extends keyof SVGElementTagNameMap>(
+    parent: SVGElement,
+    name: K,
+    attributes: Record<string, string | number>
+  ) {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for (const [key, value] of Object.entries(attributes)) {
+      node.setAttribute(key, String(value));
+    }
+    parent.append(node);
+    return node;
+  }
+
+  function bounds(
+    x: number,
+    y: number,
+    halfWidth: number,
+    halfHeight: number
+  ): Rect {
+    return {
+      left: x - halfWidth,
+      right: x + halfWidth,
+      top: y - halfHeight,
+      bottom: y + halfHeight,
+    };
+  }
+
+  function overlaps(a: Rect, b: Rect) {
+    return (
+      a.left < b.right &&
+      a.right > b.left &&
+      a.top < b.bottom &&
+      a.bottom > b.top
+    );
+  }
+
+  function drawLabels(
+    labels: SVGGElement,
+    leaders: SVGGElement,
+    positions: Position[],
+    selected: Place,
+    width: number,
+    height: number,
+    zoom: number
+  ) {
+    const markers = positions.map(({ x, y }) => bounds(x, y, 6, 6));
+    const occupied: Rect[] = [];
+    const compact = width < 560 && zoom === 1;
+    const visible = positions.filter(
+      ({ place }) => !compact || place === selected || place.overview
+    );
+    const priority = (place: Place) =>
+      place === selected ? 2 : Number(Boolean(place.overview));
+    visible.sort((a, b) => priority(b.place) - priority(a.place));
+
+    for (const { place, x, y } of visible) {
+      const label = element(labels, "text", {
+        "text-anchor": "middle",
+        "dominant-baseline": "central",
+        "data-place": place.id,
+        class: place === selected ? "selected" : "",
+      });
+      label.textContent = place.label ?? place.name;
+      const size = label.getBBox();
+      const halfWidth = size.width / 2 + 3;
+      const halfHeight = size.height / 2 + 1;
+      const side = halfWidth + 12;
+      const offsets = [
+        [side, 0],
+        [-side, 0],
+        [0, -17],
+        [0, 17],
+        [side, -17],
+        [-side, -17],
+        [side, 17],
+        [-side, 17],
+        [0, -31],
+        [0, 31],
+        [side + 16, -24],
+        [-side - 16, -24],
+        [side + 16, 25],
+        [-side - 16, 25],
+        [7, -45],
+        [7, 45],
+        [side + 28, -36],
+        [-side - 28, -36],
+        [0, -63],
+        [0, 63],
+      ];
+      const offset = offsets.find(([dx, dy]) => {
+        const box = bounds(x + dx, y + dy, halfWidth, halfHeight);
+        return (
+          box.left >= 4 &&
+          box.right <= width - 4 &&
+          box.top >= 4 &&
+          box.bottom <= height - 4 &&
+          !markers.some(mark => overlaps(mark, box)) &&
+          !occupied.some(other => overlaps(other, box))
+        );
+      });
+      if (!offset) {
+        label.remove();
+        continue;
+      }
+      const cx = x + offset[0];
+      const cy = y + offset[1];
+      const box = bounds(cx, cy, halfWidth, halfHeight);
+      label.setAttribute("x", String(cx));
+      label.setAttribute("y", String(cy));
+      occupied.push(box);
+      const endX = Math.max(box.left + 1, Math.min(x, box.right - 1));
+      const endY = Math.max(box.top, Math.min(y, box.bottom));
+      if (Math.hypot(endX - x, endY - y) > 12) {
+        element(leaders, "line", { x1: x, y1: y, x2: endX, y2: endY });
+      }
+    }
+  }
+
+  class TibetPlaceMap extends HTMLElement {
+    #cleanup?: () => void;
+
+    connectedCallback() {
+      const base = this.querySelector<SVGSVGElement>(".map-base");
+      const svg = this.querySelector<SVGSVGElement>(".map-overlay");
+      const regionLabels = this.querySelector<SVGGElement>(".map-regions");
+      const leaders = this.querySelector<SVGGElement>(".map-leaders");
+      const symbols = this.querySelector<SVGGElement>(".map-symbols");
+      const labels = this.querySelector<SVGGElement>(".map-labels");
+      const select = this.querySelector("select");
+      const meaning = this.querySelector(".place-meaning");
+      const note = this.querySelector(".place-note");
+      const context = this.querySelector<HTMLElement>(".place-context");
+      const scene = this.querySelector<HTMLParagraphElement>(".place-scene");
+      const landmarks =
+        this.querySelector<HTMLUListElement>(".place-landmarks");
+      const parentButton =
+        this.querySelector<HTMLButtonElement>(".place-parent");
+      const sources =
+        this.querySelector<HTMLParagraphElement>(".place-sources");
+      const highlights = this.querySelectorAll<SVGPathElement>("[data-river]");
+      const zoomIn = this.querySelector<HTMLButtonElement>("[data-zoom-in]");
+      const zoomOut = this.querySelector<HTMLButtonElement>("[data-zoom-out]");
+      if (
+        !base ||
+        !svg ||
+        !regionLabels ||
+        !leaders ||
+        !symbols ||
+        !labels ||
+        !select ||
+        !meaning ||
+        !note ||
+        !context ||
+        !scene ||
+        !landmarks ||
+        !parentButton ||
+        !sources ||
+        !zoomIn ||
+        !zoomOut
+      )
+        return;
+
+      const { width: mapWidth, height: mapHeight } = base.viewBox.baseVal;
+      let selected = places[0];
+      let positions: Position[] = [];
+      let zoomIndex = 0;
+      let center: [number, number] = [0.5, 0.5];
+      let drag: Drag | undefined;
+      let suppressClick = false;
+      let drawFrame = 0;
+      let wheelDelta = 0;
+      let lastWheelAt = -Infinity;
+
+      const setCenter = (x: number, y: number) => {
+        // Keep the camera inside the area covered by the terrain and rivers.
+        const margin = 0.5 / zoomLevels[zoomIndex];
+        center = [
+          Math.max(margin, Math.min(1 - margin, x)),
+          Math.max(margin, Math.min(1 - margin, y)),
+        ];
+      };
+
+      const draw = () => {
+        const { width, height } = svg.getBoundingClientRect();
+        if (!width || !height) return;
+        const zoom = zoomLevels[zoomIndex];
+        const [cx, cy] = center;
+        const mapLeft = cx - 0.5 / zoom;
+        const mapTop = cy - 0.5 / zoom;
+        base.setAttribute(
+          "viewBox",
+          `${mapLeft * mapWidth} ${mapTop * mapHeight} ${mapWidth / zoom} ${mapHeight / zoom}`
+        );
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        svg.classList.toggle("zoomed", zoomIndex > 0);
+        zoomIn.disabled = zoomIndex === zoomLevels.length - 1;
+        zoomOut.disabled = zoomIndex === 0;
+        for (const layer of [regionLabels, leaders, symbols, labels])
+          layer.replaceChildren();
+        const project = ([x, y]: number[]) => ({
+          x: (x - mapLeft) * zoom * width,
+          y: (y - mapTop) * zoom * height,
+        });
+        const inside = ({ x, y }: { x: number; y: number }) =>
+          x >= 0 && x <= width && y >= 0 && y <= height;
+        positions = places
+          .filter(
+            place => !place.parent || place === selected || zoom >= landmarkZoom
+          )
+          .map(place => ({ place, ...project(place.at) }))
+          .filter(inside);
+
+        if (width >= 475) {
+          for (const region of regions) {
+            const point = project(region.at);
+            if (!inside(point)) continue;
+            element(regionLabels, "text", {
+              ...point,
+              "text-anchor": point.x > width - 34 ? "end" : "middle",
+            }).textContent = region.name;
+          }
+        }
+
+        // Draw the selected marker last so its ring remains legible at nearby points.
+        const ordered = [...positions].sort(
+          (a, b) => Number(a.place === selected) - Number(b.place === selected)
+        );
+        for (const { place, x, y } of ordered) {
+          const mark = element(symbols, "g", {
+            transform: `translate(${x} ${y})`,
+            class: place.type,
+            "data-place": place.id,
+          });
+          if (place === selected) element(mark, "circle", { r: 10 });
+          element(mark, "path", { d: symbolsByType.get(place.type) ?? "" });
+        }
+        drawLabels(labels, leaders, positions, selected, width, height, zoom);
+      };
+
+      const updateContext = (place: Place) => {
+        const { scenic } = place;
+        const parent = place.parent ? byId.get(place.parent) : undefined;
+        context.hidden = !scenic && !parent;
+        scene.textContent = scenic?.description ?? "";
+        scene.hidden = !scenic?.description;
+
+        landmarks.replaceChildren();
+        for (const entry of scenic?.landmarks ?? []) {
+          const landmark = typeof entry === "string" ? byId.get(entry) : entry;
+          if (!landmark) continue;
+          const item = document.createElement("li");
+          const name = document.createElement(
+            typeof entry === "string" ? "button" : "strong"
+          );
+          if (name instanceof HTMLButtonElement && typeof entry === "string") {
+            name.type = "button";
+            name.dataset.placeLink = entry;
+          }
+          name.textContent = landmark.name;
+          const gloss = document.createElement("span");
+          gloss.textContent = landmark.meaning;
+          item.append(name, gloss);
+          landmarks.append(item);
+        }
+        landmarks.hidden = !landmarks.childElementCount;
+
+        parentButton.hidden = !parent;
+        parentButton.dataset.placeLink = parent?.id ?? "";
+        parentButton.textContent = parent ? `← 回到${parent.name}` : "";
+
+        const references = scenic?.sources ?? parent?.scenic?.sources ?? [];
+        sources.replaceChildren();
+        for (const reference of references) {
+          const link = document.createElement("a");
+          link.href = reference.url;
+          link.textContent = reference.name;
+          sources.append(link);
+        }
+        sources.hidden = !references.length;
+      };
+
+      const show = (id: string, centerOnPlace = false) => {
+        const place = byId.get(id);
+        if (!place) return;
+        selected = place;
+        if (centerOnPlace) {
+          if (place.parent) zoomIndex = Math.max(zoomIndex, landmarkFocusIndex);
+          if (zoomIndex > 0) setCenter(place.at[0], place.at[1]);
+        }
+        select.value = place.id;
+        meaning.textContent = place.meaning;
+        note.textContent = place.note;
+        updateContext(place);
+        for (const path of highlights) {
+          path.classList.toggle("active", path.dataset.river === place.water);
+        }
+        draw();
+      };
+
+      const controller = new AbortController();
+      const { signal } = controller;
+      const zoomBy = (direction: number, pointer?: [number, number]) => {
+        const next = zoomIndex + direction;
+        if (next < 0 || next >= zoomLevels.length) return;
+        let nextCenter = zoomIndex === 0 ? selected.at : center;
+        if (pointer) {
+          // Keep the same map point under the pointer as the viewport changes size.
+          const shift = 1 / zoomLevels[zoomIndex] - 1 / zoomLevels[next];
+          nextCenter = [
+            center[0] + (pointer[0] - 0.5) * shift,
+            center[1] + (pointer[1] - 0.5) * shift,
+          ];
+        }
+        zoomIndex = next;
+        setCenter(nextCenter[0], nextCenter[1]);
+        draw();
+      };
+      zoomIn.addEventListener("click", () => zoomBy(1), { signal });
+      zoomOut.addEventListener("click", () => zoomBy(-1), { signal });
+      svg.addEventListener(
+        "wheel",
+        event => {
+          const { deltaMode, deltaY, timeStamp } = event;
+          if ((!event.metaKey && !event.ctrlKey) || deltaY === 0) {
+            wheelDelta = 0;
+            return;
+          }
+          event.preventDefault();
+          if (
+            timeStamp - lastWheelAt > wheelGesturePause ||
+            wheelDelta * deltaY < 0
+          ) {
+            wheelDelta = 0;
+          }
+          lastWheelAt = timeStamp;
+
+          const { left, top, width, height } = svg.getBoundingClientRect();
+          let distance = deltaY;
+          if (deltaMode === WheelEvent.DOM_DELTA_LINE) distance *= 16;
+          if (deltaMode === WheelEvent.DOM_DELTA_PAGE) distance *= height;
+          wheelDelta += distance;
+          if (Math.abs(wheelDelta) < wheelPixelsPerStep) return;
+
+          zoomBy(-Math.sign(wheelDelta), [
+            (event.clientX - left) / width,
+            (event.clientY - top) / height,
+          ]);
+          wheelDelta = 0;
+        },
+        { passive: false, signal }
+      );
+      select.addEventListener("change", () => show(select.value, true), {
+        signal,
+      });
+      context.addEventListener(
+        "click",
+        event => {
+          if (!(event.target instanceof Element)) return;
+          const button = event.target.closest<HTMLButtonElement>(
+            "button[data-place-link]"
+          );
+          if (!button?.dataset.placeLink) return;
+          show(button.dataset.placeLink, true);
+          select.focus();
+        },
+        { signal }
+      );
+
+      this.closest("article")?.addEventListener(
+        "click",
+        event => {
+          if (!(event.target instanceof Element)) return;
+          const link =
+            event.target.closest<HTMLAnchorElement>("a[data-map-place]");
+          if (
+            !link?.dataset.mapPlace ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+          if (zoomIndex === 0) zoomIndex = 2;
+          show(link.dataset.mapPlace, true);
+        },
+        { signal }
+      );
+
+      svg.addEventListener(
+        "pointerdown",
+        event => {
+          if (!event.isPrimary || event.button !== 0) return;
+          suppressClick = false;
+          if (zoomIndex === 0) return;
+          drag = {
+            pointerId: event.pointerId,
+            x: event.clientX,
+            y: event.clientY,
+            center,
+            moved: false,
+          };
+        },
+        { signal }
+      );
+      svg.addEventListener(
+        "pointermove",
+        event => {
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          const dx = event.clientX - drag.x;
+          const dy = event.clientY - drag.y;
+          if (!drag.moved) {
+            if (Math.hypot(dx, dy) < 5) return;
+            drag.moved = true;
+            svg.setPointerCapture(event.pointerId);
+            svg.classList.add("dragging");
+          }
+          const zoom = zoomLevels[zoomIndex];
+          setCenter(
+            drag.center[0] - dx / (svg.clientWidth * zoom),
+            drag.center[1] - dy / (svg.clientHeight * zoom)
+          );
+          if (!drawFrame) {
+            drawFrame = requestAnimationFrame(() => {
+              drawFrame = 0;
+              draw();
+            });
+          }
+        },
+        { signal }
+      );
+      const finishDrag = (event: PointerEvent) => {
+        if (!drag || drag.pointerId !== event.pointerId) return;
+        suppressClick = drag.moved;
+        drag = undefined;
+        svg.classList.remove("dragging");
+      };
+      for (const type of [
+        "pointerup",
+        "pointercancel",
+        "lostpointercapture",
+      ] as const) {
+        svg.addEventListener(type, finishDrag, { signal });
+      }
+      svg.addEventListener(
+        "pointerleave",
+        event => {
+          if (drag && !drag.moved) finishDrag(event);
+        },
+        { signal }
+      );
+      svg.addEventListener(
+        "click",
+        event => {
+          if (suppressClick) {
+            suppressClick = false;
+            return;
+          }
+          if (!(event.target instanceof Element)) return;
+          const target = event.target.closest<SVGElement>("[data-place]");
+          if (target?.dataset.place) {
+            show(target.dataset.place);
+            return;
+          }
+          const rect = svg.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          let nearest: Position | undefined;
+          let radius = 22;
+          for (const point of positions) {
+            const distance = Math.hypot(point.x - x, point.y - y);
+            if (distance < radius) {
+              radius = distance;
+              nearest = point;
+            }
+          }
+          if (nearest) show(nearest.place.id);
+        },
+        { signal }
+      );
+
+      const observer = new ResizeObserver(draw);
+      observer.observe(svg);
+      this.#cleanup = () => {
+        controller.abort();
+        observer.disconnect();
+        cancelAnimationFrame(drawFrame);
+      };
+      show(select.value);
+    }
+
+    disconnectedCallback() {
+      this.#cleanup?.();
+    }
+  }
+
+  customElements.define("tibet-place-map", TibetPlaceMap);
+</script>
+
+<style>
+  tibet-place-map {
+    display: block;
+    margin-block: 1.75rem;
+    color: var(--foreground);
+    color-scheme: light;
+    letter-spacing: normal;
+    line-height: 1.55;
+    --map-water: light-dark(#1d78a7, #72bde1);
+  }
+
+  :global([data-theme="dark"]) tibet-place-map {
+    color-scheme: dark;
+  }
+
+  .city,
+  .map-symbols :global(.city) {
+    --mark: light-dark(#006cac, #69bdf6);
+  }
+  .mountain,
+  .map-symbols :global(.mountain) {
+    --mark: light-dark(#9e4908, #ffab63);
+  }
+  .lake,
+  .map-symbols :global(.lake) {
+    --mark: light-dark(#007e63, #73d8ac);
+  }
+  .river,
+  .map-symbols :global(.river) {
+    --mark: light-dark(#b43e7a, #f09cc9);
+  }
+  .gorge,
+  .map-symbols :global(.gorge) {
+    --mark: light-dark(#7152ae, #bfa8ff);
+  }
+
+  .map-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    margin-block-end: 0.65rem;
+  }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8125rem;
+  }
+
+  .map-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .legend-symbol {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+  .legend-symbol path {
+    fill: var(--mark);
+  }
+
+  .map-canvas {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.4rem;
+    background: color-mix(in srgb, var(--muted) 26%, var(--background));
+  }
+
+  .map-base,
+  .map-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-overlay {
+    user-select: none;
+  }
+
+  .map-overlay.zoomed {
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .map-overlay.dragging,
+  .map-overlay.dragging :global([data-place]) {
+    cursor: grabbing;
+  }
+
+  .map-zoom {
+    display: flex;
+    flex: none;
+    overflow: hidden;
+    border: 1px solid var(--muted-foreground);
+    border-radius: 0.35rem;
+    background: var(--background);
+  }
+
+  .map-zoom button {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    place-items: center;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .map-zoom button + button {
+    border-inline-start: 1px solid var(--muted);
+  }
+
+  .map-zoom button:hover:not(:disabled) {
+    background: var(--muted);
+  }
+
+  .map-zoom button:disabled {
+    color: var(--muted-foreground);
+    opacity: 0.6;
+  }
+
+  .map-zoom button:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .relief {
+    fill: var(--muted-foreground);
+  }
+  .lakes {
+    fill: color-mix(in srgb, var(--map-water) 29%, var(--background));
+  }
+  .rivers,
+  .major-river,
+  .river-highlight {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .rivers {
+    stroke: color-mix(in srgb, var(--map-water) 45%, var(--background));
+    stroke-width: 0.8;
+  }
+  .major-river {
+    stroke: color-mix(in srgb, var(--map-water) 67%, var(--background));
+    stroke-width: 1.25;
+  }
+  .river-highlight {
+    visibility: hidden;
+    stroke: var(--map-water);
+    stroke-width: 2.5;
+  }
+  .river-highlight.active {
+    visibility: visible;
+  }
+
+  .map-symbols :global([data-place]),
+  .map-labels :global([data-place]) {
+    cursor: pointer;
+  }
+  .map-symbols :global(path) {
+    fill: var(--mark);
+    stroke: var(--background);
+    stroke-width: 1.5;
+  }
+  .map-symbols :global(circle) {
+    fill: var(--background);
+    stroke: var(--mark);
+    stroke-width: 1.5;
+  }
+  .map-leaders :global(line) {
+    stroke: var(--muted-foreground);
+    opacity: 0.64;
+  }
+  .map-labels :global(text) {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    paint-order: stroke fill;
+    font-size: 0.75rem;
+  }
+  .map-labels :global(.selected) {
+    font-weight: 650;
+  }
+  .map-regions {
+    fill: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+  .map-north {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.65rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    pointer-events: none;
+  }
+
+  .map-reading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 0.7rem 1.25rem;
+    margin-block-start: 0.85rem;
+  }
+  .place-picker {
+    display: grid;
+    flex: 1 1 11rem;
+    gap: 0.3rem;
+    font-size: 0.8125rem;
+  }
+  select {
+    width: 100%;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid var(--muted-foreground);
+    border-radius: 0.3rem;
+    background: var(--background);
+    color: var(--foreground);
+    font-size: 1rem;
+  }
+  select:focus-visible {
+    outline: 2px dashed var(--accent);
+    outline-offset: 2px;
+  }
+  .map-reading [role="status"] {
+    flex: 2 1 16rem;
+  }
+  .place-meaning {
+    margin: 0;
+    font-weight: 650;
+  }
+  .place-note {
+    margin: 0.15rem 0 0;
+    font-size: 0.875rem;
+  }
+  .place-context {
+    flex-basis: 100%;
+    border-block-start: 1px solid var(--muted);
+    padding-block-start: 0.6rem;
+    font-size: 0.875rem;
+  }
+  .place-scene,
+  .place-landmarks,
+  .place-sources {
+    margin: 0;
+  }
+  .place-landmarks {
+    margin-block-start: 0.45rem;
+    padding: 0;
+    list-style: none;
+  }
+  .place-landmarks :global(li) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.6rem;
+  }
+  .place-landmarks :global(strong) {
+    padding-block: 0.27rem;
+    font-weight: 600;
+  }
+  .place-landmarks :global(button),
+  .place-parent {
+    padding-block: 0.27rem;
+    color: var(--accent);
+    text-align: start;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .place-landmarks :global(span) {
+    color: var(--muted-foreground);
+  }
+  .place-sources {
+    margin-block-start: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+  .place-sources :global(a) {
+    display: inline-block;
+    margin-inline-end: 0.75rem;
+    color: inherit;
+    text-decoration: underline;
+  }
+  .map-credit {
+    margin: 0.6rem 0 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+  .map-credit a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>

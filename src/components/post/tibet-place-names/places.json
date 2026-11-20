@@ -1,0 +1,870 @@
+{
+  "categories": [
+    {
+      "id": "city",
+      "name": "城镇与古迹",
+      "symbol": "M0,-4.8a4.8,4.8 0 1 1 0,9.6a4.8,4.8 0 1 1 0,-9.6Z"
+    },
+    {
+      "id": "mountain",
+      "name": "山峰、山群与山口",
+      "symbol": "M0,-6.6L6.3,4.7H-6.3Z"
+    },
+    {
+      "id": "lake",
+      "name": "湖泊",
+      "symbol": "M0,-6.5L6,0 0,6.5 -6,0Z"
+    },
+    {
+      "id": "river",
+      "name": "河流",
+      "symbol": "M-6,-4.7L0,-1.2 6,-4.7V.6L0,4.1 -6,.6Z"
+    },
+    {
+      "id": "gorge",
+      "name": "峡谷",
+      "symbol": "M-4.7,-4.7H4.7V4.7H-4.7Z"
+    }
+  ],
+  "places": [
+    {
+      "id": "lhasa",
+      "type": "city",
+      "name": "拉萨",
+      "meaning": "神佛之地",
+      "note": "藏语 lha 指神，sa 指土地。早期文献还写作「惹萨」，大昭寺及其周围的宗教活动深刻影响了这座城的名字。",
+      "overview": true,
+      "at": [0.519573, 0.700421]
+    },
+    {
+      "id": "shigatse",
+      "type": "city",
+      "name": "日喀则",
+      "meaning": "土地肥美的庄园",
+      "note": "地方常见释义。旧称「谿卡桑珠孜」，简称「谿卡孜」。谿卡是庄园，桑珠孜也留在了今天的区名里。",
+      "overview": true,
+      "at": [0.440569, 0.730404]
+    },
+    {
+      "id": "tsetang",
+      "type": "city",
+      "name": "山南·泽当",
+      "label": "泽当",
+      "meaning": "猴子玩耍的坝子",
+      "note": "这是当地对泽当的常见解释，和猕猴与罗刹女的传说相连。山南的藏语名「洛卡」指向南部地区。",
+      "overview": true,
+      "at": [0.543505, 0.732483]
+    },
+    {
+      "id": "nyingchi",
+      "type": "city",
+      "name": "林芝·巴宜",
+      "label": "林芝",
+      "meaning": "常释「太阳的宝座」或「娘氏的宝座」",
+      "note": "旧地名有尼池、娘池等不同音译和藏文写法。林芝市区在巴宜区八一一带，市名沿用的是尼池村一带的旧名。",
+      "overview": true,
+      "at": [0.635655, 0.699061]
+    },
+    {
+      "id": "qamdo",
+      "type": "city",
+      "name": "昌都",
+      "meaning": "两河汇合处",
+      "note": "扎曲和昂曲就在昌都城区相会，汇合后的河流称澜沧江。",
+      "overview": true,
+      "at": [0.735854, 0.581386]
+    },
+    {
+      "id": "nagqu",
+      "type": "city",
+      "name": "那曲",
+      "meaning": "黑河",
+      "note": "城名沿用河名。那曲河是怒江的上游河段，「曲」在这里就是河。",
+      "overview": true,
+      "at": [0.553491, 0.554601]
+    },
+    {
+      "id": "ngari",
+      "type": "city",
+      "name": "阿里·狮泉河镇",
+      "label": "狮泉河镇",
+      "meaning": "阿里意为「领地」或「属地」",
+      "note": "狮泉河镇是阿里地区行署和噶尔县政府的驻地，镇名取自流经此地的狮泉河。",
+      "overview": true,
+      "at": [0.128025, 0.471596]
+    },
+    {
+      "id": "sakya",
+      "type": "city",
+      "name": "萨迦",
+      "meaning": "灰白色的土",
+      "note": "萨迦寺所在山坡有风化成灰白色的岩土，寺名、地名和萨迦派的名称都和这片地方有关。",
+      "at": [0.409964, 0.759319],
+      "scenic": {
+        "description": "萨迦寺最先建在仲曲河北岸的山坡上，保存较完整的南寺在河谷里。沿河的城镇与两处寺址共享「萨迦」这个名字。",
+        "sources": [
+          {
+            "name": "萨迦寺与地名",
+            "url": "https://mangkang.changdu.gov.cn/mkx/c105862/202603/42788e4466054057bc87c34ab4664e11.shtml"
+          }
+        ]
+      }
+    },
+    {
+      "id": "medog",
+      "type": "city",
+      "name": "墨脱",
+      "meaning": "花朵",
+      "note": "当地另有佛教地名「博隅白玛岗」，意为「隐藏着的莲花」。墨脱在雅鲁藏布江穿过大拐弯后流向的峡谷里。",
+      "at": [0.670214, 0.72615]
+    },
+    {
+      "id": "qomolangma",
+      "type": "mountain",
+      "name": "珠穆朗玛峰",
+      "meaning": "常译「圣母峰」",
+      "note": "「第三女神」来自当地的五仙女传说。珠穆朗玛的藏语名称在清代绘制的地图上已有记录。",
+      "at": [0.370996, 0.83075],
+      "scenic": {
+        "description": "珠峰北坡有绒布冰川，融水向下汇入绒布河。绒布寺在北坡山谷里，从寺院一带可以望见冰川和主峰。",
+        "sources": [
+          {
+            "name": "中科院·珠峰北坡与绒布峡谷",
+            "url": "https://www.itpcas.cas.cn/new_zhxw/202210/t20221026_6539769.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "barwa",
+      "type": "mountain",
+      "name": "南迦巴瓦峰",
+      "meaning": "常释「雷电如火燃烧」",
+      "note": "另一个形象的译法是「直刺蓝天的战矛」。雅鲁藏布江在这座山的北侧转弯。",
+      "at": [0.66032, 0.701923],
+      "scenic": {
+        "description": "它位于雅鲁藏布江大拐弯的南侧，与北岸的加拉白垒峰相望。索松村在峡谷景区内，从村里可以隔江看南迦巴瓦。",
+        "landmarks": ["gorge", "gyalaperi"],
+        "sources": [
+          {
+            "name": "西藏文旅·双峰与索松村",
+            "url": "https://wlt.xizang.gov.cn/xccx/lytg/202610/t20261013_562436.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "kailash",
+      "type": "mountain",
+      "name": "冈仁波齐",
+      "meaning": "珍宝般的雪山",
+      "note": "「冈」是雪、雪山，「仁波齐」与「仁波切」同源，意为珍宝。山南边就是玛旁雍错。",
+      "at": [0.171423, 0.587597],
+      "scenic": {
+        "description": "冈仁波齐在冈底斯山脉。当地转山道从山脚的塔尔钦进入山谷，经过卓玛拉山口绕峰一周。南面是玛旁雍错和拉昂错。",
+        "landmarks": ["manasarovar"],
+        "sources": [
+          {
+            "name": "普兰县·冈仁波齐和两湖",
+            "url": "https://www.pulan.gov.cn/info/2671/179661.htm"
+          },
+          {
+            "name": "普兰县·转山道",
+            "url": "https://pulan.gov.cn/info/2641/182781.htm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "namco",
+      "type": "lake",
+      "name": "纳木错",
+      "meaning": "天湖",
+      "note": "藏语 gnam 是天，mtsho 是湖。湖在念青唐古拉山北麓，蒙古语别名「腾格里海」也是天湖。",
+      "at": [0.502135, 0.61218],
+      "scenic": {
+        "description": "念青唐古拉山沿纳木错南岸展开。扎西半岛从东南岸伸进湖中，北岸称作「圣象天门」的景观是一道临湖的天然岩拱。",
+        "sources": [
+          {
+            "name": "当雄县·扎西半岛",
+            "url": "https://www.dxx.gov.cn/dxxrmzf/jdjs/201807/64e18c3d509248b18011e43a5789a0d9.shtml"
+          },
+          {
+            "name": "西藏文旅·纳木错北岸",
+            "url": "https://wlt.xizang.gov.cn/xccx/lytg/202106/t20210610_246704.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "yamdrok",
+      "type": "lake",
+      "name": "羊卓雍错",
+      "meaning": "上部牧场的碧玉湖",
+      "note": "当地常称「羊湖」。藏语里的 g.yu 指绿松石，湖名的常见汉译采用「碧玉」。",
+      "at": [0.50427, 0.755567],
+      "scenic": {
+        "description": "羊湖的水面沿山谷分出多条支汊，湖中有岛，各个湖湾被伸进水里的山脊隔开。从岗巴拉山口看到的是其中一段湖面。",
+        "sources": [
+          {
+            "name": "山南文旅·羊卓雍错",
+            "url": "https://lyfzj.shannan.gov.cn/zjsn/jdjs/202608/t20260827_175662.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manasarovar",
+      "type": "lake",
+      "name": "玛旁雍错",
+      "meaning": "不败的碧玉湖",
+      "note": "普兰当地也译作「永恒不败的碧玉湖」。它和冈仁波齐位于同一片神山圣湖景观。",
+      "at": [0.176868, 0.620171],
+      "scenic": {
+        "description": "玛旁雍错北望冈仁波齐，西边紧挨着拉昂错，南面是纳木那尼峰。两湖之间隔着一道狭长的陆地。",
+        "landmarks": ["kailash"],
+        "sources": [
+          {
+            "name": "普兰县·神山与圣湖",
+            "url": "https://www.pulan.gov.cn/info/2671/179661.htm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "basum",
+      "type": "lake",
+      "name": "巴松措",
+      "meaning": "按藏文直译为「三岩湖」",
+      "note": "brag 是岩石，gsum 是三，mtsho 是湖。文旅介绍里还常用「绿色的水」来形容这座湖。",
+      "at": [0.621007, 0.671578],
+      "scenic": {
+        "description": "湖心的扎西岛上有措宗寺。结巴村在湖畔，沿支谷往里还有一座叫新措的湖。",
+        "sources": [
+          {
+            "name": "林芝文旅·巴松措与新措",
+            "url": "https://wlj.linzhi.gov.cn/lzslyfzwyh/c103820/202412/f72842432043462180592e984aaf97d7.shtml"
+          }
+        ]
+      }
+    },
+    {
+      "id": "yarlung",
+      "type": "river",
+      "name": "雅鲁藏布江",
+      "meaning": "与「雅隆」旧地名相连的大河",
+      "note": "「藏布」是常见的江河名成分。中游的「雅隆藏布」是如今通行江名的来源线索。",
+      "water": "yarlung",
+      "at": [0.397441, 0.734514],
+      "scenic": {
+        "description": "江水沿喜马拉雅山北侧向东流，接纳拉萨河和尼洋河。到林芝一带，江水在雪峰之间拐向南方，切出了大峡谷。",
+        "landmarks": ["kyichu", "nyang", "gorge"],
+        "sources": [
+          {
+            "name": "中科院·大拐弯考察",
+            "url": "https://igsnrr.cas.cn/cbkx/kpyd/kcsj/ylzb/202009/t20200910_5693390.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "kyichu",
+      "type": "river",
+      "name": "拉萨河·吉曲",
+      "label": "吉曲",
+      "meaning": "幸福河，也译「快乐河」",
+      "note": "吉曲是拉萨河的藏语名称。图上标在它汇入雅鲁藏布江的曲水一带。",
+      "at": [0.50605, 0.723313]
+    },
+    {
+      "id": "nyang",
+      "type": "river",
+      "name": "尼洋河·娘曲",
+      "label": "尼洋河",
+      "meaning": "「曲」意为河，「娘」与古代娘氏相关",
+      "note": "尼洋河又称娘曲，相关研究把这个称呼与曾在流域居住的娘氏联系起来。图上标在下游。",
+      "at": [0.639085, 0.717596]
+    },
+    {
+      "id": "senge",
+      "type": "river",
+      "name": "狮泉河·森格藏布",
+      "label": "狮泉河",
+      "meaning": "「森格」意为狮子",
+      "note": "也是印度河的上源。另一个藏名「森格喀巴布」带有水从狮口流下来的意思，当地有源头形似狮口的说法。",
+      "water": "senge",
+      "at": [0.174167, 0.513502]
+    },
+    {
+      "id": "gorge",
+      "type": "gorge",
+      "name": "雅鲁藏布大峡谷",
+      "label": "雅鲁藏布大峡谷",
+      "meaning": "雅鲁藏布江切出的峡谷",
+      "note": "峡谷沿用了雅鲁藏布江的名字。",
+      "water": "gorge",
+      "at": [0.658228, 0.691435],
+      "scenic": {
+        "description": "峡谷从米林派镇大渡卡一带向下游延伸。江水在南迦巴瓦峰和加拉白垒峰之间穿过，转向南流，经墨脱。大拐弯、河谷和两岸的雪峰共同构成这片地貌。",
+        "landmarks": ["barwa", "gyalaperi", "medog", "yarlung"],
+        "sources": [
+          {
+            "name": "中科院·大拐弯考察",
+            "url": "https://igsnrr.cas.cn/cbkx/kpyd/kcsj/ylzb/202009/t20200910_5693390.html"
+          },
+          {
+            "name": "西藏文旅·峡谷起点与双峰",
+            "url": "https://wlt.xizang.gov.cn/xccx/lytg/202507/t20250728_492276.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gyalaperi",
+      "type": "mountain",
+      "name": "加拉白垒峰",
+      "area": "西藏",
+      "meaning": "大拐弯北侧的雪峰",
+      "note": "位于念青唐古拉山脉东段，和南迦巴瓦峰隔峡谷对望。",
+      "parent": "gorge",
+      "at": [0.657287, 0.687419],
+      "scenic": {
+        "landmarks": ["barwa"]
+      }
+    },
+    {
+      "id": "kading",
+      "type": "gorge",
+      "name": "卡定沟",
+      "meaning": "当地释为「天上人间」",
+      "note": "也写作嘎定沟，是尼洋河畔一条有陡崖和瀑布的短峡谷。",
+      "at": [0.628114, 0.694094],
+      "scenic": {
+        "description": "卡定沟是一条汇向尼洋河谷的窄峡谷，两侧都是岩壁，天佛瀑布从沟内的岩壁落下。",
+        "landmarks": ["nyang"],
+        "sources": [
+          {
+            "name": "巴宜区·卡定沟",
+            "url": "https://www.bayiqu.gov.cn/byq/zjby/202005/8dab40c485b0470e8683a4b2b43e7a75.shtml"
+          }
+        ]
+      }
+    },
+    {
+      "id": "meili",
+      "type": "mountain",
+      "name": "梅里雪山群峰",
+      "label": "梅里雪山",
+      "area": "滇藏交界",
+      "meaning": "「梅里」意为药山",
+      "note": "「梅里」原指怒山北段一处多药材的山，后来成了德钦以西这片群峰的通称。当地信众也用「卡瓦格博」称呼以主峰为中心的一组神山。",
+      "overview": true,
+      "at": [0.790285, 0.797697],
+      "scenic": {
+        "description": "怒江和澜沧江之间的这片雪峰常合称「太子十三峰」。飞来寺隔澜沧江望向群峰，明永冰川从主峰东坡向下延伸，雨崩村在群峰东侧的山谷里。当地给多座雪峰起了带有神话和宗教色彩的名字。",
+        "landmarks": [
+          "kawagarbo",
+          "mianzimu",
+          "cogar",
+          { "name": "吉娃仁安", "meaning": "五冠峰，也叫五佛冠峰" },
+          { "name": "巴乌八蒙", "meaning": "将军峰" },
+          { "name": "扎拉旺堆", "meaning": "战神峰" },
+          { "name": "布琼松吉吾学", "meaning": "英雄儿女峰" },
+          { "name": "帕巴乃顶吉", "meaning": "十六尊者峰" },
+          { "name": "森格纳松", "meaning": "狮子峰" }
+        ],
+        "sources": [
+          {
+            "name": "卡瓦格博田野调查",
+            "url": "https://www.shanshui.org/information/4621/"
+          },
+          {
+            "name": "德钦景区讲解资料",
+            "url": "https://zwgk.mct.gov.cn/zfxxgkml/scgl/202207/P020220728611989455875.pdf"
+          },
+          {
+            "name": "甲应村访记·当地峰名",
+            "url": "https://www.dili360.com/cng/article/p655734223ffca15.htm"
+          },
+          {
+            "name": "梅里北段山峰记录",
+            "url": "https://publications.americanalpineclub.org/articles/13201213697/Kawagebo-Range-Success-on-Cogar-Lakpa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "kawagarbo",
+      "type": "mountain",
+      "name": "卡瓦格博峰",
+      "area": "滇藏交界",
+      "meaning": "白雪",
+      "note": "藏语 kha ba dkar po 意为「白雪」。这座海拔 6740 米的主峰是梅里群峰的最高点。在当地信仰里，以它为中心的一组神山也叫卡瓦格博。",
+      "parent": "meili",
+      "at": [0.789441, 0.795643],
+      "scenic": {
+        "description": "主峰在澜沧江、怒江的分水岭上。东坡的明永冰川伸向明永村所在的谷地，雨崩村在主峰东南侧的山谷里。",
+        "sources": [
+          {
+            "name": "卡瓦格博田野调查",
+            "url": "https://www.shanshui.org/information/4621/"
+          },
+          {
+            "name": "明永冰川地理调查",
+            "url": "https://www.progressingeography.com/CN/abstract/article/1007-6301/50495"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mianzimu",
+      "type": "mountain",
+      "name": "缅茨姆峰",
+      "area": "云南",
+      "meaning": "神女峰",
+      "note": "又写作「面慈母」。峰顶尖削，在卡瓦格博主峰南面。当地传说把神女视为卡瓦格博的妻子。",
+      "parent": "meili",
+      "at": [0.791885, 0.803657]
+    },
+    {
+      "id": "cogar",
+      "type": "mountain",
+      "name": "粗归腊卡峰",
+      "area": "滇藏交界",
+      "meaning": "也叫卡瓦格博二峰",
+      "note": "这座峰在梅里群峰北段，是雪山的次高峰。登山记录写作 Cogar Lakpa，也见「措归腊卡」的音译。",
+      "parent": "meili",
+      "at": [0.786714, 0.789779]
+    },
+    {
+      "id": "napahai",
+      "type": "lake",
+      "name": "纳帕海",
+      "area": "云南",
+      "meaning": "森林背后的湖泊",
+      "note": "也叫纳帕措，位于香格里拉市建塘镇。这里的「海」指一片随季节涨落的高原湖沼。",
+      "at": [0.823249, 0.840182],
+      "scenic": {
+        "description": "纳帕海湿地连着草甸和沼泽。丰水季水面铺开，枯水季露出草甸，这片湿地也是黑颈鹤等候鸟的越冬地。",
+        "sources": [
+          {
+            "name": "香格里拉市·纳帕海湿地",
+            "url": "https://www.xianggelila.gov.cn/zfxxgk_xglls/fdzdgknr/jytabljggk/zxtabljggk/202406/20240620_211861.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "dukezong",
+      "type": "city",
+      "name": "独克宗古城",
+      "label": "独克宗",
+      "area": "云南",
+      "meaning": "石头上的城堡，也称「月光城」",
+      "note": "古城围绕大龟山一带发展，这里曾在山顶建寨堡，也是滇藏茶马古道上的驿站。",
+      "at": [0.825801, 0.844742],
+      "scenic": {
+        "description": "古城的街巷围绕大龟山展开。月光广场在山脚，山上是龟山公园，古城里的藏式民居和街巷还保留着茶马古道驿站的格局。",
+        "sources": [
+          {
+            "name": "独克宗古城·历史沿革",
+            "url": "https://www.dkzgc.cn/sys-col-113/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "kangding",
+      "type": "city",
+      "name": "康定·打折多",
+      "label": "康定",
+      "area": "四川",
+      "meaning": "雅拉河和折多河的交汇处",
+      "note": "「打折多」由打曲（雅拉河）和折曲（折多河）得名，旧汉译为「打煎炉」或「打箭炉」。",
+      "overview": true,
+      "at": [0.906014, 0.66826]
+    },
+    {
+      "id": "tagong",
+      "type": "city",
+      "name": "塔公",
+      "area": "四川",
+      "meaning": "当地常释为「菩萨喜欢的地方」",
+      "note": "康定以西的塔公镇、草原和塔公寺共用这个名字，从新都桥可看到通往塔公的岔路。",
+      "at": [0.890391, 0.647118],
+      "scenic": {
+        "description": "塔公寺在镇内，镇外是塔公草原。雅拉雪山在草原东北方向，是从草原望出去常见的雪峰。",
+        "sources": [
+          {
+            "name": "康定市·塔公景点",
+            "url": "https://www.kangding.gov.cn/kdcsjs/article/107034"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gongga",
+      "type": "mountain",
+      "name": "贡嘎山群",
+      "area": "四川",
+      "meaning": "白色的雪山",
+      "note": "也称木雅贡嘎，「贡」指冰雪，「嘎」指白色。「木雅」是它所在一带的旧地名。",
+      "at": [0.902633, 0.698602],
+      "label": "贡嘎山",
+      "scenic": {
+        "description": "贡嘎是横断山脉大雪山的一片山群。木雅贡嘎主峰以北还有中山峰、勒多曼因、爱德嘉峰和嘉子峰等雪峰，海螺沟冰川从东坡下伸。",
+        "landmarks": [
+          "gongga-peak",
+          "zhongshan",
+          "reddomain",
+          "edgar",
+          "jiazi"
+        ],
+        "sources": [
+          {
+            "name": "康定市·贡嘎山概况",
+            "url": "https://www.kangding.gov.cn/kdsrmzf/c100547/201907/62b3d9f8f29e4c5a93363e6618f7e0bf.shtml"
+          },
+          {
+            "name": "四川文旅·大贡嘎",
+            "url": "https://wlt.sc.gov.cn/scwlt/dgg/2022/1/11/188370c89f154e35b62d2d53503b3a9c/files/698e81cd05cb46e6995cee8a4b02d467.pdf"
+          },
+          {
+            "name": "贡嘎山东坡冰川考察",
+            "url": "https://sdr.cas.cn/sthj/gzdt/201509/t20150909_4422206.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gongga-peak",
+      "type": "mountain",
+      "name": "木雅贡嘎峰",
+      "area": "四川",
+      "meaning": "木雅的白色雪山",
+      "note": "贡嘎山群的主峰，也是四川最高峰。「木雅」指当地旧地名，「贡嘎」指白色的雪山。",
+      "parent": "gongga",
+      "at": [0.903163, 0.704751]
+    },
+    {
+      "id": "zhongshan",
+      "type": "mountain",
+      "name": "中山峰",
+      "area": "四川",
+      "meaning": "木雅贡嘎东北的雪峰",
+      "note": "中山峰与贡嘎主峰相距约六公里，位于它与北侧群峰之间。",
+      "parent": "gongga",
+      "at": [0.904733, 0.701383]
+    },
+    {
+      "id": "reddomain",
+      "type": "mountain",
+      "name": "勒多曼因",
+      "area": "四川",
+      "meaning": "贡嘎山群西北侧的雪峰",
+      "note": "勒多曼因在木雅贡嘎西北，与东侧的爱德嘉峰隔着山谷相望。",
+      "parent": "gongga",
+      "at": [0.901677, 0.693876]
+    },
+    {
+      "id": "edgar",
+      "type": "mountain",
+      "name": "爱德嘉峰",
+      "area": "四川",
+      "meaning": "贡嘎山群东侧的雪峰",
+      "note": "康定地方资料也写作「爱德加峰」。从木雅贡嘎向北看，爱德嘉峰在偏东的一列山峰上。",
+      "parent": "gongga",
+      "at": [0.904365, 0.693816]
+    },
+    {
+      "id": "jiazi",
+      "type": "mountain",
+      "name": "嘉子峰",
+      "area": "四川",
+      "meaning": "爱德嘉峰以北的雪峰",
+      "note": "顺着贡嘎山群往北，嘉子峰位于爱德嘉峰北面、勒多曼因东北面。",
+      "parent": "gongga",
+      "at": [0.903448, 0.690474]
+    },
+    {
+      "id": "yading",
+      "type": "city",
+      "name": "稻城亚丁",
+      "area": "四川",
+      "meaning": "「亚丁」意为向阳之地",
+      "note": "亚丁村和周边保护区共用「亚丁」这个名字。",
+      "at": [0.848327, 0.794291],
+      "scenic": {
+        "description": "亚丁保护区以「日松贡布」为中心，三座雪峰合称「三怙主神山」。洛绒牛场在雪山脚下，牛奶海和五色海是峰间山谷里的湖泊。",
+        "landmarks": ["xiannairi", "yangmaiyong", "xianuoduoji"],
+        "sources": [
+          {
+            "name": "稻城县·亚丁三神山",
+            "url": "https://www.daocheng.gov.cn/lydt/article/261901"
+          }
+        ]
+      }
+    },
+    {
+      "id": "xiannairi",
+      "type": "mountain",
+      "name": "仙乃日",
+      "area": "四川",
+      "meaning": "观音菩萨",
+      "note": "亚丁三神山的北峰。从冲古寺一带的河谷可以看到仙乃日。",
+      "parent": "yading",
+      "at": [0.848784, 0.799038]
+    },
+    {
+      "id": "yangmaiyong",
+      "type": "mountain",
+      "name": "央迈勇",
+      "area": "四川",
+      "meaning": "文殊菩萨",
+      "note": "亚丁三神山的南峰。从洛绒牛场向南，能看到它尖削的峰顶。",
+      "parent": "yading",
+      "at": [0.848988, 0.802001]
+    },
+    {
+      "id": "xianuoduoji",
+      "type": "mountain",
+      "name": "夏诺多吉",
+      "area": "四川",
+      "meaning": "金刚手菩萨",
+      "note": "亚丁三神山的东峰，与仙乃日、央迈勇在山谷周围呈三角分布。",
+      "parent": "yading",
+      "at": [0.851148, 0.799785]
+    },
+    {
+      "id": "qinghai",
+      "type": "lake",
+      "name": "青海湖·措温布",
+      "label": "青海湖",
+      "area": "青海",
+      "meaning": "青蓝色的湖",
+      "note": "青海湖在藏语中称「措温布」，汉语地名也保留了湖水呈青蓝色这一印象。",
+      "overview": true,
+      "at": [0.841637, 0.105637],
+      "scenic": {
+        "description": "青海湖是一片内流咸水湖。布哈河从西边入湖，河口湿地一带有鸟岛，湖的东侧还有沙地和沙丘。",
+        "sources": [
+          {
+            "name": "国家林草局·青海湖湿地",
+            "url": "https://www.forestry.gov.cn/c/www/sdfc/80902.jhtml"
+          }
+        ]
+      }
+    },
+    {
+      "id": "chaka",
+      "type": "lake",
+      "name": "茶卡盐湖",
+      "area": "青海",
+      "meaning": "「茶卡」意为盐池",
+      "note": "湖在青海乌兰县，早年就是产盐地。汉语通名「盐湖」把它的地貌写得更直白。",
+      "at": [0.804466, 0.121284],
+      "scenic": {
+        "description": "茶卡是柴达木盆地东缘的盐湖。浅水处能看到水下的盐层，湖边还有长期采盐留下的生产景观。",
+        "sources": [
+          {
+            "name": "茶卡盐湖地理数据",
+            "url": "https://www.geodoi.ac.cn/WebCn/doi.aspx?ID=925"
+          }
+        ]
+      }
+    },
+    {
+      "id": "amnemachin",
+      "type": "mountain",
+      "name": "阿尼玛卿山脉",
+      "area": "青海",
+      "meaning": "一种释法是「黄河之祖」",
+      "note": "「阿尼」有祖父、先祖之意，「玛卿」指黄河源区的大山。",
+      "at": [0.815516, 0.278417],
+      "label": "阿尼玛卿",
+      "scenic": {
+        "description": "阿尼玛卿位于昆仑山系东段，黄河从山脉外围绕过。玛卿岗日是主峰，果洛一带的转山路线还经过赛日昂约、达马切等山峰。",
+        "landmarks": ["maqen"],
+        "sources": [
+          {
+            "name": "中科院·阿尼玛卿考察",
+            "url": "https://nwipb.cas.cn/kxcb/kpwz/200909/t20090901_2460268.html"
+          },
+          {
+            "name": "阿尼玛卿转山所经山峰",
+            "url": "https://www.sport.gov.cn/n14471/n14500/n14538/c682275/content.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "maqen",
+      "type": "mountain",
+      "name": "玛卿岗日",
+      "area": "青海",
+      "meaning": "玛卿雪山",
+      "note": "阿尼玛卿山脉的主峰，在青海果洛玛沁县。「岗日」对应藏语 gangs ri，意为雪山。",
+      "parent": "amnemachin",
+      "at": [0.817175, 0.282163]
+    },
+    {
+      "id": "labrang",
+      "type": "city",
+      "name": "拉卜楞寺",
+      "area": "甘肃",
+      "meaning": "活佛的府邸",
+      "note": "「拉卜楞」来自藏语「拉章」，在夏河指嘉木样活佛的府邸，后来随寺院通称流传。",
+      "overview": true,
+      "at": [0.925623, 0.249225],
+      "scenic": {
+        "description": "寺院建筑沿大夏河谷展开，大经堂、佛殿和僧舍分布在寺区内，转经廊沿着寺院外围绕行。",
+        "sources": [
+          {
+            "name": "甘肃·拉卜楞寺文物资料",
+            "url": "https://wlt.gansu.gov.cn/wlt/c118256/202308/169916340/files/984e9e5f38394c51803e753ad6fa617a.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zhagana",
+      "type": "city",
+      "name": "扎尕那",
+      "area": "甘肃",
+      "meaning": "石匣子",
+      "note": "甘南迭部的村寨坐落在群峰之间，周围的陡峭石壁就像围起一个匣子。",
+      "at": [0.949584, 0.329183],
+      "scenic": {
+        "description": "石峰和陡壁围起的谷地里有四个村寨，叫东哇、业日、达日、代巴。村寨依坡展开，田地分布在谷底和坡脚。",
+        "sources": [
+          {
+            "name": "迭部县·扎尕那规划",
+            "url": "https://www.tewo.gov.cn/__local/5/10/5A/3AC02BA3B683D83075A62E9BAA2_EC1EE394_71B9A8.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zheduo",
+      "type": "mountain",
+      "name": "折多山口",
+      "label": "折多山",
+      "area": "四川",
+      "meaning": "「折多」意为弯曲",
+      "note": "从康定向新都桥方向，传统川藏线经过折多山垭口，连弯山路让这个名字很好记。",
+      "at": [0.900534, 0.666435]
+    },
+    {
+      "id": "litang",
+      "type": "city",
+      "name": "理塘",
+      "area": "四川",
+      "meaning": "平坦如铜镜的草坝",
+      "note": "藏语也音译作「勒通」。「勒」是青铜，「通」指开阔平坦的草坝。",
+      "at": [0.845879, 0.673164]
+    },
+    {
+      "id": "mangkang",
+      "type": "city",
+      "name": "芒康",
+      "area": "西藏",
+      "meaning": "善妙之地",
+      "note": "从巴塘跨过金沙江进入西藏后，318 和滇藏线 214 在芒康县城相遇。",
+      "at": [0.786249, 0.698215]
+    },
+    {
+      "id": "zuogong",
+      "type": "city",
+      "name": "左贡",
+      "area": "西藏",
+      "meaning": "犏牛背",
+      "note": "犏牛是牦牛与普通牛的杂交后代。当地报道把这个名字和形似犏牛背的地势联系起来。",
+      "at": [0.759552, 0.698855]
+    },
+    {
+      "id": "basu",
+      "type": "city",
+      "name": "八宿",
+      "area": "西藏",
+      "meaning": "勇士山脚下的村庄",
+      "note": "八宿旧设八宿宗，后来改设县并迁驻白玛镇。图上标的是现在的县城。",
+      "at": [0.726612, 0.668499]
+    },
+    {
+      "id": "ranwu",
+      "type": "lake",
+      "name": "然乌湖",
+      "area": "西藏",
+      "meaning": "当地文旅常释作「羊奶湖」",
+      "note": "昌都文旅的解释取湖水呈乳白色时的观感。然乌湖也为帕隆藏布上游提供水源。",
+      "at": [0.721708, 0.714637],
+      "scenic": {
+        "description": "然乌湖在狭长的山谷里分成相连的上、中、下三段。实地水文调查分别记作雅错、安错和安目错。湖水流出后进入帕隆藏布。",
+        "sources": [
+          {
+            "name": "《地理学报》·然乌湖水文调查",
+            "url": "https://www.geog.com.cn/article/2017/0375-5444/0375-5444-72-7-1221.shtml"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bomi",
+      "type": "city",
+      "name": "波密",
+      "area": "西藏",
+      "meaning": "祖先",
+      "note": "波密县志资料以「祖先」解释县名。走过然乌后，318 沿帕隆藏布河谷到波密县城。",
+      "at": [0.685786, 0.683866]
+    },
+    {
+      "id": "lulang",
+      "type": "city",
+      "name": "鲁朗",
+      "area": "西藏",
+      "meaning": "龙王谷",
+      "note": "地方文旅也称它为「神仙居住的地方」。小镇在林芝和波密之间，从鲁朗往西就是色季拉山一带。",
+      "at": [0.648932, 0.691166],
+      "scenic": {
+        "description": "鲁朗镇在河谷中，山坡有林带，谷地有高山草甸。沿 318 往西翻过色季拉山就到了林芝市区一侧，往东顺河谷下行可到排龙。",
+        "sources": [
+          {
+            "name": "中科院·鲁朗河谷",
+            "url": "https://www.itpcas.cas.cn/new_kxcb/new_kpwz/202012/t20201211_5814771.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gongbu",
+      "type": "city",
+      "name": "工布江达",
+      "area": "西藏",
+      "meaning": "凹地大谷口",
+      "note": "县名承自旧地名「工布江达宗」。县城位于尼洋河谷，往西继续走经墨竹工卡到拉萨。",
+      "at": [0.595897, 0.6816]
+    }
+  ],
+  "regions": [
+    {
+      "name": "羌塘高原",
+      "at": [0.402135, 0.385736]
+    },
+    {
+      "name": "冈底斯山脉",
+      "at": [0.323843, 0.579331]
+    },
+    {
+      "name": "喜马拉雅山脉",
+      "at": [0.241993, 0.794729]
+    },
+    {
+      "name": "横断山脉",
+      "at": [0.811388, 0.471775]
+    },
+    {
+      "name": "成都",
+      "at": [0.981025, 0.620251]
+    }
+  ]
+}
